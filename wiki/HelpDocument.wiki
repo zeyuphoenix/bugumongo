@@ -1,4 +1,6 @@
 #labels Java,MongoDB,Mapping,Wiki
+#帮助文档
+
 =使用前提=
 要使用BuguMongo，除了需要bugu-mongo.jar之外，还需要如下jar资源：
 
