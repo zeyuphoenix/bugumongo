@@ -11,7 +11,7 @@ BuguMongo提供了：
 
 6个注解：@Entity、@Id、@Property、@Embed、@Ref、@RefList
 
-3个类：BuguConnection、BuguMapper、BuguDao
+3个类：BuguConnection、BuguDao、BuguMapper
 
 1个接口：BuguEntity
 
@@ -72,4 +72,68 @@ public class ChildFoo implements BuguEntity{
 表示对另一个对象的引用，在MongoDB中保存的是形如"father" : {"$ref" : "father", "$id" : ObjectId("4dcb4d1d3febc6503e4e5933")}这样的一个DBRef。
 
 @Ref有一个属性name，含义与@Property的属性name一样。
+@Ref还有一个属性lazy，值为true或false，默认为true。用于指定是否关联取出该引用对象。若lazy=true，表示只取出该引用对象的id，而不取出其它属性。若lazy=false，表示同时取出该引用对象的所有属性。
 ===@RefList===
+表示对另一个对象的引用的集合。其属性name和lazy的含义与@Ref中的类似。
+
+==步骤二：连接数据库==
+在能够对MongDB进行操作之前，需要使用BuguConnection连接MongoDB数据库。如：
+{{{
+BuguConnection conn = BuguConnection.getInstance();
+conn.setHost("192.168.0.100");
+conn.setPort(27017);
+conn.setDatabase("mydb");
+conn.setUsername("username");
+conn.setPassword("password");
+conn.connect();
+}}}
+或者：
+{{{
+BuguConnection conn = BuguConnection.getInstance();
+conn.connect("192.168.0.100", 27017, "mydb", "username", "password");
+}}}
+
+==步骤三：使用BuguDao进行数据库操作==
+你需要编写自己的Dao，如FooDao，来操作Foo相关的数据，FooDao需要继承自BuguDao，并且，在FooDao的构造函数中，需要传递Foo.class，如下：
+{{{
+public class FooDao extends BuguDao{
+    public FooDao(){
+        super(Foo.class);
+    }
+}
+}}}
+BuguDao中，提供了大量的函数，用于操作MongoDB的Collection，如save、remove、find、count、mapReduce等。你自己编写的Dao，通过继承自BuguDao，可以直接调用这些方法，也可以通过组合这些方法，实现更复杂的函数。如：
+{{{
+public class FooDao extends BuguDao{
+    public FooDao(){
+        super(Foo.class);
+    }
+    public long coutByLowLevel(int level){
+        DBObject query = new BasicDBObject();
+        query.put("level", new BasicDBObject("$gt", level));
+        return this.count(query);
+    }
+    ...other functions...
+}
+}}}
+{{{
+Foo foo = ...
+FooDao fDao = new FooDao();
+fDao.save(foo);
+int count = fDao.countByLowLevel(9);
+fDao.remove(foo);
+}}}
+
+==辅助转换工具：BuguMapper==
+在某些地方，你需要使用BuguMapper来进行数据转换。BuguMapper提供了3个方法：fromDBObject、toDBObject、toDBRef。使用如下：
+{{{
+public class FooDao extends BuguDao{
+    ...
+    public Foo getByFather(FatherFoo father){
+        DBObject query = new BasicDBObject();
+        query.put("father", new BuguMapper().toDBRef(father));
+        return (Foo)this.findOne(query);
+    }
+    ...
+}
+}}}
