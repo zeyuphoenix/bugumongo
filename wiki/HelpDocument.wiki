@@ -20,6 +20,15 @@ BuguMongo提供了：
 ==步骤一：定义Entity==
 要使得某个Java Entity能和MongoDB Document实现相互转换，该Entity需要实现BuguEntity接口，并加上注解，如下：
 {{{
+import com.bugull.mongo.BuguEntity;
+import com.bugull.mongo.annotations.Entity;
+import com.bugull.mongo.annotations.Embed;
+import com.bugull.mongo.annotations.Id;
+import com.bugull.mongo.annotations.Property;
+import com.bugull.mongo.annotations.Ref;
+import com.bugull.mongo.annotations.RefList;
+import java.util.List;
+
 @Entity(name="foo")
 public class Foo implements BuguEntity{
     @Id
