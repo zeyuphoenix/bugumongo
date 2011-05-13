@@ -8,15 +8,19 @@
 
 =使用步骤=
 BuguMongo提供了：
-6个注解：@Document、@Id、@Property、@Embed、@Ref、@RefList
+
+6个注解：@Entity、@Id、@Property、@Embed、@Ref、@RefList
+
 3个类：BuguConnection、BuguMapper、BuguDao
+
 1个接口：BuguEntity
+
 它们的含义都很直观。BuguMongo的使用，就是围绕着上述注解、类和接口来进行。
 
 ==步骤一：定义Entity==
-要使得某个Entity能和MongoDB Document实现相互转换，该Entity需要实现BuguEntity接口，并加上注解，如下：
+要使得某个Java Entity能和MongoDB Document实现相互转换，该Entity需要实现BuguEntity接口，并加上注解，如下：
 {{{
-@Document(name="foo")
+@Entity(name="foo")
 public class Foo implements BuguEntity{
     @Id
     private String id;
@@ -28,7 +32,44 @@ public class Foo implements BuguEntity{
     private FatherFoo father;
     @RefList
     private List<ChildFoo> children;
-    
+    ...getter and setter...
+}
+
+public class EmbedFoo {
+    private float x;
+    private float y;
+    ...getter and setter
+}
+
+@Entity(name="father")
+public class FatherFoo implements BuguEntity{
+    @Id
+    private String id;
+    private Date date;
+    ...getter and setter...
+}
+
+@Entity(name="child")
+public class ChildFoo implements BuguEntity{
+    @Id
+    private String id;
+    private List<String> list;
     ...getter and setter...
 }
 }}}
+下面分别对这6个注解进行介绍
+===@Entity===
+表示需要映射到MongoDB中的一个实体，属性name表示其在MongoDB中的collection的名称。属性name是必需的。
+===@Id===
+映射到MongoDB中的"_id"，必须为String类型。
+===@Property===
+该注解可以省略。它用来映射基本数据类型，包括：String、int、long、float、double、boolean、char、short、byte、Date等，以及这些基本数据类型组成的数组、List、Set。
+
+@Property有一个属性name，用于指定映射到MongoDB collection中某个field。属性name可以省略，表示采用与Entity的Field相同的名称。
+===@Embed===
+表示该属性是一个嵌入的对象。
+===@Ref===
+表示对另一个对象的引用，在MongoDB中保存的是形如"father" : {"$ref" : "father", "$id" : ObjectId("4dcb4d1d3febc6503e4e5933")}这样的一个DBRef。
+
+@Ref有一个属性name，含义与@Property的属性name一样。
+===@RefList===
