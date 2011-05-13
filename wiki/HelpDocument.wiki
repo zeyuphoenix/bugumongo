@@ -1,15 +1,17 @@
 #labels Java,MongoDB,Mapping,Wiki
 =使用前提=
-#要使用BuguMongo，除了需要bugu-mongo.jar之外，还需要如下jar资源：
-#1、MongoDB Java Driver。可以从[https://github.com/mongodb/mongo-java-driver/downloads 这里]下载。
-#2、log4j。可以从[http://logging.apache.org/log4j/index.html 这里]下载
+要使用BuguMongo，除了需要bugu-mongo.jar之外，还需要如下jar资源：
+
+1、MongoDB Java Driver。可以从[https://github.com/mongodb/mongo-java-driver/downloads 这里]下载。
+
+2、log4j。可以从[http://logging.apache.org/log4j/index.html 这里]下载
 
 =使用步骤=
-#BuguMongo提供了：
-#6个注解：@Document、@Id、@Property、@Embed、@Ref、@RefList
-#3个类：BuguConnection、BuguMapper、BuguDao
-#1个接口：BuguEntity
-#它们的含义都很直观。BuguMongo的使用，就是围绕着上述注解、类和接口来进行。
+BuguMongo提供了：
+6个注解：@Document、@Id、@Property、@Embed、@Ref、@RefList
+3个类：BuguConnection、BuguMapper、BuguDao
+1个接口：BuguEntity
+它们的含义都很直观。BuguMongo的使用，就是围绕着上述注解、类和接口来进行。
 
 ==步骤一：定义Entity==
 要使得某个Entity能和MongoDB Document实现相互转换，该Entity需要实现BuguEntity接口，并加上注解，如下：
