@@ -1,13 +1,16 @@
 #labels 帮助文档,Wiki
 =使用前提=
-要使用BuguMongo，除了需要bugu-mongo.jar之外，还需要如下jar资源：
 
-1、MongoDB Java Driver。可以从[https://github.com/mongodb/mongo-java-driver/downloads 这里]下载。
+1、需要JDK1.6以上
 
-2、log4j。可以从[http://logging.apache.org/log4j/index.html 这里]下载
+2、需要MongoDB Java Driver
 
-=使用步骤=
-BuguMongo提供了：
+3、需要log4j
+
+4、需要Lucene 3.2
+
+=对象-数据库映射=
+在对象-数据库映射方面，BuguMongo提供了：
 
 6个注解：@Entity、@Id、@Property、@Embed、@Ref、@RefList
 
@@ -72,7 +75,7 @@ public class ChildFoo implements BuguEntity{
 ===@Id===
 映射到MongoDB中的"_id"，必须为String类型。
 ===@Property===
-该注解可以省略。它用来映射基本数据类型，包括：String、int、long、float、double、boolean、char、short、byte、Date等，以及这些基本数据类型组成的数组、List、Set。
+该注解可以省略。它用来映射基本数据类型，包括：String、int、long、float、double、boolean、char、Date等，以及这些基本数据类型组成的数组、List、Set。
 
 @Property有一个属性name，用于指定映射到MongoDB collection中某个field。属性name可以省略，表示采用与Entity的Field相同的名称。
 ===@Embed===
@@ -146,3 +149,8 @@ public class FooDao extends BuguDao{
     ...
 }
 }}}
+
+=Lucene索引=
+在Lucene索引方面，BuguMongo提供了：
+4个注解：@Indexed、@IndexProperty、@IndexEmbed、@IndexRef
+1个单体类：BuguIndex
