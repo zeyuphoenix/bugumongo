@@ -152,5 +152,7 @@ public class FooDao extends BuguDao{
 
 =Lucene索引=
 在Lucene索引方面，BuguMongo提供了：
+
 4个注解：@Indexed、@IndexProperty、@IndexEmbed、@IndexRef
+
 1个单体类：BuguIndex
