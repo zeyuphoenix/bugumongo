@@ -212,8 +212,7 @@ public class FatherFoo implements BuguEntity{
 表示需要索引的属性。该注解有2个参数：analyze和store，都是boolean型，analyze表示是否需要分词，store表示是否需要存储，默认值都是false。
 
 @IndexProperty支持的数据类型包括：String、char、boolean、int、long、float、double、Date等。其中，数值、日期类型可以用于范围查询和排序。
-===@Index
-Embed===
+===@IndexEmbed===
 表示需要嵌入对该Embed属性的索引。
 ===@IndexRef===
 表示需要嵌入对该Ref属性的索引。
