@@ -158,9 +158,7 @@ public class FooDao extends BuguDao{
 3个类：BuguIndex、BuguParser、BuguSearcher
 
 ==步骤一：在Entity上加注解==
-
 代码例子如下：
-
 {{{
 import com.bugull.mongo.BuguEntity;
 import com.bugull.mongo.annotations.Entity;
@@ -212,6 +210,7 @@ public class FatherFoo implements BuguEntity{
 表示需要对该Entity建索引。该Entity上必须要有@Entity和@Id注解，@Indexed才能起作用。
 ===@IndexProperty===
 表示需要索引的属性。该注解有2个参数：analyze和store，都是boolean型，analyze表示是否需要分词，store表示是否需要存储，默认值都是false。
+
 String、char、boolean类型的属性，以字符串形式被索引。而int、long、float、double、Date类型的数据，通过NumericFiled，以数值的形式被索引。其中，Date类型会相应的转换成时间的long值。
 ===@IndexEmbed===
 表示需要嵌入对该Embed属性的索引。
@@ -247,13 +246,15 @@ for(Object obj : list){
     ...
 }
 }}}
-setMaxPage(maxPage)，表示最多返回搜索结果的前maxPage页，如果返回所有的搜索结果，当数据量太大的时候，会导致性能问题。pageNumber、pageSize、maxPage的值都可以不设置，默认值为分别为：1、20、50。
+setMaxPage(maxPage)，表示最多返回搜索结果的前maxPage页。设置该参数的原因是：如果返回所有的搜索结果，当数据量太大的时候，会导致性能问题。
+
+pageNumber、pageSize、maxPage的值都可以不设置，默认值为分别为：1、20、50。
 
 如果不排序，可以不用setSort()。
 
-BuguParser还提供了MultiFieldQueryParser的功能。
+BuguParser还提供了MultiFieldQueryParser的功能，参见下面的例子。
 
-对于通过@IndexEmbed和@IndexRef嵌入的索引，索引的field名称需要加上前缀，如：father.name，代码例子如下：
+对于通过@IndexEmbed和@IndexRef嵌入的索引，索引的field名称需要加上该属性的名称作为前缀，如：father.name，代码例子如下：
 {{{
 BuguSearcher searcher = new BuguSearcher(Foo.class);
 BuguParser parser = new BuguParser();
