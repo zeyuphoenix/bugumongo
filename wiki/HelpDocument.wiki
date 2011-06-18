@@ -9,7 +9,7 @@
 
 4、需要Lucene 3.2
 
-=对象-数据库映射=
+=1、对象-数据库映射=
 在对象-数据库映射方面，BuguMongo提供了：
 
 6个注解：@Entity、@Id、@Property、@Embed、@Ref、@RefList
@@ -150,9 +150,119 @@ public class FooDao extends BuguDao{
 }
 }}}
 
-=Lucene索引=
+=2、Lucene索引=
 在Lucene索引方面，BuguMongo提供了：
 
 4个注解：@Indexed、@IndexProperty、@IndexEmbed、@IndexRef
 
-1个单体类：BuguIndex
+3个类：BuguIndex、BuguParser、BuguSearcher
+
+==步骤一：在Entity上加注解==
+
+代码例子如下：
+
+{{{
+import com.bugull.mongo.BuguEntity;
+import com.bugull.mongo.annotations.Entity;
+import com.bugull.mongo.annotations.Embed;
+import com.bugull.mongo.annotations.Id;
+import com.bugull.mongo.annotations.Ref;
+import com.bugull.mongo.lucene.annotations.Indexed;
+import com.bugull.mongo.lucene.annotations.IndexProperty;
+import com.bugull.mongo.lucene.annotations.IndexEmbed;
+import com.bugull.mongo.lucene.annotations.IndexRef;
+import java.util.List;
+
+@Entity(name="foo")
+@Indexed
+public class Foo implements BuguEntity{
+    @Id
+    private String id;
+    @IndexProperty(analyze=true, store=false)
+    private String introduce;
+    @Embed
+    @IndexEmbed
+    private EmbedFoo embed;
+    @Ref
+    @IndexRef
+    private FatherFoo father;
+    ...getter and setter...
+}
+
+public class EmbedFoo {
+    @IndexProperty
+    private float x;
+    @IndexProperty
+    private float y;
+    ...getter and setter
+}
+
+@Entity(name="father")
+public class FatherFoo implements BuguEntity{
+    @Id
+    private String id;
+    @IndexProperty
+    private String name;
+    ...getter and setter...
+}
+}}}
+各个注解的含义如下：
+
+===@Indexed===
+表示需要对该Entity建索引。该Entity上必须要有@Entity和@Id注解，@Indexed才能起作用。
+===@IndexProperty===
+表示需要索引的属性。该注解有2个参数：analyze和store，都是boolean型，analyze表示是否需要分词，store表示是否需要存储，默认值都是false。
+String、char、boolean类型的属性，以字符串形式被索引。而int、long、float、double、Date类型的数据，通过NumericFiled，以数值的形式被索引。其中，Date类型会相应的转换成时间的long值。
+===@IndexEmbed===
+表示需要嵌入对该Embed属性的索引。
+===@IndexRef===
+表示需要嵌入对该Ref属性的索引。
+
+==步骤二：设置索引参数==
+代码例子如下：
+{{{
+BuguIndex index = BuguIndex.getInstance();
+index.setAnalyzer(new StandardAnalyzer(Version.LUCENE_32));
+index.setDirectoryType(DirectoryFactory.TYPE_FS);
+index.setDirectoryPath("/root/lucene_index/");
+index.startIndexReopenTask(30L*1000L);
+}}}
+代码中各个函数的含义都很直观。其中，startIndexReopenTask(long milli)的参数以毫秒为单位，表示索引刷新的时间周期，该参数值根据应用的情况而定，如30秒：30L*1000L。
+
+==步骤三：搜索==
+通过上面的设置，BuguMongo能够实现Entity和Lucene索引之间的自动同步，你只要实现搜索就行了。最基本的搜索的例子如下：
+{{{
+BuguSearcher searcher = new BuguSearcher(Foo.class);
+BuguParser parser = new BuguParser();
+Query query = parser.parse("introduce", "谷歌");
+searcher.setQuery(query);
+searcher.setSort(...);
+searcher.setPageNumber(1);
+searcher.setPageSize(20);
+searcher.setMaxPage(50);
+List list = searcher.search();
+int count = searcher.getResultCount();
+for(Object obj : list){
+    Foo foo = (Foo)obj;
+    ...
+}
+}}}
+setMaxPage(maxPage)，表示最多返回搜索结果的前maxPage页，如果返回所有的搜索结果，当数据量太大的时候，会导致性能问题。pageNumber、pageSize、maxPage的值都可以不设置，默认值为分别为：1、20、50。
+
+如果不排序，可以不用setSort()。
+
+BuguParser还提供了MultiFieldQueryParser的功能。
+
+对于通过@IndexEmbed和@IndexRef嵌入的索引，索引的field名称需要加上前缀，如：father.name，代码例子如下：
+{{{
+BuguSearcher searcher = new BuguSearcher(Foo.class);
+BuguParser parser = new BuguParser();
+Query query = parser.parse(new String[]{"introduce","father.name"},"谷歌");
+searcher.setQuery(query);
+List list = searcher.search();
+int count = searcher.getResultCount();
+for(Object obj : list){
+    Foo foo = (Foo)obj;
+    ...
+}
+}}}
