@@ -176,7 +176,7 @@ import java.util.List;
 public class Foo implements BuguEntity{
     @Id
     private String id;
-    @IndexProperty(analyze=true, store=false)
+    @IndexProperty(analyze=true)
     private String introduce;
     @Embed
     @IndexEmbed
@@ -199,7 +199,7 @@ public class EmbedFoo {
 public class FatherFoo implements BuguEntity{
     @Id
     private String id;
-    @IndexProperty
+    @IndexProperty(analyze=true)
     private String name;
     ...getter and setter...
 }
