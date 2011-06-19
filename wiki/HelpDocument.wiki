@@ -281,7 +281,7 @@ for(Object obj : list){
 }}}
 
 ==辅助工具：重建索引==
-在某些情况下，由于特殊的原因，Lucene索引文件没有与MongoDB中的记录一一对应，这时，需要对MongoDB中的记录重新建立Lucene索引。BuguMongo提供了一个类IndexRebuilder来实现该功能。IndexRebuilder实现了Runnable接口，因此可以利用它生成多个线程。代码例子如下：
+在某些情况下，由于特殊的原因，Lucene索引文件没有与MongoDB中的记录一一对应，这时，需要对MongoDB中的记录重新建立Lucene索引。BuguMongo提供了一个类IndexRebuilder来实现该功能。IndexRebuilder实现了Runnable接口，可以利用它生成多个线程。代码例子如下：
 {{{
 IndexRebuilder t1 = new IndexRebuilder(Foo.class);
 new Thread(t1).start();
