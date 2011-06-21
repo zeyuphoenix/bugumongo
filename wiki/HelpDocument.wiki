@@ -114,15 +114,40 @@ public class FooDao extends BuguDao{
     }
 }
 }}}
-BuguDao中，提供了大量的函数，用于操作MongoDB的Collection，如save、remove、find、count、mapReduce等。你自己编写的Dao，通过继承自BuguDao，可以直接调用这些方法，也可以通过组合这些方法，实现更复杂的函数。如：
+BuguDao中，提供了大量的函数，用于操作MongoDB的Collection，包括：
+
+insert()
+
+save()
+
+remove()
+
+update()
+
+set()
+
+inc()
+
+exists()
+
+findOne()
+
+findAll()
+
+find()
+
+count()
+
+mapReduce()
+
+你自己编写的Dao，通过继承自BuguDao，可以直接调用这些方法，也可以通过组合这些方法，实现更复杂的函数。如：
 {{{
 public class FooDao extends BuguDao{
     public FooDao(){
         super(Foo.class);
     }
     public long coutByLowLevel(int level){
-        DBObject query = new BasicDBObject();
-        query.put("level", new BasicDBObject("$gt", level));
+        DBObject query = QueryBuilder.start("level").greaterThan(level).get();
         return this.count(query);
     }
     ...other functions...
