@@ -117,7 +117,7 @@ public class FooDao extends BuguDao{
     }
 }
 }}}
-BuguDao中，提供了大量的函数，用于操作MongoDB的Collection，包括：
+BuguDao中，提供了大量的方法，用于操作MongoDB的Collection，包括：
 
 insert()
 
@@ -148,6 +148,8 @@ count()
 distinct()
 
 mapReduce()
+
+其中值得特别指出的是，findAll()、find()等方法，在排序方面，除了支持标准的DBObject外，还支持使用形如"level:1"、"createTime:-1"这样的字符串进行单一条件排序。这能为你编写程序带来方便。
 
 你自己编写的Dao，通过继承自BuguDao，可以直接调用这些方法，也可以通过组合这些方法，实现更复杂的函数。如：
 {{{
