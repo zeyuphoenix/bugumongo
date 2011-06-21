@@ -131,6 +131,10 @@ set()
 
 inc()
 
+push()
+
+pull()
+
 exists()
 
 findOne()
