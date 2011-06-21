@@ -249,17 +249,16 @@ public class FatherFoo implements BuguEntity{
 代码例子如下：
 {{{
 BuguIndex index = BuguIndex.getInstance();
-index.setVersion(Version.LUCENE_32);
-index.setAnalyzer(new StandardAnalyzer(Version.LUCENE_32));
+index.setAnalyzer(new StandardAnalyzer(index.getVersion()));
 index.setDirectoryType(DirectoryFactory.TYPE_FS);
 index.setDirectoryPath("/root/lucene_index/");
 index.startIndexReopenTask(30L*1000L);
 }}}
 代码中各个函数的含义都很直观。其中：
 
-setVersion()可以不设置，默认为系统版本。用getVersion()可以取得系统版本。这时，StandardAnalyzer可以这样构建：new StandardAnalyzer(index.getVersion());
-
 startIndexReopenTask(long milli)的参数以毫秒为单位，表示索引刷新的时间周期，该参数值根据应用的情况而定，如30秒：30L*1000L。
+
+另外，如果你不想使用默认的Lucene版本，还可以用setVersion()来设置Lucene索引的版本。
 
 ==步骤三：搜索==
 通过上面的设置，BuguMongo能够实现Entity和Lucene索引之间的自动同步，你只要实现搜索就行了。最基本的搜索的例子如下：
