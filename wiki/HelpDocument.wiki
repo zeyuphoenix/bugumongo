@@ -69,7 +69,7 @@ public class ChildFoo implements BuguEntity{
     ...getter and setter...
 }
 }}}
-下面分别对这6个注解进行介绍
+各个注解的含义如下：
 ===@Entity===
 表示需要映射到MongoDB中的一个实体，属性name表示其在MongoDB中的collection的名称。属性name是必需的。
 ===@Id===
