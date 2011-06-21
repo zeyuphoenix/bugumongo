@@ -145,6 +145,8 @@ find()
 
 count()
 
+distinct()
+
 mapReduce()
 
 你自己编写的Dao，通过继承自BuguDao，可以直接调用这些方法，也可以通过组合这些方法，实现更复杂的函数。如：
