@@ -89,6 +89,8 @@ public class ChildFoo implements BuguEntity{
 ===@RefList===
 表示对另一个对象的引用的集合。其属性name和lazy的含义与@Ref中的类似。
 
+用@RefList注解的List，需要使用泛型。
+
 ==步骤二：连接数据库==
 在能够对MongDB进行操作之前，需要使用BuguConnection连接MongoDB数据库。如：
 {{{
