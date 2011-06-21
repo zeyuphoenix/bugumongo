@@ -245,6 +245,8 @@ public class FatherFoo implements BuguEntity{
 ===@IndexRef===
 表示需要嵌入对该Ref属性的索引。
 
+*注：*BuguMongo不支持数组、List、Set等集合属性的索引。
+
 ==步骤二：设置索引参数==
 代码例子如下：
 {{{
