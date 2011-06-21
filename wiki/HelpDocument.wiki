@@ -79,11 +79,12 @@ public class ChildFoo implements BuguEntity{
 
 @Property有一个属性name，用于指定映射到MongoDB collection中某个field。属性name可以省略，表示采用与Entity的Field相同的名称。
 ===@Embed===
-表示该属性是一个嵌入的对象。
+表示该属性是一个嵌入的对象。其属性name的含义与@Property中的相同。
 ===@Ref===
 表示对另一个对象的引用，在MongoDB中保存的是形如"father" : {"$ref" : "father", "$id" : ObjectId("4dcb4d1d3febc6503e4e5933")}这样的一个DBRef。
 
 @Ref有一个属性name，含义与@Property的属性name一样。
+
 @Ref还有一个属性lazy，值为true或false，默认为true。用于指定是否关联取出该引用对象。若lazy=true，表示只取出该引用对象的id，而不取出其它属性。若lazy=false，表示同时取出该引用对象的所有属性。
 ===@RefList===
 表示对另一个对象的引用的集合。其属性name和lazy的含义与@Ref中的类似。
