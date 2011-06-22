@@ -85,7 +85,7 @@ public class ChildFoo implements BuguEntity{
 ===@EmbedList===
 表示该属性是一组嵌入的对象。其属性name的含义与@Property中的相同。
 
-用@EmbedList注解的List，必须使用泛型。
+*提示：*用@EmbedList注解的List，必须使用泛型。
 ===@Ref===
 表示对另一个对象的引用，在MongoDB中保存的是形如"father" : {"$ref" : "father", "$id" : ObjectId("4dcb4d1d3febc6503e4e5933")}这样的一个DBRef。
 
@@ -95,7 +95,7 @@ public class ChildFoo implements BuguEntity{
 ===@RefList===
 表示对另一个对象的引用的集合。其属性name和lazy的含义与@Ref中的类似。
 
-用@RefList注解的List，需要使用泛型。
+*提示：*用@RefList注解的List，需要使用泛型。
 
 ==步骤二：连接数据库==
 在能够对MongDB进行操作之前，需要使用BuguConnection连接MongoDB数据库。如：
@@ -155,7 +155,7 @@ distinct()
 
 mapReduce()
 
-*提示：*其中值得特别指出的是，findAll()、find()等方法，在排序方面，除了支持标准的DBObject外，还支持使用形如"level:1"、"createTime:-1"这样的字符串进行单一条件排序。这能为你编写程序带来方便。
+*提示：*值得特别指出的是，findAll()、find()等方法，在排序方面，除了支持标准的DBObject外，还支持使用形如"level:1"、"createTime:-1"这样的字符串进行单一条件排序。这能为你编写程序带来方便。
 
 你自己编写的Dao，通过继承自BuguDao，可以直接调用这些方法，也可以通过组合这些方法，实现更复杂的函数。如：
 {{{
