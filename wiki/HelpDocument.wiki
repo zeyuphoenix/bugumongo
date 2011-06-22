@@ -255,7 +255,7 @@ public class FatherFoo implements BuguEntity{
 
 @IndexProperty支持的数据类型包括：String、char、boolean、int、long、float、double、Date等基本数据类型。其中，数值、日期类型可以用于范围查询和排序。
 
-@IndexProperty还支持上述基本数据类型组成的数组、List、Set等。这些集合中的元素，不管是什么数据类型，都会以分号";"连结成一个字符串，然后加以索引。
+@IndexProperty还支持上述基本数据类型组成的数组、List、Set等。这些集合中的元素，不管是什么数据类型，都会连结成一个字符串，然后加以索引。可以用@IndexProperty的join参数设置连接字符。默认是用分号";"进行字符串连结。
 ===@IndexEmbed===
 表示需要嵌入对该Embed属性的索引。
 ===@IndexRef===
