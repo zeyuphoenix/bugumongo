@@ -25,9 +25,10 @@
 {{{
 import com.bugull.mongo.BuguEntity;
 import com.bugull.mongo.annotations.Entity;
-import com.bugull.mongo.annotations.Embed;
 import com.bugull.mongo.annotations.Id;
 import com.bugull.mongo.annotations.Property;
+import com.bugull.mongo.annotations.Embed;
+import com.bugull.mongo.annotations.EmbedList;
 import com.bugull.mongo.annotations.Ref;
 import com.bugull.mongo.annotations.RefList;
 import java.util.List;
@@ -195,7 +196,7 @@ public class FooDao extends BuguDao{
 =2、Lucene索引=
 在Lucene索引方面，BuguMongo提供了：
 
-4个注解：@Indexed、@IndexProperty、@IndexEmbed、@IndexRef
+5个注解：@Indexed、@IndexProperty、@IndexEmbed、@IndexRef、@IndexFilter
 
 3个类：BuguIndex、BuguParser、BuguSearcher
 
@@ -211,6 +212,8 @@ import com.bugull.mongo.lucene.annotations.Indexed;
 import com.bugull.mongo.lucene.annotations.IndexProperty;
 import com.bugull.mongo.lucene.annotations.IndexEmbed;
 import com.bugull.mongo.lucene.annotations.IndexRef;
+import com.bugull.mongo.lucene.annotations.IndexFilter;
+import com.bugull.mongo.lucene.annotations.Compare;
 import java.util.List;
 
 @Entity(name="foo")
@@ -226,6 +229,8 @@ public class Foo implements BuguEntity{
     @Ref
     @IndexRef
     private FatherFoo father;
+    @IndexFilter(compare=Compare.EQUALS,value="true")
+    private boolean valid;
     ...getter and setter...
 }
 
@@ -262,6 +267,28 @@ public class FatherFoo implements BuguEntity{
 表示需要嵌入对该Ref属性的索引。
 
 *提示：*BuguMongo不支持@EmbedList、@RefList类型属性的索引。
+===@IndexFilter===
+表示只有满足该条件的实体才会被索引，否则不创建索引。在一个实体上可以有多个@IndexFilter。
+
+@IndexFilter有2个参数：compare和value。compare表示比较操作，是枚举类型Compare。value是比较的值，是字符串，会相应的解析成该属性类型的值。
+
+compare有多个枚举值，它们的含义和所支持的数据类型如下：
+
+Compare.IS_EQUALS——等于（==）。支持String、boolean、int、long、float、double、char。
+
+Compare.NOT_EQUALS——不等于（!=）。支持String、boolean、int、long、float、double、char。
+
+Compare.GREATER_THAN——大于（>）。支持int、long、float、double。
+
+Compare.GREATER_THAN_EQUALS——大于等于（>=）。支持int、long、float、double。
+
+Compare.LESS_THAN——小于（<）。支持int、long、float、double。
+
+Compare.LESS_THAN_EQUALS——小于等于（<=）。支持int、long、float、double。
+
+Compare.IS_NULL——为空（==null）。支持Object类型，包括String。这时不需要value参数。
+
+Compare.NOT_NULL——不为空（!=null）。支持Object类型，包括String。这时不需要value参数。
 
 ==步骤二：设置索引参数==
 代码例子如下：
