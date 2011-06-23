@@ -229,7 +229,7 @@ public class Foo implements BuguEntity{
     @Ref
     @IndexRef
     private FatherFoo father;
-    @IndexFilter(compare=Compare.EQUALS,value="true")
+    @IndexFilter(compare=Compare.IS_EQUALS,value="true")
     private boolean valid;
     ...getter and setter...
 }
