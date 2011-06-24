@@ -12,7 +12,7 @@
 =1、对象-数据库映射=
 在对象-数据库映射方面，BuguMongo提供了：
 
-7个注解：@Entity、@Id、@Property、@Embed、@EmbedList、@Ref、@RefList
+8个注解：@Entity、@Id、@Property、@Embed、@EmbedList、@Ref、@RefList、@Ignore
 
 3个类：BuguConnection、BuguDao、BuguMapper
 
@@ -47,6 +47,8 @@ public class Foo implements BuguEntity{
     private FatherFoo father;
     @RefList
     private List<ChildFoo> children;
+    @Ignore
+    private double sumScore;
     ...getter and setter...
 }
 
@@ -74,29 +76,33 @@ public class ChildFoo implements BuguEntity{
 }}}
 各个注解的含义如下：
 ===@Entity===
-表示需要映射到MongoDB中的一个实体，属性name表示其在MongoDB中的collection的名称。属性name是必需的。
+表示需要映射到MongoDB中的一个实体，参数name表示其在MongoDB中的collection的名称。属性name是必需的。
+
+*提示：*使用@Entity注解的类，必须实现BuguEntity接口。
 ===@Id===
 映射到MongoDB中的"_id"，必须为String类型。
 ===@Property===
 该注解可以省略。它用来映射基本数据类型，包括：String、int、long、float、double、boolean、char、Date等，以及这些基本数据类型组成的数组、List、Set。
 
-@Property有一个属性name，用于指定映射到MongoDB collection中某个field。属性name可以省略，表示采用与Entity的Field相同的名称。
+@Property有一个参数name，用于指定映射到MongoDB collection中某个field。参数name可以省略，表示采用与Entity的Field相同的名称。
 ===@Embed===
-表示该属性是一个嵌入的对象。其属性name的含义与@Property中的相同。
+表示该属性是一个嵌入的对象。其参数name的含义与@Property中的相同。
 ===@EmbedList===
-表示该属性是一组嵌入的对象。其属性name的含义与@Property中的相同。
+表示该属性是一组嵌入的对象。其参数name的含义与@Property中的相同。
 
 *提示：*用@EmbedList注解的List，必须使用泛型。
 ===@Ref===
 表示对另一个对象的引用，在MongoDB中保存的是形如"father" : {"$ref" : "father", "$id" : ObjectId("4dcb4d1d3febc6503e4e5933")}这样的一个DBRef。
 
-@Ref有一个属性name，含义与@Property的属性name一样。
+@Ref有一个参数name，含义与@Property的参数name一样。
 
-@Ref还有一个属性lazy，值为true或false，默认为true。用于指定是否关联取出该引用对象。若lazy=true，表示只取出该引用对象的id，而不取出其它属性。若lazy=false，表示同时取出该引用对象的所有属性。
+@Ref还有一个参数lazy，值为true或false，默认为true。用于指定是否关联取出该引用对象。若lazy=true，表示只取出该引用对象的id，而不取出其它属性。若lazy=false，表示同时取出该引用对象的所有属性。
 ===@RefList===
-表示对另一个对象的引用的集合。其属性name和lazy的含义与@Ref中的类似。
+表示对另一个对象的引用的集合。其参数name和lazy的含义与@Ref中的类似。
 
 *提示：*用@RefList注解的List，需要使用泛型。
+===@Ignore===
+表示该属性不需要被映射。当保存实体时，该属性不会保存至MongoDB；同样，该属性也不会从MongoDB中取出。
 
 ==步骤二：连接数据库==
 在能够对MongDB进行操作之前，需要使用BuguConnection连接MongoDB数据库。如：
