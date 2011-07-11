@@ -78,7 +78,7 @@ public class ChildFoo implements BuguEntity{
 }}}
 各个注解的含义如下：
 ===@Entity===
-表示需要映射到MongoDB中的一个实体，参数name表示其在MongoDB中的collection的名称。参数name可以省略，默认使用类名的小写。
+表示需要映射到MongoDB中的一个实体，参数name表示其在MongoDB中的collection的名称。参数name可以省略，默认使用类名的全小写。
 
 *提示：*使用@Entity注解的类，必须实现BuguEntity接口。
 ===@Id===
