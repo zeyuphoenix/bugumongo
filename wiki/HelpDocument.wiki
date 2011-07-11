@@ -1,15 +1,12 @@
 #summary 使用说明、帮助文档
 #labels 使用说明,帮助文档,Wiki
 
-=使用前提=
-
-1、需要JDK1.6以上
-
-2、需要MongoDB Java Driver
-
-3、需要log4j
-
-4、需要Lucene 3.2
+=版本说明=
+BuguMongo目前的版本是0.1，它使用：
+  * JDK1.6
+  * MongoDB Java Driver 2.6.3
+  * Lucene 3.2
+  * Log4j记录日志
 
 =1、对象-数据库映射=
 在对象-数据库映射方面，BuguMongo提供了：
