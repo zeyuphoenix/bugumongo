@@ -1,4 +1,6 @@
+#summary 使用说明、帮助文档
 #labels 帮助文档,Wiki
+
 =使用前提=
 
 1、需要JDK1.6以上
