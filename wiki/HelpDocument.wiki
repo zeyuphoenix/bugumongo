@@ -188,7 +188,15 @@ fDao.remove(foo);
 }}}
 
 ==辅助转换工具：BuguMapper==
-在某些地方，你需要使用BuguMapper来进行数据转换。BuguMapper提供了3个方法：fromDBObject、toDBObject、toDBRef。使用如下：
+在某些地方，你需要使用BuguMapper来进行数据转换。BuguMapper提供了3个方法：
+
+fromDBObject()
+
+toDBObject()
+
+toDBRef()
+
+一个例子如下：
 {{{
 public class FooDao extends BuguDao{
     ...
@@ -199,6 +207,16 @@ public class FooDao extends BuguDao{
     }
     ...
 }
+}}}
+另外，对于@Ref、@RefList注解的属性，默认lazy=true，只取出其值的id，而不取出其它属性值。当你要用到其它属性值的时候，可以使用BuguMapper的fetch方法，例子如下：
+{{{
+...
+Foo foo = fooDao.findOne(id);
+BuguMapper mapper = new BuguMapper();
+mapper.fetch(foo, "children");
+...
+List list = fooDao.findAll();
+mapper.fetch(list, "father");
 }}}
 
 =2、Lucene索引=
