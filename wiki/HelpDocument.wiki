@@ -1,5 +1,5 @@
 #summary 使用说明、帮助文档
-#labels 帮助文档,Wiki
+#labels 使用说明,帮助文档,Wiki
 
 =使用前提=
 
