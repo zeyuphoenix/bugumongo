@@ -327,16 +327,18 @@ Compare.NOT_NULL——不为空（!=null）。支持Object类型，包括String�
 代码例子如下：
 {{{
 BuguIndex index = BuguIndex.getInstance();
-index.setAnalyzer(new StandardAnalyzer(index.getVersion()));
-index.setDirectoryType(DirectoryFactory.TYPE_FS);
 index.setDirectoryPath("/root/lucene_index/");
-index.startIndexReopenTask(30L*1000L);
+index.setIndexReopenTask(30L*1000L);
 }}}
 代码中各个函数的含义都很直观。其中：
 
-startIndexReopenTask(long milli)的参数以毫秒为单位，表示索引刷新的时间周期，该参数值根据应用的情况而定，如30秒：30L*1000L。
+BuguMongo使用FSDirectory存储索引，通过setDirectoryPath()可以设置索引文件存放的位置。
 
-另外，如果你不想使用默认的Lucene版本，还可以用setVersion()来设置Lucene索引的版本。
+setIndexReopenTask(long milli)的参数以毫秒为单位，表示索引刷新的时间周期，该参数值根据应用的情况而定，如30秒：30L*1000L。
+
+BuguIndex默认使用StandardAnalyzer，你可以用setAnalyzer()来设置你所需要的Analyzer。
+
+另外，如果你不想使用默认的Lucene版本，可以用setVersion()来设置Lucene索引的版本，用getVersion()可以获得版本号。
 
 ==步骤三：搜索==
 通过上面的设置，BuguMongo能够实现Entity和Lucene索引之间的自动同步，你只要实现搜索就行了。最基本的搜索的例子如下：
