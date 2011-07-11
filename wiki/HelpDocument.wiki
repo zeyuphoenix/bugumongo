@@ -140,6 +140,8 @@ save()
 
 remove()
 
+removeAll()
+
 update()
 
 set()
@@ -158,13 +160,21 @@ findAll()
 
 find()
 
+cache()
+
 count()
 
 distinct()
 
 mapReduce()
 
-*提示：*值得特别指出的是，findAll()、find()等方法，在排序方面，除了支持标准的DBObject外，还支持使用形如"level:1"、"createTime:-1"这样的字符串进行单一条件排序。这能为你编写程序带来方便。
+......
+
+上面这些方法的详细使用说明，请参考文档BuguDao。其中有2点值得特别指出：
+
+*1、*findAll()、find()等方法，在排序方面，除了支持标准的DBObject外，还支持使用形如"level:1"、"createTime:-1"这样的字符串进行单一条件排序。这能为你编写程序带来方便。
+
+*2、*对于系统中的常用的基本数据，比如新闻系统中的新闻类别，可以用cache()方法将其取出并缓存起来。当然，使用cache方法的前提是，你设置了BuguConnection中的cacheTimeout值：BuguConnection.getInstance().setCacheTimeout(30L*60L*1000L)。
 
 你自己编写的Dao，通过继承自BuguDao，可以直接调用这些方法，也可以通过组合这些方法，实现更复杂的函数。如：
 {{{
@@ -208,7 +218,7 @@ public class FooDao extends BuguDao{
     ...
 }
 }}}
-另外，对于@Ref、@RefList注解的属性，默认lazy=true，只取出其值的id，而不取出其它属性值。当你要用到其它属性值的时候，可以使用BuguMapper的fetch方法，例子如下：
+另外，对于@Ref、@RefList注解的属性，默认lazy=true，只取出其值的id，而不取出其它属性值。当你要用到其它属性值的时候，可以使用BuguMapper的fetch方法，将@Ref、@RefList的属性值全部取出。例子如下：
 {{{
 ...
 Foo foo = fooDao.findOne(id);
