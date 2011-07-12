@@ -131,7 +131,7 @@ public class FooDao extends BuguDao{
     }
 }
 }}}
-BuguDao中，提供了大量的方法，用于操作MongoDB的Collection，包括：
+BuguDao中，提供了大量的常用的方法，用于操作MongoDB的Collection，包括：
 
 insert()
 
