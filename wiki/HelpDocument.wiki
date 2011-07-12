@@ -175,7 +175,7 @@ mapReduce()
 
 *2、*对于系统中的常用的基本数据，比如新闻系统中的新闻类别，可以用cache()方法将其取出并缓存起来。当然，使用cache方法的前提是，你设置了BuguConnection中的cacheTimeout值：BuguConnection.getInstance().setCacheTimeout(30L*60L*1000L)。
 
-*注意*：请谨慎使用cache。一般来说，只对*数据量小、常用的、系统基础数据*使用cache。
+*注意*：请谨慎使用cache。一般来说，只对 *数据量小、常用的、系统基础数据* 使用cache。
 
 你自己编写的Dao，通过继承自BuguDao，可以直接调用这些方法，也可以通过组合这些方法，实现更复杂的函数。如：
 {{{
