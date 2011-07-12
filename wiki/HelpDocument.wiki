@@ -179,7 +179,7 @@ BuguConnection.getInstance().setCacheTimeout(30L*60L*1000L)。
 }}}
 *注意*：请谨慎使用cache。一般来说，只对 *数据量小、常用的、系统基础数据* 使用cache。
 
-你自己编写的Dao，通过继承自BuguDao，可以直接调用这些方法，也可以通过组合这些方法，实现更复杂的函数。如：
+你自己编写的Dao，通过继承自BuguDao，可以直接使用BuguDao中的方法，也可以通过组合这些方法，实现更复杂的函数。如：
 {{{
 public class FooDao extends BuguDao{
     public FooDao(){
