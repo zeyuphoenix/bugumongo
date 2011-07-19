@@ -403,7 +403,7 @@ IndexRebuilder t2 = new IndexRebuilder(MyEntity.class);
 new Thread(t2).start();
 }}}
 
-=GridFS文件存取=
+=3、GridFS文件存取=
 
 BuguMongo提供了4个类，来简化GridFS文件的上传和获取。
 
@@ -518,15 +518,12 @@ public void compress(String dimension, int maxWidth, int maxHeight) 方法中，
 </servlet-mapping>
 }}}
 然后，可以通过如下的URL链接来获取文件：
-
+{{{
 http://www.domain.com/UploadedFile/xxxx.jpg
-
 或者：
-
 http://www.domain.com/UploadedFile/key/value/xxxx.jpg
-
 http://www.domain.com/UploadedFile/key1/value1/key2/value2/xxxx.jpg
-
+}}}
 其中：
 
 xxxx.jpg表示文件名，必须提供。
@@ -534,9 +531,8 @@ xxxx.jpg表示文件名，必须提供。
 key、value表示属性名称、属性值。
 
 例如：
-
+{{{
 http://www.domain.com/UploadedFile/dimension/small/2011070799999999999999.jpg
-
 http://www.domain.com/UploadedFile/author/Frank/dimension/small/2011070799999999999999.jpg
-
-特别需要指出的是，经过ImageUploader.compress()压缩后的图片，默认有一个尺寸属性"dimension"。
+}}}
+*需要特别注意*的是，经过ImageUploader.compress()压缩后的图片，默认有一个尺寸属性"dimension"。
