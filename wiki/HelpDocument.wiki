@@ -8,6 +8,7 @@ BuguMongo目前的版本是0.1，它使用：
   * Lucene 3.2
   * Log4j记录日志
 
+
 =1、对象-数据库映射=
 在对象-数据库映射方面，BuguMongo提供了：
 
@@ -232,6 +233,7 @@ List list = fooDao.findAll();
 mapper.fetch(list, "father");
 }}}
 
+
 =2、Lucene索引=
 在Lucene索引方面，BuguMongo提供了：
 
@@ -402,6 +404,7 @@ new Thread(t1).start();
 IndexRebuilder t2 = new IndexRebuilder(MyEntity.class);
 new Thread(t2).start();
 }}}
+
 
 =3、GridFS文件存取=
 
