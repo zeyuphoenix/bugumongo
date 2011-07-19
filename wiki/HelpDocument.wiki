@@ -529,13 +529,13 @@ http://www.domain.com/UploadedFile/key1/value1/key2/value2/xxxx.jpg
 }}}
 其中：
 
-xxxx.jpg表示文件名，必须提供。
+xxxx.jpg——表示文件名，必须提供。
 
-key、value表示属性名称、属性值。
+key、value——表示属性名称、属性值。
 
 例如：
 {{{
 http://www.domain.com/UploadedFile/dimension/small/2011070799999999999999.jpg
 http://www.domain.com/UploadedFile/author/Frank/dimension/small/2011070799999999999999.jpg
 }}}
-*需要特别注意*的是，经过ImageUploader.compress()压缩后的图片，默认有一个尺寸属性"dimension"。
+*需要特别注意*的是，经过ImageUploader.compress()压缩后的图片，默认有一个尺寸属性，属性名称是"dimension"，属性值就是compress()函数中的参数值。
