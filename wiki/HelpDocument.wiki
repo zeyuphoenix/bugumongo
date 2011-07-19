@@ -9,8 +9,8 @@ BuguMongo目前的版本是0.1，它使用：
   * Log4j记录日志
 
 
-=1、对象-数据库映射=
-在对象-数据库映射方面，BuguMongo提供了：
+=1、对象-文档映射=
+在对象-文档映射方面，BuguMongo提供了：
 
 8个注解：@Entity、@Id、@Property、@Embed、@EmbedList、@Ref、@RefList、@Ignore
 
