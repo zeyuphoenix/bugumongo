@@ -517,7 +517,7 @@ public void compress(String dimension, int maxWidth, int maxHeight) 方法中，
 </servlet>
 <servlet-mapping>
     <servlet-name>UploadedFile</servlet-name>
-    <url-pattern>/UploadedFile</url-pattern>
+    <url-pattern>/UploadedFile/*</url-pattern>
 </servlet-mapping>
 }}}
 然后，可以通过如下的URL链接来获取文件：
