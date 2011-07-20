@@ -539,3 +539,7 @@ http://www.domain.com/UploadedFile/dimension/small/2011070799999999999999.jpg
 http://www.domain.com/UploadedFile/author/Frank/dimension/small/2011070799999999999999.jpg
 }}}
 *需要特别注意*的是，经过ImageUploader.compress()压缩后的图片，默认有一个尺寸属性，属性名称是"dimension"，属性值就是compress()函数中的参数值。
+
+对于图片类型的文件，通过该Servlet获取，浏览器能对它进行缓存。
+
+对于非图片类型的文件，返回application/octet-stream格式的内容，浏览器不对它进行缓存。
