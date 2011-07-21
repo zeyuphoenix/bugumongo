@@ -53,8 +53,8 @@ import com.bugull.mongo.fs.Uploader;
 ...
 public class CreateNewsAction extends ActionSupport{
 
-    private File file;  //struts接收到的文件
-    private String fileFileName;  //struts接收到的文件名
+    private File file;
+    private String fileFileName;
     private News news;
     private NewsDao newsDao;
 
