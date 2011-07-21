@@ -67,9 +67,13 @@ public class ChildFoo implements BuguEntity{
 }}}
 各个注解的含义如下：
 ===@Entity===
-表示需要映射到MongoDB中的一个实体，参数name表示其在MongoDB中的collection的名称。参数name可以省略，默认使用类名的全小写。
+表示需要映射到MongoDB中的一个实体。该注解有3个参数：
 
-如果该实体对应的是Capped Collection，那么可以设置@Entity的参数capped=true，还可以设置capSize，默认为10M（10L*1024L*1024L）。
+name——String型，表示其在MongoDB中的collection的名称。name可以省略，默认使用类名的全小写。
+
+capped——boolean型，表示该Entity类对应的是Capped Collection，缺省值为false。
+
+capSize——long型，设置Capped Collection的大小，缺省值为10M（10L*1024L*1024L）。
 
 *提示：*使用@Entity注解的类，必须实现BuguEntity接口。
 ===@Id===
@@ -77,7 +81,9 @@ public class ChildFoo implements BuguEntity{
 ===@Property===
 该注解可以省略。它用来映射基本数据类型，包括：String、int、long、float、double、boolean、char、Date等，以及这些基本数据类型组成的数组、List、Set。
 
-@Property有一个参数name，用于指定映射到MongoDB collection中某个field。参数name可以省略，表示采用与Entity的Field相同的名称。
+@Property只有一个参数：
+
+name——String型，用于指定映射到MongoDB collection中某个field。参数name可以省略，表示采用与Entity的Field相同的名称。
 ===@Embed===
 表示该属性是一个嵌入的对象。其参数name的含义与@Property中的相同。
 ===@EmbedList===
@@ -87,9 +93,11 @@ public class ChildFoo implements BuguEntity{
 ===@Ref===
 表示对另一个对象的引用，在MongoDB中保存的是形如"father" : {"$ref" : "father", "$id" : ObjectId("4dcb4d1d3febc6503e4e5933")}这样的一个DBRef。
 
-@Ref有一个参数name，含义与@Property的参数name一样。
+@Ref有2个参数：
 
-@Ref还有一个参数lazy，值为true或false，默认为true。用于指定是否关联取出该引用对象。若lazy=true，表示只取出该引用对象的id，而不取出其它属性。若lazy=false，表示同时取出该引用对象的所有属性。
+name——含义与@Property的参数name一样。
+
+lazy——boolean型，用于指定是否关联取出该引用对象。若lazy=true，表示只取出该引用对象的id，而不取出其它属性。若lazy=false，表示同时取出该引用对象的所有属性。缺省值为true。
 ===@RefList===
 表示对另一个对象的引用的集合。其参数name和lazy的含义与@Ref中的类似。
 
