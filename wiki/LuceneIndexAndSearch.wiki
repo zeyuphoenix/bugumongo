@@ -65,7 +65,7 @@ public class FatherFoo implements BuguEntity{
 ===@IndexProperty===
 表示需要对该属性建立索引。
 
-@IndexProperty支持的数据类型包括：String、char、boolean、int、long、float、double、Date等基本数据类型。其中，数值、日期类型可以用于范围查询和排序。
+@IndexProperty支持的数据类型包括：String、char、boolean、int、long、float、double、Date等基本数据类型。
 
 @IndexProperty注解有4个参数：
 
