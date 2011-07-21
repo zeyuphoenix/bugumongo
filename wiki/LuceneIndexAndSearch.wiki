@@ -3,7 +3,7 @@
 =Lucene索引和搜索=
 在Lucene集成方面，BuguMongo提供了：
 
-5个注解：@Indexed、@IndexProperty、@IndexEmbed、@IndexRef、@IndexFilter、@BoostSwitch
+6个注解：@Indexed、@IndexProperty、@IndexEmbed、@IndexRef、@IndexFilter、@BoostSwitch
 
 3个类：BuguIndex、BuguParser、BuguSearcher
 
