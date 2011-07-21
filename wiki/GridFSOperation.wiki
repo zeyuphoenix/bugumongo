@@ -1,6 +1,6 @@
 #summary GridFS文件操作
 
-=GridFS文件存取=
+=GridFS文件操作=
 
 通过BuguFS类，能够实现对GridFS文件的保存、获取、删除操作。
 
