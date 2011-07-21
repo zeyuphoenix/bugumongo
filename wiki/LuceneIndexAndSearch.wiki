@@ -73,11 +73,11 @@ public class FatherFoo implements BuguEntity{
 
 @IndexProperty注解有4个参数：
 
-analyze——boolean型，表示是否需要分词，默认值为false
+analyze——boolean型，表示是否需要分词，缺省值为false
 
-store——boolean型，表示是否需要存储，默认值为false
+store——boolean型，表示是否需要存储，缺省值为false
 
-boost——float型，表示该Field的权重，默认值为1.0
+boost——float型，表示该Field的权重，缺省值为1.0
 
 join——String型。@IndexProperty还支持上述基本数据类型组成的数组、List、Set等。这些集合中的元素，不管是什么数据类型，都会连结成一个字符串，然后加以索引。可以用join参数来设置连接字符。默认是用分号";"进行字符串连结。
 
@@ -119,9 +119,9 @@ compare——与上面@IndexFilter的compare含义相同
 
 value——与上面@IndexFilter的value含义相同
 
-fit——float型，表示满足比较条件时该Document的boost值
+fit——float型，表示满足比较条件时该Document的boost值，缺省值为1.0
 
-unfit——float型，表示不满足比较条件时该Document的boost值
+unfit——float型，表示不满足比较条件时该Document的boost值，缺省值为1.0
 
 在一个Entity类上只能有一个@BoostSwitch注解。
 
