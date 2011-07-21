@@ -414,7 +414,7 @@ fs.save(data, filename);
 Map params = new HashMap();
 params.put("author", "张三");
 params.put("group", "技术");
-fs.save(data, filename' params);
+fs.save(data, filename, params);
 
 //获取
 GridFSDBFile dbFile = fs.findOne(filename);
