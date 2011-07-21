@@ -38,7 +38,7 @@ fs.remove(filename);
 fs.remove(query);
 }}}
 
-BuguFS类比较低级。幸运的是，如果你是在Web项目中使用BuguMongo，那么，你可以不必直接使用BuguFS类。BuguMongo在BuguFS类的基础之上，提供了另外4个类，来简化GridFS文件的上传和获取，而且功能更加强大。这4个类分别是：
+BuguFS类比较低级。幸运的是，你可以不必直接使用BuguFS类。BuguMongo在BuguFS类的基础之上，提供了另外4个类，来简化GridFS文件的上传和获取，而且功能更加强大。这4个类分别是：
 
 上传：Uploader、ImageUploader、Watermark。
 
@@ -141,7 +141,7 @@ public class CreateProductAction extends ActionSupport{
 public void compress(String dimension, int maxWidth, int maxHeight) 方法中，dimension是指图片尺寸的类型，用来区分同一图片的不同尺寸的拷贝。经过compress方法压缩保存后的图片文件，和原图有相同的filename，例如，同样是2011070799999999999999.jpg。
 
 ===文件的获取===
-在Web项目中，保存到GridFS中的文件，可以通过UploadedFileServlet来获取，在web.xml中配置如下：
+如果你是在Web项目中使用BuguMongo，那么，保存到GridFS中的文件，可以通过UploadedFileServlet来获取，在web.xml中配置如下：
 {{{
 <servlet>
     <servlet-name>UploadedFile</servlet-name>
