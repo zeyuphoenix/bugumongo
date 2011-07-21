@@ -28,7 +28,7 @@ import java.util.List;
 public class Foo implements BuguEntity{
     @Id
     private String id;
-    @IndexProperty(anaylyze=true,boost=2.0f)
+    @IndexProperty(analyze=true,boost=2.0f)
     private String title;
     @IndexProperty(analyze=true)
     private String introduce;
