@@ -67,13 +67,13 @@ public class FatherFoo implements BuguEntity{
 
 @IndexProperty注解有4个参数：
 
-*analyze*——boolean型，表示是否需要分词，默认值为false
+analyze——boolean型，表示是否需要分词，默认值为false
 
-*store*——boolean型，表示是否需要存储，默认值为false
+store——boolean型，表示是否需要存储，默认值为false
 
-*boost*——float型，表示该Field的权重，默认值为1.0
+boost——float型，表示该Field的权重，默认值为1.0
 
-*join*——String型。@IndexProperty还支持上述基本数据类型组成的数组、List、Set等。这些集合中的元素，不管是什么数据类型，都会连结成一个字符串，然后加以索引。可以用join参数来设置连接字符。默认是用分号";"进行字符串连结。
+join——String型。@IndexProperty还支持上述基本数据类型组成的数组、List、Set等。这些集合中的元素，不管是什么数据类型，都会连结成一个字符串，然后加以索引。可以用join参数来设置连接字符。默认是用分号";"进行字符串连结。
 
 ===@IndexEmbed===
 表示需要嵌入对该Embed属性的索引。
