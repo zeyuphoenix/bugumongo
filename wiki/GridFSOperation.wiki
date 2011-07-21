@@ -6,10 +6,16 @@
 
 代码例子如下：
 {{{
+import com.bugull.mongo.fs.BuguFS;
+
 BuguFS fs = BuguFS.getInstance();
+
 //保存
 File file = ...
-fs.save(file);
+fs.save(file);   //filename使用file.getName()
+
+String filename = ...  //提供一个文件名(重命名)
+fs.save(file, filename);
 
 Byte[] data = ...
 String filename = ...
@@ -39,7 +45,9 @@ BuguFS类比较低级。幸运的是，如果你是在Web项目中使用BuguMong
 读取：UploadedFileServlet
 
 ==文件上传==
-以Struts2开发的新闻系统为例，发布一篇新闻的时候，同时上传新闻的附件（比如.doc文件），那么，在Struts2的Action中，代码这样写：
+这里，以Struts2开发的新闻系统为例。当然，这仅仅是个例子，并不是说BuguMongo只能在Struts2中使用。
+
+发布一篇新闻的时候，同时上传新闻的附件（比如.doc文件），那么，在Struts2的Action中，代码这样写：
 {{{
 import com.bugull.mongo.fs.Uploader;
 ...
