@@ -88,7 +88,7 @@ join——String型。@IndexProperty还支持上述基本数据类型组成的�
 
 *提示：*BuguMongo不支持@EmbedList、@RefList类型属性的索引。
 ===@IndexFilter===
-表示只有满足该条件的实体才会被索引，否则不创建索引。在一个实体上可以有多个@IndexFilter。
+表示只有满足该条件的实体才会被索引，否则不创建索引。
 
 @IndexFilter有2个参数：compare和value。compare表示比较操作，是枚举类型Compare。value是比较的值，是字符串，会相应的解析成该属性类型的值。
 
@@ -110,6 +110,8 @@ Compare.IS_NULL——为空（==null）。支持Object类型，包括String。�
 
 Compare.NOT_NULL——不为空（!=null）。支持Object类型，包括String。这时不需要value参数。
 
+在一个Entity类上可以有多个@IndexFilter注解，表示需要同时满足这些条件。
+
 ===@BoostSwitch===
 同一个Entity类的不同的Document，可能需要设置不同的权重，@BoostSwitch注解就是用来实现这个功能的，它有4个参数：
 
@@ -120,6 +122,8 @@ value——与上面@IndexFilter的value含义相同
 fit——float型，表示满足比较条件时该Document的boost值
 
 unfit——float型，表示不满足比较条件时该Document的boost值
+
+在一个Entity类上只能有一个@BoostSwitch注解。
 
 ==步骤二：设置索引参数==
 代码例子如下：
