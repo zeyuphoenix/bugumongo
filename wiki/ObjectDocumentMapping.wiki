@@ -1,0 +1,215 @@
+#summary 对象-文档映射
+
+=对象-文档映射=
+在对象-文档映射方面，BuguMongo提供了：
+
+8个注解：@Entity、@Id、@Property、@Embed、@EmbedList、@Ref、@RefList、@Ignore
+
+3个类：BuguConnection、BuguDao、BuguMapper
+
+1个接口：BuguEntity
+
+它们的含义都很直观。BuguMongo的使用，就是围绕着上述注解、类和接口来进行。
+
+==步骤一：定义Entity==
+要使得某个Java Entity能和MongoDB Document实现相互转换，该Entity需要实现BuguEntity接口，并加上注解，如下：
+{{{
+import com.bugull.mongo.BuguEntity;
+import com.bugull.mongo.annotations.Entity;
+import com.bugull.mongo.annotations.Id;
+import com.bugull.mongo.annotations.Property;
+import com.bugull.mongo.annotations.Embed;
+import com.bugull.mongo.annotations.EmbedList;
+import com.bugull.mongo.annotations.Ref;
+import com.bugull.mongo.annotations.RefList;
+import java.util.List;
+
+@Entity(name="foo")
+public class Foo implements BuguEntity{
+    @Id
+    private String id;
+    @Property
+    private int level;
+    @Embed
+    private EmbedFoo embed;
+    @EmbedList
+    private List<EmbedFoo> embedList;
+    @Ref
+    private FatherFoo father;
+    @RefList
+    private List<ChildFoo> children;
+    @Ignore
+    private double sumScore;
+    ...getter and setter...
+}
+
+public class EmbedFoo {
+    private float x;
+    private int y;
+    ...getter and setter
+}
+
+@Entity(name="father")
+public class FatherFoo implements BuguEntity{
+    @Id
+    private String id;
+    private Date date;
+    ...getter and setter...
+}
+
+@Entity(name="child")
+public class ChildFoo implements BuguEntity{
+    @Id
+    private String id;
+    private List<String> list;
+    ...getter and setter...
+}
+}}}
+各个注解的含义如下：
+===@Entity===
+表示需要映射到MongoDB中的一个实体，参数name表示其在MongoDB中的collection的名称。参数name可以省略，默认使用类名的全小写。
+
+如果该实体对应的是Capped Collection，那么可以设置@Entity的参数capped=true，还可以设置capSize，默认为10M（10L*1024L*1024L）。
+
+*提示：*使用@Entity注解的类，必须实现BuguEntity接口。
+===@Id===
+映射到MongoDB中的"_id"，必须为String类型。
+===@Property===
+该注解可以省略。它用来映射基本数据类型，包括：String、int、long、float、double、boolean、char、Date等，以及这些基本数据类型组成的数组、List、Set。
+
+@Property有一个参数name，用于指定映射到MongoDB collection中某个field。参数name可以省略，表示采用与Entity的Field相同的名称。
+===@Embed===
+表示该属性是一个嵌入的对象。其参数name的含义与@Property中的相同。
+===@EmbedList===
+表示该属性是一组嵌入的对象。其参数name的含义与@Property中的相同。
+
+*提示：*用@EmbedList注解的List，必须使用泛型。
+===@Ref===
+表示对另一个对象的引用，在MongoDB中保存的是形如"father" : {"$ref" : "father", "$id" : ObjectId("4dcb4d1d3febc6503e4e5933")}这样的一个DBRef。
+
+@Ref有一个参数name，含义与@Property的参数name一样。
+
+@Ref还有一个参数lazy，值为true或false，默认为true。用于指定是否关联取出该引用对象。若lazy=true，表示只取出该引用对象的id，而不取出其它属性。若lazy=false，表示同时取出该引用对象的所有属性。
+===@RefList===
+表示对另一个对象的引用的集合。其参数name和lazy的含义与@Ref中的类似。
+
+*提示：*用@RefList注解的List，需要使用泛型。
+===@Ignore===
+表示该属性不需要被映射。当保存实体时，该属性不会保存至MongoDB；同样，该属性也不会从MongoDB中取出。
+
+==步骤二：连接数据库==
+在能够对MongDB进行操作之前，需要使用BuguConnection连接MongoDB数据库。如：
+{{{
+BuguConnection conn = BuguConnection.getInstance();
+conn.setHost("192.168.0.100");
+conn.setPort(27017);
+conn.setDatabase("mydb");
+conn.setUsername("username");
+conn.setPassword("password");
+conn.connect();
+}}}
+或者：
+{{{
+BuguConnection conn = BuguConnection.getInstance();
+conn.connect("192.168.0.100", 27017, "mydb", "username", "password");
+}}}
+
+==步骤三：使用BuguDao进行数据库操作==
+你需要编写自己的Dao，如FooDao，来操作Foo相关的数据，FooDao需要继承自BuguDao，并且，在FooDao的构造函数中，需要传递Foo.class，如下：
+{{{
+public class FooDao extends BuguDao{
+    public FooDao(){
+        super(Foo.class);
+    }
+}
+}}}
+BuguDao中，提供了大量的常用的方法，用于操作MongoDB的Collection，包括：
+
+insert()
+
+save()
+
+remove()
+
+removeAll()
+
+update()
+
+set()
+
+inc()
+
+push()
+
+pull()
+
+exists()
+
+findOne()
+
+findAll()
+
+find()
+
+count()
+
+distinct()
+
+mapReduce()
+
+......
+
+上面这些方法的用法都比较直观。其中值得特别指出的是：findAll()、find()等方法，在排序方面，除了支持标准的DBObject外，还支持使用形如"level:1"、"createTime:-1"这样的字符串进行单一条件排序。这能为你编写程序带来方便。
+
+你自己编写的Dao，通过继承自BuguDao，可以直接使用BuguDao中的方法，也可以通过组合这些方法，实现更复杂的函数。如：
+{{{
+public class FooDao extends BuguDao{
+    public FooDao(){
+        super(Foo.class);
+    }
+    public long coutByLowLevel(int level){
+        DBObject query = QueryBuilder.start("level").greaterThan(level).get();
+        return this.count(query);
+    }
+    ...other functions...
+}
+}}}
+{{{
+Foo foo = ...
+FooDao fDao = new FooDao();
+fDao.save(foo);
+int count = fDao.countByLowLevel(9);
+fDao.remove(foo);
+}}}
+
+==辅助转换工具：BuguMapper==
+在某些地方，你需要使用BuguMapper来进行数据转换。BuguMapper提供了3个方法：
+
+fromDBObject()
+
+toDBObject()
+
+toDBRef()
+
+一个例子如下：
+{{{
+public class FooDao extends BuguDao{
+    ...
+    public Foo getByFather(FatherFoo father){
+        DBObject query = new BasicDBObject();
+        query.put("father", new BuguMapper().toDBRef(father));
+        return (Foo)this.findOne(query);
+    }
+    ...
+}
+}}}
+另外，对于@Ref、@RefList注解的属性，默认lazy=true，只取出其值的id，而不取出其它属性值。当你要用到其它属性值的时候，可以使用BuguMapper的fetch方法，将@Ref、@RefList的属性值全部取出。例子如下：
+{{{
+...
+Foo foo = fooDao.findOne(id);
+BuguMapper mapper = new BuguMapper();
+mapper.fetch(foo, "children");
+...
+List list = fooDao.findAll();
+mapper.fetch(list, "father");
+}}}
