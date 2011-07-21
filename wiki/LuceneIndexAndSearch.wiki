@@ -3,7 +3,7 @@
 =Lucene索引和搜索=
 在Lucene集成方面，BuguMongo提供了：
 
-5个注解：@Indexed、@IndexProperty、@IndexEmbed、@IndexRef、@IndexFilter
+5个注解：@Indexed、@IndexProperty、@IndexEmbed、@IndexRef、@IndexFilter、@BoostSwitch
 
 3个类：BuguIndex、BuguParser、BuguSearcher
 
@@ -28,6 +28,8 @@ import java.util.List;
 public class Foo implements BuguEntity{
     @Id
     private String id;
+    @IndexProperty(anaylyze=true,boost=2.0f)
+    private String title;
     @IndexProperty(analyze=true)
     private String introduce;
     @Embed
@@ -38,6 +40,8 @@ public class Foo implements BuguEntity{
     private FatherFoo father;
     @IndexFilter(compare=Compare.IS_EQUALS,value="true")
     private boolean valid;
+    @BoostSwitch(compare=Compare.IS_EQUALS,value="true",fit=1.5f,unfit=0.5f)
+    private boolean vip;
     ...getter and setter...
 }
 
@@ -105,6 +109,17 @@ Compare.LESS_THAN_EQUALS——小于等于（<=）。支持int、long、float、
 Compare.IS_NULL——为空（==null）。支持Object类型，包括String。这时不需要value参数。
 
 Compare.NOT_NULL——不为空（!=null）。支持Object类型，包括String。这时不需要value参数。
+
+===@BoostSwitch===
+同一个Entity类的不同的Document，可能需要设置不同的权重，@BoostSwitch注解就是用来实现这个功能的，它有4个参数：
+
+compare——与上面@IndexFilter的compare含义相同
+
+value——与上面@IndexFilter的value含义相同
+
+fit——float型，表示满足比较条件时该Document的boost值
+
+unfit——float型，表示不满足比较条件时该Document的boost值
 
 ==步骤二：设置索引参数==
 代码例子如下：
