@@ -89,7 +89,7 @@ name——String型，用于指定映射到MongoDB collection中某个field。�
 ===@EmbedList===
 表示该属性是一组嵌入的对象。其参数name的含义与@Property中的相同。
 
-*提示：*用@EmbedList注解的List，必须使用泛型。
+*提示：*@EmbedList注解支持java.util.List和java.util.Set，但都必须使用泛型。
 ===@Ref===
 表示对另一个对象的引用，在MongoDB中保存的是形如"father" : {"$ref" : "father", "$id" : ObjectId("4dcb4d1d3febc6503e4e5933")}这样的一个DBRef。
 
@@ -101,7 +101,7 @@ lazy——boolean型，用于指定是否关联取出该引用对象。若lazy=t
 ===@RefList===
 表示对另一个对象的引用的集合。其参数name和lazy的含义与@Ref中的类似。
 
-*提示：*用@RefList注解的List，需要使用泛型。
+*提示：*@RefList注解支持java.util.List和java.util.Set，但都必须使用泛型。
 ===@Ignore===
 表示该属性不需要被映射。当保存实体时，该属性不会保存至MongoDB；同样，该属性也不会从MongoDB中取出。
 
