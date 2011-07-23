@@ -133,7 +133,7 @@ BuguIndex index = BuguIndex.getInstance();
 index.setDirectoryPath("/root/lucene_index/");
 Version version = index.getVersion();
 index.setAnalyzer(new StandardAnalyzer(version));
-index.setThreadPoolSize(6);
+index.setThreadPoolSize(5);
 index.setIndexReopenPeriod(60L*1000L);
 
 index.open();
