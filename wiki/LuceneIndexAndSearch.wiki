@@ -150,6 +150,7 @@ Query query = parser.parse("introduce", "谷歌");
 BuguSearcher searcher = new BuguSearcher(Foo.class);
 searcher.setQuery(query);
 searcher.setSort(...);
+searcher.setFilter(...);
 searcher.setPageNumber(1);
 searcher.setPageSize(20);
 searcher.setMaxPage(50);
@@ -165,6 +166,8 @@ setMaxPage(maxPage)，表示最多返回搜索结果的前maxPage页。设置该
 pageNumber、pageSize、maxPage的值都可以不设置，默认值为分别为：1、20、50。
 
 如果不排序，可以不用setSort()。
+
+如果没有Filter，则可以不用设置setFilter()。
 
 BuguParser类提供了对各种数据类型的查询支持，包括数值查询、数值和日期查询等，还提供了MultiFieldQueryParser的功能，参见下面的例子。
 
@@ -188,6 +191,8 @@ for(Object obj : list){
     ...
 }
 }}}
+
+在一些特殊的情况下，你可能需要使用底层的Lucene搜索功能，比如使用Collector，这时，你需要通过调用BuguSearcher的getSearcher()方法，来获得底层Lucene的IndexSearcher，然后用它来进行搜索。
 
 ==辅助工具：重建索引==
 在某些情况下，由于特殊的原因，Lucene索引文件没有与MongoDB中的记录一一对应，这时，需要对MongoDB中的记录重新建立Lucene索引。BuguMongo提供了一个类IndexRebuilder来实现该功能。IndexRebuilder实现了Runnable接口，可以利用它生成多个线程。代码例子如下：
