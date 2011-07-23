@@ -54,6 +54,8 @@ public class FatherFoo implements BuguEntity{
     @Id
     private String id;
     private Date date;
+    @Ref
+    private FatherFoo father;
     ...getter and setter...
 }
 
@@ -199,7 +201,7 @@ toDBObject()
 
 toDBRef()
 
-一个例子如下：
+其中最常用的是toDBRef()。当你需要把@Ref、@RefList注解的属性作为查询条件的时候，需要用toDBRef()方法，将Entity对象转换为DBRef，然后放入DBObject中。一个例子如下：
 {{{
 public class FooDao extends BuguDao{
     ...
@@ -211,6 +213,11 @@ public class FooDao extends BuguDao{
     ...
 }
 }}}
+*关键代码是下面这一行，需要特别注意*：
+{{{
+query.put("father", new BuguMapper().toDBRef(father));
+}}}
+
 另外，对于@Ref、@RefList注解的属性，默认lazy=true，只取出其值的id，而不取出其它属性值。当你要用到其它属性值的时候，可以使用BuguMapper的fetch方法，将@Ref、@RefList的属性值全部取出。例子如下：
 {{{
 ...
@@ -220,4 +227,8 @@ mapper.fetch(foo, "children");
 ...
 List list = fooDao.findAll();
 mapper.fetch(list, "father");
+}}}
+fetch()方法还支持级联取出属性，可以一级一级往下取，例如：
+{{{
+mapper.fetch(list, "father.father");
 }}}
