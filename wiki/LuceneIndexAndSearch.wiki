@@ -195,11 +195,13 @@ for(Object obj : list){
 在一些特殊的情况下，你可能需要使用底层的Lucene搜索功能，比如使用Collector，这时，你需要通过调用BuguSearcher的getSearcher()方法，来获得底层Lucene的IndexSearcher，然后用它来进行搜索。
 
 ==辅助工具：重建索引==
-在某些情况下，由于特殊的原因，Lucene索引文件没有与MongoDB中的记录一一对应，这时，需要对MongoDB中的记录重新建立Lucene索引。BuguMongo提供了一个类IndexRebuilder来实现该功能。IndexRebuilder实现了Runnable接口，可以利用它生成多个线程。代码例子如下：
+在某些情况下，由于特殊的原因，Lucene索引文件没有与MongoDB中的记录一一对应，这时，需要对MongoDB中的记录重新建立Lucene索引。BuguMongo提供了一个类IndexRebuilder来实现该功能。代码例子如下：
 {{{
-IndexRebuilder t1 = new IndexRebuilder(Foo.class);
-new Thread(t1).start();
+IndexRebuilder r1 = new IndexRebuilder(Foo.class);
+r1.rebuild();
 ...
-IndexRebuilder t2 = new IndexRebuilder(MyEntity.class);
-new Thread(t2).start();
+int batchSize = 50;
+IndexRebuilder r2 = new IndexRebuilder(MyEntity.class, batchSize);
+r2.rebuild();
 }}}
+参数batchSize表示IndexRebuilder每次从MongoDB中取多少条数据进行索引，默认值为100。
