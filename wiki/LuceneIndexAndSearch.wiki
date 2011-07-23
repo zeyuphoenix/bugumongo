@@ -126,14 +126,21 @@ unfit——float型，表示不满足比较条件时该Document的boost值，缺
 在一个Entity类上只能有一个@BoostSwitch注解。
 
 ==步骤二：设置索引参数==
-代码例子如下：
+首先，系统初始化的时候，需要设置BuguIndex的各个参数，并执行open()方法，代码例子如下：
 {{{
 BuguIndex index = BuguIndex.getInstance();
+
 index.setDirectoryPath("/root/lucene_index/");
 Version version = index.getVersion();
 index.setAnalyzer(new StandardAnalyzer(version));
 index.setThreadPoolSize(6);
 index.setIndexReopenPeriod(60L*1000L);
+
+index.open();
+}}}
+退出系统的时候，记得关闭索引：
+{{{
+index.close();
 }}}
 代码中各个函数的含义都很直观。其中：
 
