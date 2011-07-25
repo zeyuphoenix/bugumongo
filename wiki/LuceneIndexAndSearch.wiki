@@ -157,8 +157,7 @@ setIndexReopenPeriod(long milli)的参数以毫秒为单位，表示索引刷新
 ==步骤三：搜索==
 通过上面的设置，BuguMongo能够实现Entity和Lucene索引之间的自动同步，你只要实现搜索就行了。最基本的搜索的例子如下：
 {{{
-BuguParser parser = new BuguParser();
-Query query = parser.parse("introduce", "谷歌");
+Query query = BuguParser.parse("introduce", "谷歌");
 BuguSearcher searcher = new BuguSearcher(Foo.class);
 searcher.setQuery(query);
 searcher.setSort(...);
@@ -186,10 +185,9 @@ BuguParser类提供了对各种数据类型的查询支持，包括数值查询�
 对于通过@IndexEmbed和@IndexRef嵌入的索引，索引的field名称需要加上该属性的名称作为前缀，如：father.name。参见下面的例子。
 
 {{{
-BuguParser parser = new BuguParser();
-Query strQuery = parser.parse(new String[]{"introduce","father.name"},"谷歌");
-Query xQuery = parser.parse("embed.x",3.14f);
-Query yQuery = parser.parse("embed.y", 100, 300);
+Query strQuery = BuguParser.parse(new String[]{"introduce","father.name"},"谷歌");
+Query xQuery = BuguParser.parse("embed.x",3.14f);
+Query yQuery = BuguParser.parse("embed.y", 100, 300);
 BooleanQuery bQuery = new BooleanQuery();
 bQuery.add(strQuery, Occur.SHOULD);
 bQuery.add(xQuery, Occur.MUST_NOT);
