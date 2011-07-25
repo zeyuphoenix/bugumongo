@@ -199,7 +199,7 @@ BuguMapper.toDBRef()
 
 BuguMapper.fetch()
 
-===toDBRef===
+===toDBRef()===
 当你需要把@Ref、@RefList注解的属性作为查询条件的时候，需要用BuguMapper.toDBRef()方法，将Entity对象转换为DBRef，然后放入DBObject中。一个例子如下：
 {{{
 public class FooDao extends BuguDao{
