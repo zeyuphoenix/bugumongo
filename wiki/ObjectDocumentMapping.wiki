@@ -192,22 +192,21 @@ int count = fDao.countByLowLevel(9);
 fDao.remove(foo);
 }}}
 
-==辅助转换工具：BuguMapper==
-在某些地方，你需要使用BuguMapper来进行数据转换。BuguMapper提供了3个方法：
+==辅助工具：BuguMapper==
+BuguMapper是ODM的辅助工具类，主要提供2个静态方法：
 
-fromDBObject()
+BuguMapper.toDBRef()
 
-toDBObject()
+BuguMapper.fetch()
 
-toDBRef()
-
-其中最常用的是toDBRef()。当你需要把@Ref、@RefList注解的属性作为查询条件的时候，需要用toDBRef()方法，将Entity对象转换为DBRef，然后放入DBObject中。一个例子如下：
+===toDBRef===
+当你需要把@Ref、@RefList注解的属性作为查询条件的时候，需要用BuguMapper.toDBRef()方法，将Entity对象转换为DBRef，然后放入DBObject中。一个例子如下：
 {{{
 public class FooDao extends BuguDao{
     ...
     public Foo getByFather(FatherFoo father){
         DBObject query = new BasicDBObject();
-        query.put("father", new BuguMapper().toDBRef(father));
+        query.put("father", BuguMapper.toDBRef(father));
         return (Foo)this.findOne(query);
     }
     ...
@@ -215,20 +214,20 @@ public class FooDao extends BuguDao{
 }}}
 *关键代码是下面这一行，需要特别注意*：
 {{{
-query.put("father", new BuguMapper().toDBRef(father));
+query.put("father", BuguMapper.toDBRef(father));
 }}}
 
-另外，对于@Ref、@RefList注解的属性，默认lazy=true，只取出其值的id，而不取出其它属性值。当你要用到其它属性值的时候，可以使用BuguMapper的fetch方法，将@Ref、@RefList的属性值全部取出。例子如下：
+===fetch()===
+对于@Ref、@RefList注解的属性，默认lazy=true，只取出其值的id，而不取出其它属性值。当你要用到其它属性值的时候，可以使用BuguMapper的fetch方法，将@Ref、@RefList的属性值全部取出。例子如下：
 {{{
 ...
 Foo foo = fooDao.findOne(id);
-BuguMapper mapper = new BuguMapper();
-mapper.fetch(foo, "children");
+BuguMapper.fetch(foo, "children");    //把foo的children属性取出来
 ...
 List list = fooDao.findAll();
-mapper.fetch(list, "father");
+BuguMapper.fetch(list, "father");
 }}}
 fetch()方法还支持级联取出属性，可以一级一级往下取，例如：
 {{{
-mapper.fetch(list, "father.father");
+BuguMapper.fetch(list, "father.father");
 }}}
