@@ -135,39 +135,127 @@ public class FooDao extends BuguDao{
 }}}
 BuguDao中，提供了大量的常用的方法，用于操作MongoDB的Collection，包括：
 
-insert()
+*插入：*
 
-save()
+public void insert(BuguEntity... arr)
 
-remove()
+public void insert(List<BuguEntity> list)
 
-removeAll()
+*保存：*
 
-update()
+public void save(BuguEntity obj)
 
-set()
+  ——如果obj中没有ID值，则为插入，若有ID值，则为修改。
 
-inc()
+*删除：*
 
-push()
+public void removeAll()
 
-pull()
+public void remove(BuguEntity obj)
 
-exists()
+public void remove(String id)
 
-findOne()
+public void remove(String key, Object value)
 
-findAll()
+public void remove(DBObject query)
 
-find()
+*修改：*
 
-count()
+public void update(BuguEntity obj, DBObject dbo)
 
-distinct()
+public void update(String id, DBObject dbo)
 
-mapReduce()
+public void update(DBObject query, DBObject dbo)
 
-......
+public void set(BuguEntity obj, String key, Object value)
+
+public void set(String id, String key, Object value)
+
+public void inc(BuguEntity obj, String key, Object value)
+
+public void inc(String id, String key, Object value)
+
+public void push(BuguEntity obj, String key, Object value)
+
+public void push(String id, String key, Object value)
+
+public void pull(BuguEntity obj, String key, Object value)
+
+public void pull(String id, String key, Object value)
+
+*判断是否存在：*
+
+public boolean exists(String key, Object value)
+
+public boolean exists(DBObject query)
+
+public boolean exists(BuguEntity obj, String key, Object value)
+
+*查找一个：*
+
+public Object findOne(String id)
+
+public Object findOne(String key, Object value)
+
+public Object findOne(DBObject query)
+
+*查找全部：*
+
+public List findAll()
+
+public List findAll(String orderBy)
+
+public List findAll(DBObject orderBy)
+
+public List findAll(int pageNum, int pageSize)
+
+public List findAll(String orderBy, int pageNum, int pageSize)
+
+public List findAll(DBObject orderBy, int pageNum, int pageSize)
+
+*按条件查找：*
+
+public List find(String key, Object value)
+
+public List find(DBObject query)
+
+public List find(String key, Object value, String orderBy)
+
+public List find(DBObject query, String orderBy)
+
+public List find(DBObject query, DBObject orderBy)
+
+public List find(String key, Object value, int pageNum, int pageSize)
+
+public List find(DBObject query, int pageNum, int pageSize)
+
+public List find(String key, Object value, String orderBy, int pageNum, int pageSize)
+
+public List find(DBObject query, String orderBy, int pageNum, int pageSize)
+
+public List find(DBObject query, DBObject orderBy, int pageNum, int pageSize)
+
+*统计：*
+
+public long count()
+
+public long count(String key, Object value)
+
+public long count(DBObject query)
+
+public List distinct(String key)
+
+public List distinct(String key, DBObject query)
+
+*MapReduce：*
+
+public Iterable<DBObject> mapReduce(DBObject command)
+
+public Iterable<DBObject> mapReduce(MapReduceCommand command)
+
+public Iterable<DBObject> mapReduce(String map, String reduce, String outputTarget, DBObject query)
+
+public Iterable<DBObject> mapReduce(String map, String reduce, String outputTarget, MapReduceCommand.OutputType outputType, DBObject query)
 
 上面这些方法的用法都比较直观。其中值得特别指出的是：findAll()、find()等方法，在排序方面，除了支持标准的DBObject外，还支持使用形如"level:1"、"createTime:-1"这样的字符串进行单一条件排序。这能为你编写程序带来方便。
 
