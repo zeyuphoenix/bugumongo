@@ -1,4 +1,16 @@
 #summary 版本更新日志.
 
+= 0.4 =
+2011-08-20发布。
+
+ * ODM增加了对Map数据类型的支持。
+ * @RefList注解增加了sort属性，用于排序。
+ * BuguDao中的排序，增加了对形如"level:1, name:-1"这样的多个排序属性的支持。
+ * BuguDao中新增max()、min()、sum()等统计函数，并增强了mapReduce函数的功能。
+ * 优化了BuguDao批量插入的性能。
+ * 修正了IndexRebuildTask中批量处理的bug。
+ * 修正了BuguFS中保存文件时附加属性的bug。
+ * 增加了UploadedFileServlet对浏览器中支持文件的类型，包括html、htm、swf、mp3、mp4、pdf等。
+
 = 0.2 =
 2011-07-30发布
