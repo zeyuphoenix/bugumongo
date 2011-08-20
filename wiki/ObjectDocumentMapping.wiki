@@ -81,7 +81,7 @@ capSize——long型，设置Capped Collection的大小，缺省值为10M（10L*
 ===@Id===
 映射到MongoDB中的"_id"，必须为String类型。
 ===@Property===
-该注解可以省略。它用来映射基本数据类型，包括：String、int、long、float、double、boolean、char、Date等，以及这些基本数据类型组成的数组、List、Set。
+该注解可以省略。它用来映射基本数据类型，包括：String、int、long、float、double、boolean、char、Date等，以及这些基本数据类型组成的数组、List、Set、Map。
 
 @Property只有一个参数：
 
@@ -91,7 +91,7 @@ name——String型，用于指定映射到MongoDB collection中某个field。�
 ===@EmbedList===
 表示该属性是一组嵌入的对象。其参数name的含义与@Property中的相同。
 
-*提示：*@EmbedList注解支持java.util.List和java.util.Set，但都必须使用泛型。
+@EmbedList注解支持java.util.List、java.util.Set、java.util.Map，但都必须使用泛型。当使用Map的时候，嵌入对象只能作为Map的value，而不能作为key。
 ===@Ref===
 表示对另一个对象的引用，在MongoDB中保存的是形如"father" : {"$ref" : "father", "$id" : ObjectId("4dcb4d1d3febc6503e4e5933")}这样的一个DBRef。
 
@@ -101,9 +101,19 @@ name——含义与@Property的参数name一样。
 
 lazy——boolean型，用于指定是否关联取出该引用对象。若lazy=true，表示只取出该引用对象的id，而不取出其它属性。若lazy=false，表示同时取出该引用对象的所有属性。缺省值为true。
 ===@RefList===
-表示对另一个对象的引用的集合。其参数name和lazy的含义与@Ref中的类似。
+表示对另一个对象的引用的集合。
 
-*提示：*@RefList注解支持java.util.List和java.util.Set，但都必须使用泛型。
+@RefList有3个参数：
+
+name——含义与@Property的参数name一样。
+
+lazy——boolean型，用于指定是否关联取出该引用对象。若lazy=true，表示只取出该引用对象的id，而不取出其它属性。若lazy=false，表示同时取出该引用对象的所有属性。缺省值为true。
+
+sort——String型，用于取出该List或Set属性时，使用的排序规则，其形式是："level:1"，或"level:1, timestamp:-1"这样的多个排序规则。如果不排序，则不设置sort值。
+
+当lazy=false，或者使用BuguMapper.fetch()取出@RefList注解的属性时，都会使用其sort参数。
+
+@RefList注解支持java.util.List、java.util.Set、java.util.Map，但都必须使用泛型。当使用Map的时候，引用对象只能作为Map的value，而不能作为key。
 ===@Ignore===
 表示该属性不需要被映射。当保存实体时，该属性不会保存至MongoDB；同样，该属性也不会从MongoDB中取出。
 
@@ -137,9 +147,9 @@ BuguDao中，提供了大量的常用的方法，用于操作MongoDB的Collectio
 
 *插入：*
 {{{
-public void insert(BuguEntity... arr)
+public void insert(BuguEntity obj)
 
-public void insert(List<BuguEntity> list)
+public void insert(List<BuguEntity> list)  //批量插入
 }}}
 *保存：*
 {{{
@@ -244,18 +254,30 @@ public long count(DBObject query)
 public List distinct(String key)
 
 public List distinct(String key, DBObject query)
+
+public double max(String key)
+
+public double max(String key, DBObject query)
+
+public double min(String key)
+
+public double min(String key, DBObject query)
+
+public double sum(String key)
+
+public double sum(String key, DBObject query)
 }}}
 *MapReduce：*
 {{{
-public Iterable<DBObject> mapReduce(DBObject command)
-
 public Iterable<DBObject> mapReduce(MapReduceCommand command)
 
-public Iterable<DBObject> mapReduce(String map, String reduce, String outputTarget, DBObject query)
+public Iterable<DBObject> mapReduce(String map, String reduce, DBObject query) 
 
-public Iterable<DBObject> mapReduce(String map, String reduce, String outputTarget, MapReduceCommand.OutputType outputType, DBObject query)
+public Iterable<DBObject> mapReduce(String map, String reduce, String outputTarget, MapReduceCommand.OutputType outputType, DBObject sort, DBObject query)
+
+public Iterable<DBObject> mapReduce(String map, String reduce, String outputTarget, MapReduceCommand.OutputType outputType, DBObject sort, int pageNum, int pageSize, DBObject query)
 }}}
-上面这些方法的用法都比较直观。其中值得特别指出的是：findAll()、find()等方法，在排序方面，除了支持标准的DBObject外，还支持使用形如"level:1"、"createTime:-1"这样的字符串进行单一条件排序。这能为你编写程序带来方便。
+上面这些方法的用法都比较直观。其中值得特别指出的是：findAll()、find()等方法，在排序方面，除了支持标准的DBObject外，还支持使用形如"level:1"、"level:1,createTime:-1"这样的字符串进行排序，这能为你编写程序带来方便。
 
 你自己编写的Dao，通过继承自BuguDao，可以直接使用BuguDao中的方法，也可以通过组合这些方法，实现更复杂的函数。如：
 {{{
@@ -319,3 +341,4 @@ fetch()方法还支持级联取出属性，可以一级一级往下取，例如�
 {{{
 BuguMapper.fetch(list, "father.father");
 }}}
+当用fetch()方法取出@RefList注解标注的属性时，会根据注解上的sort属性进行排序。
