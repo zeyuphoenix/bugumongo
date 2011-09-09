@@ -5,7 +5,7 @@
 
 6个注解：@Indexed、@IndexProperty、@IndexEmbed、@IndexRef、@IndexFilter、@BoostSwitch
 
-3个类：BuguIndex、BuguParser、BuguSearcher
+5个类：BuguIndex、BuguParser、BuguSearcher、BuguHighlighter、IndexRebuilder
 
 ==步骤一：在Entity上加注解==
 代码例子如下：
@@ -191,8 +191,7 @@ bQuery.add(strQuery, Occur.SHOULD);
 bQuery.add(xQuery, Occur.MUST_NOT);
 bQuery.add(yQuery, Occur.MUST);
 BuguSearcher searcher = new BuguSearcher(Foo.class);
-searcher.setQuery(bQuery);
-List list = searcher.search();
+List list = searcher.search(bQuery);
 int count = searcher.getResultCount();
 for(Object obj : list){
     Foo foo = (Foo)obj;
