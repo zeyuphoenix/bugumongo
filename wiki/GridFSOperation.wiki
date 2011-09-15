@@ -6,9 +6,8 @@
 BuguMongo通过BuguFS类来操作GridFS文件系统，能够实现对文件的保存、获取、删除、重命名、移动等操作，而且能够按文件夹组织文件。
 
 BuguFS提供了如下操作：
+*保存*
 {{{
-//保存
-
 public void save(File file)
 
 public void save(File file, String filename)
@@ -28,15 +27,15 @@ public void save(byte[] data, String filename)
 public void save(byte[] data, String filename, String folderName)
 
 public void save(byte[] data, String filename, String folderName, Map<String, Object> params)
-
-//获取一个文件
-
+}}}
+*获取一个文件*
+{{{
 public GridFSDBFile findOne(String filename)
 
 public GridFSDBFile findOne(DBObject query)
-
-//获取文件列表
-
+}}}
+*获取文件列表*
+{{{
 public List<GridFSDBFile> find(DBObject query)
 
 public List<GridFSDBFile> find(DBObject query, int pageNum, int pageSize)
@@ -48,9 +47,9 @@ public List<GridFSDBFile> find(DBObject query, DBObject orderBy)
 public List<GridFSDBFile> find(DBObject query, String orderBy, int pageNum, int pageSize)
 
 public List<GridFSDBFile> find(DBObject query, DBObject orderBy, int pageNum, int pageSize)
-
-//获取某个文件夹中的文件列表
-
+}}}
+*获取某个文件夹中的文件列表*
+{{{
 public List<GridFSDBFile> findByFolder(String folderName)
 
 public List<GridFSDBFile> findByFolder(String folderName, int pageNum, int pageSize)
@@ -62,34 +61,35 @@ public List<GridFSDBFile> findByFolder(String folderName, String orderBy)
 public List<GridFSDBFile> findByFolder(String folderName, String orderBy, int pageNum, int pageSize)
 
 public List<GridFSDBFile> findByFolder(String folderName, DBObject orderBy, int pageNum, int pageSize)
-
-//获取所有的文件夹
-
+}}}
+*获取所有的文件夹*
+{{{
 public List findAllFolder()
-
-//重命名
-
+}}}
+*文件重命名*
+{{{
 public void rename(String oldName, String newName)
 
 public void rename(GridFSDBFile file, String newName)
-
-//文件夹重命名
-
+}}}
+*文件夹重命名*
+{{{
 public void renameFolder(String oldName, String newName)
-
-//移动文件
+}}}
+*移动文件*
+{{{
 public void move(String filename, String folderName)
 
 public void move(GridFSDBFile file, String folderName)
-
-//删除文件
-
+}}}
+*删除文件*
+{{{
 public void remove(String filename)
 
 public void remove(DBObject query)
-
-//删除文件夹
-
+}}}
+*删除文件夹*
+{{{
 public void removeFolder(String folderName)
 }}}
 与BuguDao中的方法类似，上面的find方法支持使用形如"level:1"、"level:1,price:-1"这样的字符串进行排序。
