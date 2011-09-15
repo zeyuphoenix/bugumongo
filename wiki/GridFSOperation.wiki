@@ -113,7 +113,7 @@ BuguFS fs = BuguFS.getInstance();
 File file = ...
 fs.save(file);   //filename使用file.getName()
 
-String filename = ...  //提供一个文件名(重命名)
+String filename = ...  //提供一个文件名
 fs.save(file, filename);
 
 Byte[] data = ...
