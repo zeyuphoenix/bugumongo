@@ -8,6 +8,7 @@ BuguMongo通过BuguFS类来操作GridFS文件系统，能够实现对文件的�
 BuguFS提供了如下操作：
 {{{
 //保存
+
 public void save(File file)
 
 public void save(File file, String filename)
@@ -29,11 +30,13 @@ public void save(byte[] data, String filename, String folderName)
 public void save(byte[] data, String filename, String folderName, Map<String, Object> params)
 
 //获取一个文件
+
 public GridFSDBFile findOne(String filename)
 
 public GridFSDBFile findOne(DBObject query)
 
 //获取文件列表
+
 public List<GridFSDBFile> find(DBObject query)
 
 public List<GridFSDBFile> find(DBObject query, int pageNum, int pageSize)
@@ -47,6 +50,7 @@ public List<GridFSDBFile> find(DBObject query, String orderBy, int pageNum, int 
 public List<GridFSDBFile> find(DBObject query, DBObject orderBy, int pageNum, int pageSize)
 
 //获取某个文件夹中的文件列表
+
 public List<GridFSDBFile> findByFolder(String folderName)
 
 public List<GridFSDBFile> findByFolder(String folderName, int pageNum, int pageSize)
@@ -60,14 +64,17 @@ public List<GridFSDBFile> findByFolder(String folderName, String orderBy, int pa
 public List<GridFSDBFile> findByFolder(String folderName, DBObject orderBy, int pageNum, int pageSize)
 
 //获取所有的文件夹
+
 public List findAllFolder()
 
 //重命名
+
 public void rename(String oldName, String newName)
 
 public void rename(GridFSDBFile file, String newName)
 
 //文件夹重命名
+
 public void renameFolder(String oldName, String newName)
 
 //移动文件
@@ -76,13 +83,25 @@ public void move(String filename, String folderName)
 public void move(GridFSDBFile file, String folderName)
 
 //删除文件
+
 public void remove(String filename)
 
 public void remove(DBObject query)
 
 //删除文件夹
+
 public void removeFolder(String folderName)
 }}}
+与BuguDao中的方法类似，上面的find方法支持使用形如"level:1"、"level:1,price:-1"这样的字符串进行排序。
+
+此外，BuguFS中还有几个常用的静态常量：
+{{{
+public final static String FOLDER = "folder";  //文件夹
+public final static String FILENAME = "filename";  //文件名
+public final static String LENGTH = "length";  //文件大小，以byte为单位
+public final static String UPLOADDATE = "uploadDate";  //上传时间
+}}}
+对于GridFS中每一个文件（GridFSDBFile），都会有filename、length、uploadDate这三个属性。如果保存的时候还设置了文件夹，那么还会有folder属性。
 
 一个代码例子如下：
 {{{
@@ -104,7 +123,7 @@ fs.save(data, filename);
 Map params = new HashMap();
 params.put("author", "张三");
 params.put("group", "技术");
-fs.save(data, filename, params);
+fs.save(data, filename, "文件夹A", params);
 
 //获取
 GridFSDBFile dbFile = fs.findOne(filename);
@@ -113,12 +132,15 @@ InputStream is = dbFile.getInputStream();
 DBObject query = ...
 List<GridFSDBFile> list = fs.find(query);
 
+String orderBy = BuguFS.UPLOADDATE + ":-1";
+List<GridFSDBFile> listOfFolder = fs.findByFolder("文件夹A", orderBy);  //取出文件夹A中的文件，并按上传时间倒序排列
+
 //删除
 fs.remove(filename);
 fs.remove(query);
 }}}
 
-BuguFS类比较低级。幸运的是，你可以不必直接使用BuguFS类。BuguMongo在BuguFS类的基础之上，提供了另外4个类，来简化GridFS文件的上传和获取，而且功能更加强大。这4个类分别是：
+除了BuguFS外，BuguMongo还提供了另外4个辅助类，来简化GridFS文件的上传和获取，而且功能更加强大。这4个类分别是：
 
 上传：Uploader、ImageUploader、Watermark。
 
@@ -150,9 +172,15 @@ public class CreateNewsAction extends ActionSupport{
 }}}
 uploader.getFilename()，返回的是，文件经过保存以后，系统生成的文件名（含扩展名），格式如：2011070799999999999999.doc，其中，20110707为日期，9999999999999为当前时间的long值。news实体中attachment值，就是这个字符串。
 
+如果需要把文件上传到指定的文件夹中，Uploader可以这样定义：
+{{{
+String folderName = "文件夹A";
+Uploader uploader = new Uploader(file, fileFileName, folderName);
+}}}
+
 还可以为上传的文件设置其它属性。例如，设置文件的作者：
 {{{
-Uploader uploader = new Uploader(file, fileFileName);
+Uploader uploader = new Uploader(file, fileFileName, "文件夹B");
 uploader.setAttribute("author", "Frank");
 uploader.save();
 }}}
