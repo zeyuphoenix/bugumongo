@@ -150,7 +150,7 @@ BuguMongo使用当前Lucene的默认版本号。用getVersion()可以获得版�
 
 你可以用setAnalyzer()来设置你所需要的Analyzer。如果不设置，则BuguIndex默认使用StandardAnalyzer。
 
-当需要对一个Entity创建索引，或者修改、删除索引的时候，BuguMongo会从线程池中选择一个线程来执行该任务。setThreadPoolSize(int poolSize)，就是设置线程池的大小。该值可以不设置，默认值为5。
+当需要对一个Entity创建索引，或者修改、删除索引的时候，BuguMongo会从线程池中选择一个线程来执行该任务。setThreadPoolSize(int poolSize)，就是设置线程池的大小。该值可以不设置，默认值为10。
 
 setIndexReopenPeriod(long milli)的参数以毫秒为单位，表示索引刷新的时间周期，该参数值根据应用的情况而定，如30秒：30L*1000L。该值可以不设置，默认值为60L*1000L，即1分钟。
 
@@ -167,6 +167,7 @@ searcher.setPageSize(20);
 searcher.setMaxPage(50);
 List list = searcher.search();
 int count = searcher.getResultCount();
+searcher.close();  //务必记得关闭BuguSearcher
 for(Object obj : list){
     Foo foo = (Foo)obj;
     ...
@@ -193,13 +194,24 @@ bQuery.add(yQuery, Occur.MUST);
 BuguSearcher searcher = new BuguSearcher(Foo.class);
 List list = searcher.search(bQuery);
 int count = searcher.getResultCount();
+searcher.close();
 for(Object obj : list){
     Foo foo = (Foo)obj;
     ...
 }
 }}}
 
-在一些特殊的情况下，你可能需要使用底层的Lucene搜索功能，比如使用Collector，这时，你需要通过调用BuguSearcher的getSearcher()方法，来获得底层Lucene的IndexSearcher，然后用它来进行搜索。
+===获得IndexSearcher===
+
+BuguSearcher能实现大部分常用的搜索功能，但在一些特殊的情况下，你可能需要使用底层的Lucene搜索功能，比如使用Collector，这时，你需要通过调用BuguSearcher的getSearcher()方法，来获得底层Lucene的IndexSearcher，然后用它来进行搜索。
+{{{
+BuguSearcher searcher = new BuguSearcher(Foo.class);
+IndexSearcher is = searcher.getSearcher();
+Query query = ...
+Collector collector = ...
+is.search(query, collector);
+searcher.close();
+}}}
 
 ==查询分析器：BuguParser==
 
@@ -236,6 +248,8 @@ public static Query parse(String field, float minValue, float maxValue)
 public static Query parse(String field, double minValue, double maxValue)
 
 public static Query parse(String field, Date begin, Date end)
+
+public static Query parse(String field, Timestamp begin, Timestamp end)
 }}}
 *其它：*
 {{{
@@ -245,7 +259,7 @@ public static Query parse(String field, char value)
 }}}
 
 ==辅助工具：重建索引==
-在某些情况下，由于特殊的原因，Lucene索引文件没有与MongoDB中的记录一一对应，这时，需要对MongoDB中的记录重新建立Lucene索引。BuguMongo提供了一个类IndexRebuilder来实现该功能。代码例子如下：
+在某些情况下，由于特殊的原因，Lucene索引文件没有与MongoDB中的记录一一对应，这时，需要对MongoDB中的文档重新建立Lucene索引。BuguMongo提供了一个类IndexRebuilder来实现该功能。代码例子如下：
 {{{
 IndexRebuilder r1 = new IndexRebuilder(Foo.class);
 r1.rebuild();
@@ -255,3 +269,25 @@ IndexRebuilder r2 = new IndexRebuilder(MyEntity.class, batchSize);
 r2.rebuild();
 }}}
 参数batchSize表示IndexRebuilder每次从MongoDB中取多少条数据进行索引，默认值为100。
+
+==辅助工具：高亮显示==
+对搜索结果中的关键词进行高亮显示，是一个经常用到的功能。BuguMongo中提供了一个类BuguHighlighter来实现该功能。代码例子如下：
+{{{
+Query query = BuguParser.parse("introduce", "谷歌");
+BuguSearcher searcher = new BuguSearcher(Foo.class);
+BuguHighlighter highlighter = new BuguHighlighter("introduce", "谷歌");  //对introduce字段的“谷歌”关键词高亮显示
+searcher.setHighlighter(highlighter);
+List list = searcher.search(query);
+searcher.close();
+}}}
+可以对多个字段中的关键词高亮显示。比如，同时对title、introduce字段中的“谷歌”关键词高亮显示，BuguHighlighter可以这样定义：
+{{{
+String[] fields = new String[]{"title", "introduce"};
+BuguHighlighter highlighter = new BuguHighlighter(fields, "谷歌");
+}}}
+BuguHighlighter默认将关键词用红色显示，如果需要把它改成其它的显示样式，可以这样定义：
+{{{
+BuguHighlighter highlighter = new BuguHighlighter("introduce", "谷歌");
+Formatter formatter = new SimpleHTMLFormatter("<font color=\"#0000FF\"><b>", "</b></font>");  //蓝色，加粗
+highlighter.setFormatter(formatter);
+}}}
