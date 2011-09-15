@@ -1,0 +1,32 @@
+#summary 连接数据库
+
+= 连接到MongoDB =
+在能够对MongDB进行操作之前，需要使用BuguConnection连接MongoDB数据库。代码如下：
+{{{
+BuguConnection conn = BuguConnection.getInstance();
+conn.setHost("192.168.0.100");
+conn.setPort(27017);
+conn.setDatabase("mydb");
+conn.setUsername("username");
+conn.setPassword("password");
+conn.connect();
+}}}
+或者：
+{{{
+BuguConnection conn = BuguConnection.getInstance();
+conn.connect("192.168.0.100", 27017, "mydb", "username", "password");
+}}}
+如果不需要提供授权帐号，那么可以这样连接：
+{{{
+BuguConnection conn = BuguConnection.getInstance();
+conn.connect("192.168.0.100", 27017, "mydb");
+}}}
+
+= 获取DB =
+用BuguMongo来进行开发，几乎不需要直接使用MongoDB Java Driver中的DB类。当然，在一些特殊的情况下，你可能会需要使用它，这时，可以通过BuguConnection的getDB()方法，来获取DB实例：
+{{{
+import com.mongodb.DB;
+...
+BuguConnection conn = BuguConnection.getInstance();
+DB db = conn.getDB();
+}}}
