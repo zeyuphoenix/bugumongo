@@ -1,5 +1,24 @@
 #summary 版本更新日志.
 
+= 0.6 =
+2011-09-15发布。
+
+ * BuguConnection新增一个connect()方法，用于在不需要提供授权帐号的情况下连接数据库。
+ * 增加了对short、Timestamp数据类型的支持。
+ * 新增@EnsureIndex注解，用来建立数据库索引。
+ * BuguDao新增getCollection()方法，用于获取DBCollection。
+ * BuguDao新增drop()方法，用于删除Collection。
+ * 解决了MapReduce中排序属性orderBy不能为null的bug。
+ * BuguFS新增文件夹的概念，可以按文件夹来组织文件。
+ * BuguFS可以对文件夹、文件进行重命名。
+ * BuguFS可以将文件在文件夹之间移动。
+ * BuguFS取出文件列表的时候，可以排序和分页。
+ * 解决IndexReader在reopen之后没有释放的bug。
+ * BuguSearcher新增close()方法，以关闭相应的IndexReader。
+ * Lucene搜索增加了对高亮显示（Highlighter）的支持。
+ * 把BuguIndex的线程池默认值由5改为10。
+ * 对部分代码的性能进行了优化。
+
 = 0.4 =
 2011-08-20发布。
 
