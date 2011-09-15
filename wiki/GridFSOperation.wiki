@@ -121,10 +121,11 @@ Byte[] data = ...
 String filename = ...
 fs.save(data, filename);
 
+String folderName = "文件夹A";
 Map params = new HashMap();
 params.put("author", "张三");
 params.put("group", "技术");
-fs.save(data, filename, "文件夹A", params);
+fs.save(data, filename, folderName, params);
 
 //获取
 GridFSDBFile dbFile = fs.findOne(filename);
