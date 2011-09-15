@@ -5,7 +5,7 @@
 
 8个注解：@Entity、@Id、@Property、@Embed、@EmbedList、@Ref、@RefList、@Ignore
 
-3个类：BuguConnection、BuguDao、BuguMapper
+2个类：BuguDao、BuguMapper
 
 1个接口：BuguEntity
 
@@ -117,24 +117,7 @@ sort——String型，用于取出该List或Set属性时，使用的排序规则
 ===@Ignore===
 表示该属性不需要被映射。当保存实体时，该属性不会保存至MongoDB；同样，该属性也不会从MongoDB中取出。
 
-==步骤二：连接数据库==
-在能够对MongDB进行操作之前，需要使用BuguConnection连接MongoDB数据库。如：
-{{{
-BuguConnection conn = BuguConnection.getInstance();
-conn.setHost("192.168.0.100");
-conn.setPort(27017);
-conn.setDatabase("mydb");
-conn.setUsername("username");
-conn.setPassword("password");
-conn.connect();
-}}}
-或者：
-{{{
-BuguConnection conn = BuguConnection.getInstance();
-conn.connect("192.168.0.100", 27017, "mydb", "username", "password");
-}}}
-
-==步骤三：使用BuguDao进行数据库操作==
+==步骤二：使用BuguDao进行数据库操作==
 你需要编写自己的Dao，如FooDao，来操作Foo相关的数据，FooDao需要继承自BuguDao，并且，在FooDao的构造函数中，需要传递Foo.class，如下：
 {{{
 public class FooDao extends BuguDao{
