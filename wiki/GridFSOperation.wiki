@@ -91,7 +91,7 @@ public void remove(DBObject query)
 }}}
 *删除文件夹*
 {{{
-public void removeFolder(String folderName)
+public void removeFolder(String folderName)  //会同时删除里面的所有文件
 }}}
 与BuguDao中的方法类似，上面的find方法支持使用形如"level:1"、"level:1,price:-1"这样的字符串进行排序。
 
