@@ -81,7 +81,7 @@ capSize——long型，设置Capped Collection的大小，缺省值为10M（10L*
 ===@Id===
 映射到MongoDB中的"_id"，必须为String类型。
 ===@Property===
-该注解可以省略。它用来映射基本数据类型，包括：String、int、long、float、double、boolean、char、Date等，以及这些基本数据类型组成的数组、List、Set、Map。
+该注解可以省略。它用来映射基本数据类型，包括：String、int、long、short、float、double、boolean、char、Date、Timestamp等，以及这些基本数据类型组成的数组、List、Set、Map。
 
 @Property只有一个参数：
 
@@ -140,7 +140,7 @@ public void save(BuguEntity obj)  //如果obj中没有ID值，则为插入，若
 }}}
 *删除：*
 {{{
-public void removeAll()
+public void drop()
 
 public void remove(BuguEntity obj)
 
@@ -252,7 +252,7 @@ public double sum(String key, DBObject query)
 }}}
 *MapReduce：*
 {{{
-public Iterable<DBObject> mapReduce(MapReduceCommand command)
+public Iterable<DBObject> mapReduce(String map, String reduce)
 
 public Iterable<DBObject> mapReduce(String map, String reduce, DBObject query) 
 
@@ -281,6 +281,14 @@ FooDao fDao = new FooDao();
 fDao.save(foo);
 int count = fDao.countByLowLevel(9);
 fDao.remove(foo);
+}}}
+
+===取得DBCollection===
+BuguDao封装了大部分常用的DAO方法，你几乎不需要直接使用MongoDB Java Driver的DBCollection类。当然，在一些特殊情况下，你可能需要使用DBCollection，来执行BuguDao无法实现的操作，比如对collection重命名。这时，可以通过BuguDao的getCollection()方法，来获得其相对应的DBCollection实例：
+{{{
+FooDao dao = new FooDao();
+DBCollection col = dao.getCollection();
+col.rename("newName");
 }}}
 
 ==辅助工具：BuguMapper==
