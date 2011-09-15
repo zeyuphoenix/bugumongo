@@ -2,7 +2,7 @@
 
 = 数据库索引 =
 
-*注意：* 这里的索引指的是数据库本身的索引，不要把它与Lucene的索引相混淆。
+*注意：* 这里指的是数据库本身的索引，不要把它与Lucene的索引相混淆。
 
 如果不需要打开shell执行create index，直接在程序源代码里就能指定数据库索引，是不是很酷？
 
@@ -22,6 +22,7 @@ public class News implements BuguEntity{
     private int level;  //推荐级别
 
     ...getter and setter...
+}
 }}}
 如果有多个索引，中间用分号(;)隔开：
 {{{
