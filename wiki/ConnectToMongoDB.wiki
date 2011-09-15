@@ -28,5 +28,7 @@ conn.connect("192.168.0.100", 27017, "mydb");
 import com.mongodb.DB;
 ...
 BuguConnection conn = BuguConnection.getInstance();
+conn.connect("192.168.0.100", 27017, "mydb", "username", "password");
+...
 DB db = conn.getDB();
 }}}
