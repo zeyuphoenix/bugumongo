@@ -148,7 +148,7 @@ fs.remove(query);
 
 读取：UploadedFileServlet
 
-==辅助类：文件上传==
+==辅助类：文件上传类Uploader==
 这里，以Struts2开发的新闻系统为例。当然，这仅仅是个例子，并不是说BuguMongo只能在Struts2中使用。
 
 发布一篇新闻的时候，同时上传新闻的附件（比如.doc文件），那么，在Struts2的Action中，代码这样写：
@@ -250,7 +250,7 @@ public class CreateProductAction extends ActionSupport{
 }}}
 public void compress(String dimension, int maxWidth, int maxHeight) 方法中，dimension是指图片尺寸的类型，用来区分同一图片的不同尺寸的拷贝。经过compress方法压缩保存后的图片文件，和原图有相同的filename，例如，同样是2011070799999999999999.jpg。
 
-===辅助类：文件的获取===
+===辅助类：文件获取类UploadedFileServlet===
 如果你是在Web项目中使用BuguMongo，那么，保存到GridFS中的文件，可以通过UploadedFileServlet来获取，在web.xml中配置如下：
 {{{
 <servlet>
