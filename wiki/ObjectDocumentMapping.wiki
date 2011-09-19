@@ -280,13 +280,19 @@ public class FooDao extends BuguDao{
 然后可以这样调用FooDao中的方法：
 {{{
 FooDao fDao = new FooDao();
+
 int count = fDao.countByLowLevel(9);    //level值大于9的记录条数
+
 List list1 = fDao.findAll(1, 50);    //取出所有的Foo，并分页显示，显示第1页，每页50条
+
 List list2 = fDao.find("embed.x", 3.14, "level:-1");    //取出embed属性的x=3.14的Foo，按level值从大到小排列
 
 Foo foo = ...
+
 fDao.save(foo);    //保存
+
 fDao.inc(foo, "level", 1);    //level值增加1
+
 fDao.set(foo, "embed.y", 100);    //把embed中y的值设为100
 
 fDao.remove(foo);   //删除
