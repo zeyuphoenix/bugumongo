@@ -275,8 +275,6 @@ public class FooDao extends BuguDao{
         DBObject query = QueryBuilder.start("level").greaterThan(level).get();
         return this.count(query);
     }
-
-    ...other functions...
 }
 }}}
 然后可以这样调用FooDao中的方法：
