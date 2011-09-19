@@ -126,7 +126,7 @@ public class FooDao extends BuguDao{
     }
 }
 }}}
-BuguDao中，提供了大量的常用的方法，用于操作MongoDB的Collection，包括：
+BuguDao的使用非常灵活方便，它提供了大量的常用的方法，用于操作MongoDB的Collection，包括：
 
 *插入：*
 {{{
@@ -262,26 +262,37 @@ public Iterable<DBObject> mapReduce(String map, String reduce, String outputTarg
 }}}
 上面这些方法的用法都比较直观。其中值得特别指出的是：findAll()、find()等方法，在排序方面，除了支持标准的DBObject外，还支持使用形如"level:1"、"level:1,createTime:-1"这样的字符串进行排序，这能为你编写程序带来方便。
 
-你自己编写的Dao，通过继承自BuguDao，可以直接使用BuguDao中的方法，也可以通过组合这些方法，实现更复杂的函数。如：
+你自己编写的Dao，通过继承自BuguDao，可以直接使用BuguDao中的方法，也可以通过组合这些方法，实现更复杂的函数。
+
+一个Dao的例子如下：
 {{{
 public class FooDao extends BuguDao{
     public FooDao(){
         super(Foo.class);
     }
+
     public long coutByLowLevel(int level){
         DBObject query = QueryBuilder.start("level").greaterThan(level).get();
         return this.count(query);
     }
+
     ...other functions...
 }
 }}}
+然后可以这样调用FooDao中的方法：
 {{{
-Foo foo = ...
 FooDao fDao = new FooDao();
-fDao.save(foo);
-int count = fDao.countByLowLevel(9);
-fDao.remove(foo);
-}}}
+int count = fDao.countByLowLevel(9);    //level值大于9的记录条数
+List list1 = fDao.findAll(1, 50);    //取出所有的Foo，并分页显示，显示第1页，每页50条
+List list2 = fDao.find("embed.x", 3.14, "level:-1");    //取出embed属性的x=3.14的Foo，按level值从大到小排列
+
+Foo foo = ...
+fDao.save(foo);    //保存
+fDao.inc(foo, "level", 1);    //level值增加1
+fDao.set(foo, "embed.y", 100);    //把embed中y的值设为100
+
+fDao.remove(foo);   //删除
+}}} 
 
 ===取得DBCollection===
 BuguDao封装了大部分常用的DAO方法，你几乎不需要直接使用MongoDB Java Driver的DBCollection类。当然，在一些特殊情况下，你可能需要使用DBCollection，来执行BuguDao无法实现的操作，比如对collection重命名。这时，可以通过BuguDao的getCollection()方法，来获得其相对应的DBCollection实例：
