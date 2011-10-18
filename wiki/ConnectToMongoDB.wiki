@@ -4,22 +4,30 @@
 在能够对MongDB进行操作之前，需要使用BuguConnection连接到MongoDB数据库。代码如下：
 {{{
 BuguConnection conn = BuguConnection.getInstance();
-conn.setHost("192.168.0.100");
-conn.setPort(27017);
-conn.setDatabase("mydb");
-conn.setUsername("username");
-conn.setPassword("password");
-conn.connect();
-}}}
-或者：
-{{{
-BuguConnection conn = BuguConnection.getInstance();
 conn.connect("192.168.0.100", 27017, "mydb", "username", "password");
 }}}
-如果不需要提供授权帐号，那么可以这样连接：
+如果不需要提供授权帐号，那么可以省略用户名和密码：
 {{{
 BuguConnection conn = BuguConnection.getInstance();
 conn.connect("192.168.0.100", 27017, "mydb");
+}}}
+
+=连接副本集（ReplicaSet）=
+如果需要连接到一组ReplicaSet，那么代码例子如下：
+{{{
+List<ServerAddress> addrs = new ArrayList<ServerAddress>();
+addrs.add(new ServerAddress("192.168.0.100", 27017));
+addrs.add(new ServerAddress("192.168.0.101", 27017));
+BuguConnection conn = BuguConnection.getInstance();
+conn.setReplicaSet(addrs).setDatabase("mydb").setUsername("username").setPassword("password").connect();
+}}}
+
+=设置连接参数=
+如果不想使用默认的连接参数，那么可以自己提供一个MongoOptions：
+{{{
+MongoOptions options = ...
+BuguConnection conn = BuguConnection.getInstance();
+conn.setHost("192.168.0.100").setPort(27017).setDatabase("mydb").setOptions(options).connect();
 }}}
 
 = 获取DB =
