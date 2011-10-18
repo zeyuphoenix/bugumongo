@@ -4,6 +4,7 @@
 AdvancedDao是BuguDao的子类，它主要提供MapReduce功能，以及一些不经常使用的高级统计功能。
 
 AdvancedDao中的方法如下：
+
 *统计：*
 {{{
 public double max(String key)
