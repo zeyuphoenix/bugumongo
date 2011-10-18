@@ -7,11 +7,15 @@
 
 8个注解：@Entity、@Id、@Property、@Embed、@EmbedList、@Ref、@RefList、@Ignore
 
-2个类：BuguDao、BuguMapper
-
 1个接口：BuguEntity
 
-==步骤一：定义Entity==
+2个Dao类：BuguDao、AdvancedDao
+
+1个查询类：Query
+
+1个辅助类：BuguMapper
+
+==1、定义Entity==
 要使得某个Java Entity能和MongoDB Document实现相互转换，该Entity需要实现BuguEntity接口，并加上注解，如下：
 {{{
 import com.bugull.mongo.BuguEntity;
@@ -117,7 +121,8 @@ sort——String型，用于取出该List或Set属性时，使用的排序规则
 ===@Ignore===
 表示该属性不需要被映射。当保存实体时，该属性不会保存至MongoDB；同样，该属性也不会从MongoDB中取出。
 
-==步骤二：使用BuguDao进行数据库操作==
+==2、使用BuguDao进行数据库操作==
+===2.1 Dao构造函数===
 你需要编写自己的Dao，如FooDao，来操作Foo相关的数据，FooDao需要继承自BuguDao，并且，在FooDao的构造函数中，需要传递Foo.class，如下：
 {{{
 public class FooDao extends BuguDao{
@@ -126,6 +131,8 @@ public class FooDao extends BuguDao{
     }
 }
 }}}
+
+===2.2 BuguDao中的方法===
 BuguDao的使用非常灵活方便，它提供了大量的常用的方法，用于操作MongoDB的Collection，包括：
 
 *插入：*
@@ -278,7 +285,7 @@ fDao.set(foo, "embed.y", 100);    //把embed中y的值设为100
 fDao.remove(foo);   //删除
 }}} 
 
-===排序===
+===2.3 排序===
 正如前面的例子中显示的那样，BuguDao中的findAll()、find()等方法，在排序方面，除了支持标准的DBObject外，还支持使用形如"{level:-1}"这样的字符串进行排序，这能为你编写程序带来方便。
 
 排序字符串可以采用标准的JSON格式，如：
@@ -303,7 +310,7 @@ list2 = fDao.findAll("level:1, timestamp:-1");
 
 *注*：@RefList注解中的sort属性，也使用相同的书写规则。
 
-===取得DBCollection===
+===2.4 取得DBCollection===
 BuguDao封装了大部分常用的DAO方法，你几乎不需要直接使用MongoDB Java Driver的DBCollection类。当然，在一些特殊情况下，你可能需要使用DBCollection，来执行BuguDao无法实现的操作，比如对collection重命名。这时，可以通过BuguDao的getCollection()方法，来获得其相对应的DBCollection实例：
 {{{
 FooDao dao = new FooDao();
@@ -311,8 +318,8 @@ DBCollection col = dao.getCollection();
 col.rename("newName");
 }}}
 
-==辅助工具：BuguMapper==
-BuguMapper是ODM的辅助工具类，主要提供2个静态方法，toDBRef()、fetch：
+==3、辅助工具：BuguMapper==
+BuguMapper是ODM的辅助工具类，主要提供2个静态方法，toDBRef()、fetch()：
 {{{
 public static DBRef toDBRef(BuguEntity obj)
 
@@ -320,7 +327,7 @@ public static void fetch(BuguEntity obj, String... names)
 
 public static void fetch(List list, String... names)
 }}}
-===toDBRef()===
+===3.1 toDBRef()===
 当你需要把@Ref、@RefList注解的属性作为查询条件的时候，需要用BuguMapper的toDBRef()方法，将Entity对象转换为DBRef，然后放入DBObject中。一个例子如下：
 {{{
 public class FooDao extends BuguDao{
@@ -338,7 +345,7 @@ public class FooDao extends BuguDao{
 query.put("father", BuguMapper.toDBRef(father));
 }}}
 
-===fetch()===
+===3.2 fetch()===
 对于@Ref、@RefList注解的属性，默认lazy=true，只取出其值的id，而不取出其它属性值。当你要用到其它属性值的时候，可以使用BuguMapper的fetch方法，将@Ref、@RefList的属性值全部取出。例子如下：
 {{{
 ...
@@ -353,3 +360,7 @@ fetch()方法还支持级联取出属性，可以一级一级往下取，例如�
 BuguMapper.fetch(list, "father.father");
 }}}
 当用fetch()方法取出@RefList注解标注的属性时，会根据注解上的sort属性进行排序。
+
+==4、AdvancedDao==
+
+==5、Query查询==
