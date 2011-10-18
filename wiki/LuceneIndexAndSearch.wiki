@@ -5,6 +5,12 @@ BuguMongo集成了Lucene的功能。当往MongoDB中新增一个Document时，�
 
 另外，BuguMongo还提供了对Lucene搜索的支持。根据Lucene索引进行搜索的时候，搜索结果能自动转换成对应的Entity对象。
 
+在Lucene集成方面，BuguMongo提供了：
+
+6个注解：@Indexed、@IndexProperty、@IndexEmbed、@IndexRef、@IndexFilter、@BoostSwitch
+
+5个类：BuguIndex、BuguParser、BuguSearcher、BuguHighlighter、IndexRebuilder
+
 ==步骤一：在Entity上加注解==
 代码例子如下：
 {{{
