@@ -12,7 +12,7 @@ BuguConnection conn = BuguConnection.getInstance();
 conn.connect("192.168.0.100", 27017, "mydb");
 }}}
 
-=连接副本集（ReplicaSet）=
+==连接副本集（ReplicaSet）==
 如果需要连接到一组ReplicaSet，那么代码例子如下：
 {{{
 List<ServerAddress> addrs = new ArrayList<ServerAddress>();
@@ -22,7 +22,7 @@ BuguConnection conn = BuguConnection.getInstance();
 conn.setReplicaSet(addrs).setDatabase("mydb").setUsername("username").setPassword("password").connect();
 }}}
 
-=设置连接参数=
+==设置连接参数==
 如果不想使用默认的连接参数，那么可以自己提供一个MongoOptions：
 {{{
 MongoOptions options = ...
@@ -30,7 +30,7 @@ BuguConnection conn = BuguConnection.getInstance();
 conn.setHost("192.168.0.100").setPort(27017).setDatabase("mydb").setOptions(options).connect();
 }}}
 
-= 获取DB =
+==获取DB==
 用BuguMongo来进行开发，几乎不需要直接使用MongoDB Java Driver中的DB类。当然，在一些特殊的情况下，你可能会需要使用它，这时，可以通过BuguConnection的getDB()方法，来获取DB实例：
 {{{
 import com.mongodb.DB;
