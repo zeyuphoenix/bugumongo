@@ -1,0 +1,4 @@
+#summary AdvancedDao类，主要提供MapReduce功能
+
+= AdvancedDao =
+
