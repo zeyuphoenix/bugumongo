@@ -11,7 +11,7 @@
 以一个简单的新闻系统为例：
 {{{
 @Entity
-@EnsureIndex(index="type:1")
+@EnsureIndex(index="{type:1}")
 public class News implements BuguEntity{
     @Id
     private String id;
@@ -24,11 +24,21 @@ public class News implements BuguEntity{
     ...getter and setter...
 }
 }}}
-如果有多个索引，中间用分号(;)隔开：
+索引的书写规则，可以采用标准的JSON格式:
 {{{
-@EnsureIndex(index="type:1; level:-1")
+@EnsureIndex(index="{'type':1}")
 }}}
-如果是组合索引，属性间用逗号(,)隔开：
+或者简化的JSON格式：
 {{{
-@EnsureIndex(index="author:1, type:1; level:-1")  //2个索引，第1个为组合索引
+@EnsureIndex(index="{type:1}")
+}}}
+
+如果有多个索引，那么这样写：
+{{{
+@EnsureIndex(index="{type:1},{level:-1}")
+}}}
+
+如果是组合索引，格式如下：
+{{{
+@EnsureIndex(index="{author:1, type:1}, {level:-1}")  //2个索引，第1个为组合索引
 }}}
