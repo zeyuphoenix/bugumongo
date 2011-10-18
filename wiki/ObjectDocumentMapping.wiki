@@ -146,6 +146,8 @@ public void remove(BuguEntity obj)
 
 public void remove(String id)
 
+public void remove(String... ids)  //批量删除
+
 public void remove(String key, Object value)
 
 public void remove(DBObject query)
