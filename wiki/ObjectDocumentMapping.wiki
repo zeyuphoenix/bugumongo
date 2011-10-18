@@ -32,6 +32,7 @@ import java.util.List;
 public class Foo implements BuguEntity{
     @Id
     private String id;
+    private String name;
     @Property
     private int level;
     @Embed
@@ -274,7 +275,9 @@ List list1 = fDao.findAll(1, 50);    //取出所有的Foo，并分页显示，�
 
 List list2 = fDao.find("embed.x", 3.14, "{level:-1}");    //取出embed属性的x=3.14的Foo，按level值从大到小排列
 
-Foo foo = ...
+Foo foo = fDao.findOne("4dcb4d1d3febc6503e4e5933");  //根据ID取出Entity
+
+foo.setName("MyNewName");
 
 fDao.save(foo);    //保存
 
