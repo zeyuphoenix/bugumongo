@@ -1,7 +1,7 @@
 #summary 对象-文档映射，DAO操作
 
 =对象-文档映射=
-在对象（Object，也称实体Entity）、文档（Document）之间实现自动转换，是BuguMongo的最核心功能，这能让你直接用面向对象的概念来操作MongoDB数据库，而不用去关心底层的数据库细节。
+在对象(Object，也称实体Entity)、文档(Document)之间实现自动转换，是BuguMongo的最核心功能，这能让你直接用面向对象的概念来操作MongoDB数据库，而不用去关心底层的数据库细节。
 
 在这方面，BuguMongo提供了：
 
