@@ -1,15 +1,15 @@
-#summary 对象-文档映射
+#summary 对象-文档映射，DAO操作
 
 =对象-文档映射=
-在对象-文档映射方面，BuguMongo提供了：
+在对象（Object，也称实体Entity）、文档（Document）之间实现自动转换，是BuguMongo的最核心功能，这能让你直接用面向对象的概念来操作MongoDB数据库，而不用去关心底层的数据库细节。
+
+在这方面，BuguMongo提供了：
 
 8个注解：@Entity、@Id、@Property、@Embed、@EmbedList、@Ref、@RefList、@Ignore
 
 2个类：BuguDao、BuguMapper
 
 1个接口：BuguEntity
-
-它们的含义都很直观。BuguMongo的使用，就是围绕着上述注解、类和接口来进行。
 
 ==步骤一：定义Entity==
 要使得某个Java Entity能和MongoDB Document实现相互转换，该Entity需要实现BuguEntity接口，并加上注解，如下：
