@@ -1,3 +1,65 @@
 #summary Query查询
 
 =Query查询=
+在用BuguMongo做开发的时候，除了使用BuguDao中的find方法进行查询外，还有另一种选择，就是使用Query类。
+
+先看看Query类中有些什么方法：
+
+*生成查询条件*：
+{{{
+public Query is(String key, Object value)
+
+public Query notEquals(String key, Object value)
+
+public Query greaterThan(String key, Object value)
+
+public Query greaterThanEquals(String key, Object value)
+
+public Query lessThan(String key, Object value)
+
+public Query lessThanEquals(String key, Object value)
+
+public Query in(String key, Object... values)
+
+public Query notIn(String key, Object... values)
+
+public Query all(String key, Object... values)
+
+public Query size(String key, int value)
+
+public Query mod(String key, int divisor, int remainder)
+
+public Query exists(String key)
+
+public Query notExists(String key)
+
+public Query regex(String key, String regex)
+
+public Query or(Query... qs)
+
+public Query and(Query... qs)
+
+public Query near(String key, double x, double y)
+
+public Query near(String key, double x, double y, double maxDistance)
+
+public Query withinCenter(String key, double x, double y, double radius)
+
+public Query withinBox(String key, double x1, double y1, double x2, double y2)
+}}}
+*设置查询参数*:
+{{{
+public Query sort(String orderBy)
+
+public Query pageNumber(int pageNumber)
+
+public Query pageSize(int pageSize)
+}}}
+*返回查询结果*：
+{{{
+public Object result()
+
+public List results()
+
+public long count()
+}}}
