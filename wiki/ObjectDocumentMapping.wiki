@@ -248,7 +248,7 @@ public List distinct(String key)
 public List distinct(String key, DBObject query)
 }}}
 
-通过继承自BuguDao，可以直接使用BuguDao中的方法，也可以通过组合这些方法，实现更复杂的函数。
+通过继承BuguDao，可以直接使用BuguDao中的方法，也可以通过组合这些方法，实现更复杂的函数。
 
 一个Dao的例子如下：
 {{{
@@ -328,7 +328,7 @@ public static void fetch(BuguEntity obj, String... names)
 public static void fetch(List list, String... names)
 }}}
 ===3.1、toDBRef()===
-当你需要把@Ref、@RefList注解的属性作为查询条件的时候，需要用BuguMapper的toDBRef()方法，将Entity对象转换为DBRef，然后放入DBObject中。一个例子如下：
+使用BuguDao中的find方法进行查询的时候，有一个需要特别注意的地方，那就是：当需要把@Ref、@RefList注解的属性作为查询条件的时候，需要用BuguMapper的toDBRef()方法，将Entity对象转换为DBRef，然后放入DBObject中。一个例子如下：
 {{{
 public class FooDao extends BuguDao{
     ...
@@ -367,3 +367,9 @@ BuguDao中提供了大量常用的方法，但如果要使用一些高级功能�
 AdvancedDao扩展自BuguDao，提供了一些高级功能（主要是MapReduce和聚合统计），详细内容请查看[http://code.google.com/p/bugumongo/wiki/TheAdvancedDao AdvancedDao]。
 
 ==5、Query查询==
+正如你前面看到的那样，BuguDao中的find方法，使用的是MongoDB Java Driver中的DBObject类作为查询条件。使用DBObject进行查询存在如下问题：
+ * 需要对MongoDB Java Driver比较熟悉；
+ * 生成复杂的查询条件比较麻烦，组合起来不方便；
+ * 需要把Entity实体转换成DBRef。
+
+如果你不习惯使用DBObject来进行查询，没关系，BuguMongo还提供了另一种选择，那就是[http://code.google.com/p/bugumongo/wiki/HowToQuery 使用Query]。
