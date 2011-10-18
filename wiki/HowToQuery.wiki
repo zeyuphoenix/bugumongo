@@ -1,7 +1,7 @@
 #summary Query查询
 
 =Query查询=
-在用BuguMongo做开发的时候，除了使用BuguDao中的find方法进行查询外，还有另一种选择，就是使用Query类。
+在用BuguMongo做开发的时候，除了使用[http://code.google.com/p/bugumongo/wiki/ObjectDocumentMapping#2、使用_进行操作 BuguDao]中的find方法进行查询外，还有另一种选择，就是使用Query类。
 
 ==1、Query==
 
