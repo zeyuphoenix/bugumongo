@@ -105,7 +105,7 @@ Query q1 = dao.query().greaterThan("level", 10);
 Query q2 = dao.query().is("name", "John");
 List list = dao.query().or(q1, q2).results();
 }}}
-*注意*：and操作只有MongoDB 2.0以后才支持，而且，几乎很少需要用到and操作，Query的连缀书写形式，就是按多个条件的“and”关系进行组合的。一个需要用到and操作的例子如下，它用来连接两个or条件：
+*注意*：and操作只有MongoDB 2.0以后才支持，而且，几乎很少需要用到and操作，Query的连缀书写形式，就是按多个条件的“与”逻辑进行组合的。一个需要用到and操作的例子如下，它用来连接两个or条件：
 {{{
 Query q1 = dao.query().is("level", 10);
 Query q2 = dao.query().is("level", 20);
