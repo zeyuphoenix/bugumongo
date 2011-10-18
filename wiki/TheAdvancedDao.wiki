@@ -1,0 +1,41 @@
+#summary AdvancedDao类，主要提供MapReduce功能
+
+= AdvancedDao =
+AdvancedDao是BuguDao的子类，它主要提供MapReduce功能，以及一些不经常使用的高级统计功能。
+
+AdvancedDao中的方法如下：
+
+*统计：*
+{{{
+public double max(String key)
+
+public double max(String key, DBObject query)
+
+public double min(String key)
+
+public double min(String key, DBObject query)
+
+public double sum(String key)
+
+public double sum(String key, DBObject query)
+}}}
+*分组：*
+{{{
+public Iterable<DBObject> group(GroupCommand cmd)
+
+public Iterable<DBObject> group(DBObject key, DBObject query, DBObject initial, String reduce)
+
+public Iterable<DBObject> group(DBObject key, DBObject query, DBObject initial, String reduce, String finalize)
+}}}
+*MapReduce：*
+{{{
+public Iterable<DBObject> mapReduce(MapReduceCommand cmd)
+
+public Iterable<DBObject> mapReduce(String map, String reduce)
+
+public Iterable<DBObject> mapReduce(String map, String reduce, DBObject query) 
+
+public Iterable<DBObject> mapReduce(String map, String reduce, String outputTarget, MapReduceCommand.OutputType outputType, DBObject sort, DBObject query)
+
+public Iterable<DBObject> mapReduce(String map, String reduce, String outputTarget, MapReduceCommand.OutputType outputType, DBObject sort, int pageNum, int pageSize, DBObject query)
+}}}
