@@ -239,28 +239,6 @@ public long count(DBObject query)
 public List distinct(String key)
 
 public List distinct(String key, DBObject query)
-
-public double max(String key)
-
-public double max(String key, DBObject query)
-
-public double min(String key)
-
-public double min(String key, DBObject query)
-
-public double sum(String key)
-
-public double sum(String key, DBObject query)
-}}}
-*MapReduce：*
-{{{
-public Iterable<DBObject> mapReduce(String map, String reduce)
-
-public Iterable<DBObject> mapReduce(String map, String reduce, DBObject query) 
-
-public Iterable<DBObject> mapReduce(String map, String reduce, String outputTarget, MapReduceCommand.OutputType outputType, DBObject sort, DBObject query)
-
-public Iterable<DBObject> mapReduce(String map, String reduce, String outputTarget, MapReduceCommand.OutputType outputType, DBObject sort, int pageNum, int pageSize, DBObject query)
 }}}
 上面这些方法的用法都比较直观。其中值得特别指出的是：findAll()、find()等方法，在排序方面，除了支持标准的DBObject外，还支持使用形如"level:1"、"level:1,createTime:-1"这样的字符串进行排序，这能为你编写程序带来方便。
 
