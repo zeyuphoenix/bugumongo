@@ -159,12 +159,7 @@ setIndexReopenPeriod(long milli)的参数以毫秒为单位，表示索引刷新
 {{{
 Query query = BuguParser.parse("introduce", "谷歌");
 BuguSearcher searcher = new BuguSearcher(Foo.class);
-searcher.setQuery(query);
-searcher.setSort(...);
-searcher.setFilter(...);
-searcher.setPageNumber(1);
-searcher.setPageSize(20);
-searcher.setMaxPage(50);
+searcher.setQuery(query).setSort().setFilter().setPageNumber(1).setPageSize(20).setMaxPage(50);
 List list = searcher.search();
 int count = searcher.getResultCount();
 searcher.close();  //务必记得关闭BuguSearcher
