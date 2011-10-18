@@ -88,7 +88,7 @@ List list = dao.query().greaterThan("level", 10).notEquals("name", "Frank").page
 }}}
 ===3.2、支持字符串形式的排序===
 {{{
-List list = dao.query().in("name", "Frank", "John").sort("{level:1, timestamp: -1}");
+List list = dao.query().in("name", "Frank", "John").sort("{level:1, timestamp: -1}").results();
 }}}
 对于排序字符串的书写规则，请[http://code.google.com/p/bugumongo/wiki/ObjectDocumentMapping#2.3、排序 参考这里]。
 ===3.3、支持Entity实体查询===
