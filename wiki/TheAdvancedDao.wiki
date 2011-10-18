@@ -1,4 +1,4 @@
-#summary AdvancedDao类，主要提供MapReduce功能
+#summary AdvancedDao类
 
 = AdvancedDao =
 AdvancedDao是BuguDao的子类，它主要提供MapReduce功能，以及一些高级统计功能。
