@@ -3,6 +3,8 @@
 =Query查询=
 在用BuguMongo做开发的时候，除了使用BuguDao中的find方法进行查询外，还有另一种选择，就是使用Query类。
 
+==1、Query==
+
 先看看Query类中有些什么方法：
 
 *生成查询条件*：
@@ -63,3 +65,32 @@ public List results()
 
 public long count()
 }}}
+
+==2、创建Query==
+通过调用BuguDao中的query()方法，就可以创建一个Query对象：
+{{{
+public class FooDao extends BuguDao{
+    public FooDao(){
+        super(Foo.class);
+    }
+    ...
+}
+
+FooDao fDao = new FooDao();
+Query q = fDao.query();
+...
+}}}
+
+==3、查询==
+===3.1、支持连缀书写形式===
+{{{
+List list = fDao.query().greaterThan("level", 10).notEquals("name", "Frank").pageNumber(1).pageSize(20).results();
+}}}
+===3.2、支持字符串排序===
+{{{
+List list = fDao.query().in("name", "Frank", "John").sort("level:1, timestamp: -1");
+}}}
+===3.3、支持Entity实体查询===
+
+
+==4、用Query类还是用find方法？==
