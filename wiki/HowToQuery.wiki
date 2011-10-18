@@ -81,7 +81,7 @@ Query q = dao.query();
 ...
 }}}
 
-==3、查询==
+==3、用Query实现查询==
 ===3.1、支持连缀书写形式===
 {{{
 List list = dao.query().greaterThan("level", 10).notEquals("name", "Frank").pageNumber(1).pageSize(20).results();
