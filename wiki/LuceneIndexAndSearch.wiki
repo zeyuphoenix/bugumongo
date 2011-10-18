@@ -1,11 +1,9 @@
 #summary Lucene索引和搜索
 
 =Lucene索引和搜索=
-在Lucene集成方面，BuguMongo提供了：
+BuguMongo集成了Lucene的功能。当往MongoDB中新增一个Document时，能自动为该Document建立Lucene索引。相应的，当MongoDB中的Document被修改、删除时，对应的Lucene索引也会修改、删除。
 
-6个注解：@Indexed、@IndexProperty、@IndexEmbed、@IndexRef、@IndexFilter、@BoostSwitch
-
-5个类：BuguIndex、BuguParser、BuguSearcher、BuguHighlighter、IndexRebuilder
+另外，BuguMongo还提供了对Lucene搜索的支持。根据Lucene索引进行搜索的时候，搜索结果能自动转换成对应的Entity对象。
 
 ==步骤一：在Entity上加注解==
 代码例子如下：
@@ -216,9 +214,13 @@ BuguParser提供了一系列静态方法，用于创建Query。
 
 *字符串查询：*
 {{{
-public static Query parse(String field, String value)
+public static Query parse(String field, String value)  //默认使用Operator.OR
 
-public static Query parse(String[] fields, String value)
+public static Query parse(String field, String value, Operator op)
+
+public static Query parse(String[] fields, String value)  //默认使用Operator.OR
+
+public static Query parse(String[] fields, String value, Operator op)
 
 public static Query parse(String[] fields, Occur[] occurs, String value)
 }}}
