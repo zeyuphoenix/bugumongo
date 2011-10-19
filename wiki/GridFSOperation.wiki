@@ -196,11 +196,10 @@ public class CreateNewsAction extends ActionSupport{
 @RequestMapping(value="/upload")  
 public class FileUploadController {
     @RequestMapping(value="/fileUpload", method=RequestMethod.POST)  
-    public String handleFormUpload(@RequestParam("file")  
-    MultipartFile file) throws IOException {
+    public String handleFormUpload(@RequestParam("file") MultipartFile file) throws IOException{
         InputStream is = file.getInputStream();
         String originalName = file.getOriginalFilename();
-        Uploader uploader = new Uploader(is, fileFileName, true);
+        Uploader uploader = new Uploader(is, originalName, true);
         uploader.save();
         ...
     }
@@ -210,7 +209,7 @@ public class FileUploadController {
 如果需要把文件上传到指定的文件夹中，Uploader可以这样定义：
 {{{
 String folderName = "文件夹A";
-Uploader uploader = new Uploader(file, originalName);
+Uploader uploader = new Uploader(file, originalName);  //不重命名
 uploader.setFolder(folderName);
 uploader.save();
 }}}
