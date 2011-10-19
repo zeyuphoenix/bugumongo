@@ -1,5 +1,23 @@
 #summary 版本更新日志
 
+= 0.8 =
+2011-10-19发布。
+
+ * BuguConnection增加了对副本集(Replica Set)以及MongoOptions的支持。
+ * BuguConnection和BuguSearcher等需要设置多个参数的地方，支持连缀书写形式。
+ * BuguDao新增批量删除的方法。
+ * 新增一个AdvancedDao类，将BuguDao中较少用到的高级功能(主要是MapReduce)移入其中。
+ * 在AdvancedDao中增加了对group聚合函数的支持。
+ * 新增一个Query类，用于更方便的实现查询。
+ * 修改了@EnsureIndex注解中属性的规则，使其更容易使用。
+ * @EnsureIndex增加了对地理空间数据索引的支持。
+ * 增强了BuguParser的功能，解析字符串的时候，能设置Operator.AND或Operator.OR。
+ * Uploader新增2个构造函数，用于保存byte[]和InputStream类型的数据。
+ * ImageUploader新增getSize()方法，获取图片的宽度和高度。
+ * 修正了图片压缩、加水印时可能出错的bug。
+ * MongoDB Java Driver版本更新到2.6.5。
+ * Lucene版本更新到3.4.0。
+
 = 0.6 =
 2011-09-15发布。
 
