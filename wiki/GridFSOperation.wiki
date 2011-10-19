@@ -261,7 +261,7 @@ watermark.setText("www.mongodb.com");
 uploader.save(watermark);
 }}}
 
-Watermark类还有许多其它参数，它们的定义和初始值如下：
+Watermark类还有许多其它参数，它们的定义和初始值如下，这些属性值都可以通过watermark.setXXX()来进行设置：
 {{{
 public final static int CENTER = 1;
 public final static int BOTTOM_RIGHT = 2;
