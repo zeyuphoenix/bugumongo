@@ -190,7 +190,7 @@ public class CreateNewsAction extends ActionSupport{
 }}}
 上面的代码中，因为rename=true，因此，uploader.getFilename()，返回的是，文件经过保存以后，系统自动生成的文件名（含扩展名），格式如：2011070799999999999999.doc，其中，20110707为日期，9999999999999为当前时间的毫秒数。news实体中attachment值，就是这个字符串。
 
-如果是使用SpringMVC，那么代码可以这样写：
+如果是使用SpringMVC，那么Controller的代码示例如下：
 {{{
 @Controller  
 @RequestMapping(value="/upload")  
