@@ -196,7 +196,7 @@ public class CreateNewsAction extends ActionSupport{
 @RequestMapping(value="/upload")  
 public class FileUploadController {
     @RequestMapping(value="/fileUpload", method=RequestMethod.POST)  
-    public String handleFormUpload(@RequestParam("file") MultipartFile file) throws IOException{
+    public String handleUpload(@RequestParam("file") MultipartFile file) throws IOException{
         InputStream is = file.getInputStream();
         String originalName = file.getOriginalFilename();
         Uploader uploader = new Uploader(is, originalName, true);
@@ -225,7 +225,9 @@ uploader.save();
 图片上传使用类ImageUploader，它继承自Uploader，除了具备上面讲的Uploader的功能以外，ImageUploader还能实现图片加水印、图片压缩。
 
 ===3.1、图片加水印===
-图片上传的时候，可以自动加上水印，代码如下：
+图片上传的时候，可以自动给图片加上水印。可以是图片水印，也可以是文字水印。
+
+上传图片的时候，给其加上图片水印的代码如下：
 {{{
 import com.bugull.mongo.fs.Watermark;
 import com.bugull.mongo.fs.ImageUploader;
@@ -239,9 +241,8 @@ public class CreateProductAction extends ActionSupport{
 
     public String execute(){
         Watermark watermark = new Watermark();
-        watermark.setFilePath("/root/website/images/watermark.png");
-        watermark.setAlign(Watermark.CENTER);
-        ImageUploader uploader = new ImageUploader(img, imgFileName);
+        watermark.setImagePath("/root/website/images/watermark.png");
+        ImageUploader uploader = new ImageUploader(img, imgFileName, true);
         uploader.save(watermark);
         product.setPicture(uploader.getFilename());
         productDao.save(product);
@@ -250,13 +251,33 @@ public class CreateProductAction extends ActionSupport{
     ...
 }
 }}}
-watermark.setFilePath(filePath)设置水印文件的路径，该路径是操作系统的绝对路径。
+watermark.setImagePath(imagePath)设置水印文件的路径，该路径是操作系统的绝对路径。
 
-watermark.setAlign(align)设置水印图片的对其位置，Watermark.CENTER表示水印位于图片正中央，Watermark.BOTTOM_RIGHT表示水印位于图片的右下角。
+还可以给图片加上文字水印，代码示例如下：
+{{{
+ImageUploader uploader = new ImageUploader(file, fileFileName, true);
+Watermark watermark = new Watermark();
+watermark.setText("www.mongodb.com");
+uploader.save(watermark);
+}}}
 
-如果是位于右下角，则还可以用watermark.setBottom(int bottom)，watermark.setRight(int right)来设置水印图片和原图片之间的下边距、右边距。
-
-为保证水印效果，水印图片最好是.png格式的，背景是透明的，图片内容是半透明的。
+Watermark类还有许多其它参数，它们的定义和初始值如下：
+{{{
+public final static int CENTER = 1;
+public final static int BOTTOM_RIGHT = 2;
+    
+private String imagePath;
+private String text;
+    
+private String fontName = "宋体";
+private int fontStyle = Font.PLAIN;
+private Color color = Color.GRAY;
+private int fontSize = 30;
+private float alpha = 0.5f;
+private int align = CENTER;
+private int right = 20;
+private int bottom = 20;
+}}}
 
 ===3.2、图片压缩===
 图片上传的时候，经常还需要将该图片压缩、保存成若干份，代码例子如下：
@@ -271,7 +292,7 @@ public class CreateProductAction extends ActionSupport{
     private ProductDao productDao;
 
     public String execute(){
-        ImageUploader uploader = new ImageUploader(img, imgFileName);
+        ImageUploader uploader = new ImageUploader(img, imgFileName, true);
         uploader.save();
         uploader.compress("medium", 300, 300);
         uploader.compress("small", 100, 100);
