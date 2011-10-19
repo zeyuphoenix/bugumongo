@@ -305,6 +305,16 @@ public class CreateProductAction extends ActionSupport{
 }}}
 public void compress(String dimension, int maxWidth, int maxHeight) 方法中，dimension是指图片尺寸的类型，用来区分同一图片的不同尺寸的拷贝。经过compress方法压缩保存后的图片文件，和原图有相同的filename，例如，同样是2011070799999999999999.jpg。
 
+===3.3、获取图片尺寸===
+通过ImageUploader上传的图片，经过保存后，还可以取得图片的宽度和高度，代码示例如下：
+{{{
+ImageUploader uploader = new ImageUploader(file, fileFileName, true);
+uploader.save();
+int[] size = uploader.getSize();
+int width = size[0];   //宽度
+int height = size[1];  //高度
+}}}
+
 ==4、辅助类：文件获取类UploadedFileServlet==
 如果你是在Web项目中使用BuguMongo，那么，保存到GridFS中的文件，可以通过UploadedFileServlet来获取，在web.xml中配置如下：
 {{{
