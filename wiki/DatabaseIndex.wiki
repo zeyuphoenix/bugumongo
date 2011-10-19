@@ -42,3 +42,8 @@ public class News implements BuguEntity{
 {{{
 @EnsureIndex(index="{author:1, type:1}, {level:-1}")  //2个索引，第1个为组合索引
 }}}
+
+如果是地理空间索引，也是类似的：
+{{{
+@EnsureIndex(index="{gps:2d}")
+}}}
