@@ -300,12 +300,12 @@ list = fDao.findAll("{'level': -1}");
 list = fDao.findAll("{'level':1, 'timestamp':-1}");
 }}}
 
-也可以使用简化的JSON格式：
+也可以省略单引号，使用简化的JSON格式：
 {{{
 list1 = fDao.findAll("{level:1}");
 list2 = fDao.findAll("{level:1, timestamp:-1}");
 }}}
-或者简化成下面这样，也是支持的：
+甚至连花括号也省略，简化成下面这样，也是支持的：
 {{{
 list1 = fDao.findAll("level:1");
 list2 = fDao.findAll("level:1, timestamp:-1");
@@ -314,7 +314,7 @@ list2 = fDao.findAll("level:1, timestamp:-1");
 *注*：@RefList注解中的sort属性，也使用相同的书写规则。
 
 ===2.4、取得DBCollection===
-BuguDao封装了大部分常用的DAO方法，你几乎不需要直接使用MongoDB Java Driver的DBCollection类。当然，在一些特殊情况下，你可能需要使用DBCollection，来执行BuguDao无法实现的操作，比如对collection重命名。这时，可以通过BuguDao的getCollection()方法，来获得其相对应的DBCollection实例：
+BuguDao封装了大部分常用的DAO方法，几乎不需要直接使用MongoDB Java Driver的DBCollection类。当然，在一些特殊情况下，你可能需要使用DBCollection，来执行BuguDao无法实现的操作，比如对collection重命名。这时，可以通过BuguDao的getCollection()方法，来获得其相对应的DBCollection实例：
 {{{
 FooDao dao = new FooDao();
 DBCollection col = dao.getCollection();
