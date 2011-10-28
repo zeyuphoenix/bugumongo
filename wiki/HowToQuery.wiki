@@ -40,7 +40,9 @@ public Query regex(String key, String regex)
 public Query or(Query... qs)
 
 public Query and(Query... qs)
-
+}}}
+*地理空间数据查询*：
+{{{
 public Query near(String key, double x, double y)
 
 public Query near(String key, double x, double y, double maxDistance)
