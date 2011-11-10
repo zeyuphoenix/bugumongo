@@ -34,6 +34,7 @@ MongoOptions options = ...
 BuguConnection conn = BuguConnection.getInstance();
 conn.setHost("192.168.0.100").setPort(27017).setDatabase("mydb").setOptions(options).connect();
 }}}
+对于各个连接参数和它们的默认值，可以查看[https://github.com/mongodb/mongo-java-driver/blob/master/src/main/com/mongodb/MongoOptions.java MongoOptions的源代码]
 
 ==获取DB==
 用BuguMongo来进行开发，几乎不需要直接使用MongoDB Java Driver中的DB类。当然，在一些特殊的情况下，你可能会需要使用它，这时，可以通过BuguConnection的getDB()方法，来获取DB实例：
