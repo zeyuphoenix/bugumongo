@@ -34,7 +34,15 @@ MongoOptions options = ...
 BuguConnection conn = BuguConnection.getInstance();
 conn.setHost("192.168.0.100").setPort(27017).setDatabase("mydb").setOptions(options).connect();
 }}}
-对于各个连接参数和它们的默认值，可以查看[https://github.com/mongodb/mongo-java-driver/blob/master/src/main/com/mongodb/MongoOptions.java MongoOptions的源代码]
+对于各个连接参数和它们的默认值，可以查看[https://github.com/mongodb/mongo-java-driver/blob/master/src/main/com/mongodb/MongoOptions.java MongoOptions的源代码]。
+
+其中一个大家最为关心的参数，就是数据库连接数（连接池）。MongoDB Java Driver默认使用10个连接，在一般的应用中，这足够了。如果你要修改这个默认的连接数，可以这样写：
+{{{
+MongoOptions options = new MongoOptions();
+options.connectionsPerHost = 20;  //使用20个连接
+BuguConnection conn = BuguConnection.getInstance();
+conn.setHost("192.168.0.100").setPort(27017).setDatabase("mydb").setUsername("username").setPassword("password").setOptions(options).connect();
+}}}
 
 ==获取DB==
 用BuguMongo来进行开发，几乎不需要直接使用MongoDB Java Driver中的DB类。当然，在一些特殊的情况下，你可能会需要使用它，这时，可以通过BuguConnection的getDB()方法，来获取DB实例：
