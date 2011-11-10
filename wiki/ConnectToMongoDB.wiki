@@ -6,6 +6,11 @@
 BuguConnection conn = BuguConnection.getInstance();
 conn.connect("192.168.0.100", 27017, "mydb", "username", "password");
 }}}
+也可以这样写：
+{{{
+BuguConnection conn = BuguConnection.getInstance();
+conn.setHost("192.168.0.100").setPort(27017).setDatabase("mydb").setUsername("username").setPassword("password").connect();
+}}}
 如果不需要提供授权帐号，那么可以省略用户名和密码：
 {{{
 BuguConnection conn = BuguConnection.getInstance();
