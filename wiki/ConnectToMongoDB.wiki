@@ -56,4 +56,4 @@ DB db = conn.getDB();
 }}}
 
 ==相关FAQ==
- * [http://xbwen.iteye.com/blog/1222561 连接数据库的代码应该写在哪里]
+ * [http://xbwen.iteye.com/blog/1222561 连接数据库的代码应该写在哪里？]
