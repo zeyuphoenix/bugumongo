@@ -124,7 +124,7 @@ sort——String型，用于取出该List或Set属性时，使用的排序规则
 
 ==2、使用BuguDao进行操作==
 ===2.1、Dao构造函数===
-你需要编写自己的Dao，如FooDao，来操作Foo相关的数据，FooDao需要继承自BuguDao，并且，在FooDao的构造函数中，需要传递Foo.class，如下：
+你需要编写自己的Dao，如FooDao，来操作Foo相关的数据。FooDao需要继承自BuguDao，并且，在FooDao的构造函数中，需要传递Foo.class，如下：
 {{{
 public class FooDao extends BuguDao{
     public FooDao(){
@@ -314,11 +314,11 @@ list2 = fDao.findAll("level:1, timestamp:-1");
 *注*：@RefList注解中的sort属性，也使用相同的书写规则。
 
 ===2.4、取得DBCollection===
-BuguDao封装了大部分常用的DAO方法，几乎不需要直接使用MongoDB Java Driver的DBCollection类。当然，在一些特殊情况下，你可能需要使用DBCollection，来执行BuguDao无法实现的操作，比如对collection重命名。这时，可以通过BuguDao的getCollection()方法，来获得其相对应的DBCollection实例：
+BuguDao封装了大部分常用的DAO方法，几乎不需要直接使用MongoDB Java Driver的DBCollection类。当然，在一些特殊情况下，你可能需要使用DBCollection，来执行BuguDao无法实现的操作，比如对collection重命名。这时，可以通过BuguDao的getCollection()方法，来获得其相对应的DBCollection实例，例如：
 {{{
 FooDao dao = new FooDao();
 DBCollection col = dao.getCollection();
-col.rename("newName");
+col.rename("newName");  //对collection重命名
 }}}
 
 ==3、辅助工具：BuguMapper==
