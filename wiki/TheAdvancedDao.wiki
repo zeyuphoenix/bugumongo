@@ -1,7 +1,7 @@
 #summary AdvancedDao类
 
 = AdvancedDao =
-AdvancedDao是BuguDao的子类，它主要提供MapReduce功能，以及一些高级统计功能。
+AdvancedDao是BuguDao的子类，它主要提供MapReduce功能，以及基于MapReduce实现的一些高级统计功能。但鉴于目前MongoDB的MapReduce性能不是很理想，如果您的数据量非常庞大，请谨慎使用。
 
 AdvancedDao中的方法如下：
 
