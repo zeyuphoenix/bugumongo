@@ -16,7 +16,15 @@
 1个辅助类：BuguMapper
 
 ==1、定义Entity==
-要使得某个Java Entity能和MongoDB Document实现相互转换，该Entity需要实现BuguEntity接口，并加上注解，如下：
+===1.1 BuguEntity接口===
+要使得某个Java Entity能和MongoDB Document实现相互转换，该Entity需要实现BuguEntity接口，该接口中有2个方法，如下：
+{{{
+public void setId(String id);
+    
+public String getId();
+}}}
+===1.2 注解===
+先看一段示例代码：
 {{{
 import com.bugull.mongo.BuguEntity;
 import com.bugull.mongo.annotations.Entity;
@@ -45,7 +53,19 @@ public class Foo implements BuguEntity{
     private List<ChildFoo> children;
     @Ignore
     private double sumScore;
-    ...getter and setter...
+
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    ...other getter and setter...
+
 }
 
 public class EmbedFoo {
