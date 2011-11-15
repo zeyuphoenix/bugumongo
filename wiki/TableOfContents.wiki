@@ -1,6 +1,6 @@
 #summary 帮助文档导航
 
-==帮助文档导航==
+==帮助文档==
 
  * [ConnectToMongoDB 连接数据库]
  * [ObjectDocumentMapping 对象-文档映射]
