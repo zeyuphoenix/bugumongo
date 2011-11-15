@@ -9,5 +9,3 @@
  * [DatabaseIndex 数据库索引]
  * [LuceneIndexAndSearch Lucene索引和搜索]
  * [GridFSOperation GridFS文件操作]
- *   
- * [FAQ FAQ]
