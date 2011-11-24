@@ -3,3 +3,5 @@
 = FAQ =
 
 1、[http://xbwen.iteye.com/blog/1222561 连接数据库的代码应该写在哪里？]
+
+2、[http://xbwen.iteye.com/blog/1276742 是否可以不创建没有任何自定义方法的Dao类？]
