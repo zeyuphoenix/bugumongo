@@ -1,5 +1,24 @@
 #summary 版本更新日志
 
+= 1.0 =
+尚未发布。
+
+ * @EmbedList和@RefList增加了对数组的支持。
+ * 新增@IndexEmbedList和@IndexRefList注解，支持集合属性的Lucene索引和搜索。 
+ * 新增@IndexRefBy注解。 
+ * @EnsureIndex中的index属性改为value。
+ * @EnsureIndex注解增加了对name、unique、background等索引参数的支持。
+ * @Property、@Embed、@EmbedList等注解增加了lazy属性，用于提高查询性能。 
+ * BuguMapper类新增一个fetchLazy()方法，用于获取@Property、@Embed、@EmbedList等lazy属性。 
+ * 删除了@Ref、@RefList的lazy属性，改用cascade。
+ * @Ref、@RefList新增cascade属性。
+ * 把BuguMapper中原来的两个fetch()方法改为fetchCascade()。
+ * 鉴于BuguDao中原有的update方法难以理解和使用，全部改为set方法。
+ * 解决bug：重建Lucene索引之前没有删除原来的索引。
+ * 解决bug：MapperUtil中的hasIndexAnnotation()方法，当key中有“."的时候出错。
+ * 增加了对ReadPreference的支持。
+ * MongoDB Java Driver版本更新到2.7.2。
+
 = 0.8 =
 2011-10-19发布。
 
