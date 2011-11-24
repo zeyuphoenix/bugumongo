@@ -398,3 +398,6 @@ AdvancedDao扩展自BuguDao，提供了一些高级功能（主要是MapReduce�
  * 需要把Entity实体转换成DBRef。
 
 如果你不习惯使用DBObject来进行查询，没有关系，BuguMongo还提供了另一种选择，那就是[http://code.google.com/p/bugumongo/wiki/HowToQuery 使用Query]。
+
+==6、相关FAQ==
+ * [http://xbwen.iteye.com/blog/1276742 是否可以不创建没有任何自定义方法的Dao类？]
