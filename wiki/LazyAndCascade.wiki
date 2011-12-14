@@ -42,7 +42,7 @@ public class NewsDao extends BuguDao{
 新闻的内容，是很长的字符串。而显示新闻列表的时候，并不需要把新闻内容取出来。
 {{{
 NewsDao dao = new NewsDao();
-List<News> list = dao.query().pageNumber(1).pageSize(100).results();  //取出100条新闻
+List<News> list = dao.query().pageNumber(1).pageSize(100).results();  //取出100条新闻，用于列表显示
 }}}
 因为content上的@Property注解，把lazy设为了true，因此，并没有把content字段从数据库中取出来，list里面每个News的content，值为null。
 
@@ -56,17 +56,52 @@ BuguMapper.fetchLazy(list);  //现在，lazy=true的字段也被取出来了
 fetchLazy()方法虽然用起来很方便，但它是以牺牲性能为代价的，因此，除非特殊情况，否则不要使用它。
 
 = cascade属性 =
-对于@Ref、@RefList注解的属性，默认lazy=true，只取出其值的id，而不取出其它属性值。当你要用到其它属性值的时候，可以使用BuguMapper的fetch方法，将@Ref、@RefList的属性值全部取出。例子如下：
+@Ref、@RefList都有cascade属性，其缺省值都是空字符串""，表示不做任何关联操作。
+
+通过设置cascade属性，可以关联CRUD操作，给编写程序带来很大的方便。
+
+例：
 {{{
-...
-Foo foo = fooDao.findOne(id);
-BuguMapper.fetch(foo, "children");    //把foo的children属性取出来
-...
-List list = fooDao.findAll();
-BuguMapper.fetch(list, "father");
+@Entity
+public class Foo implements BuguEntity{
+    @Id
+    private String id;
+    private String name;
+    @Ref
+    private Father father;
+
+    ...getter and setter...
+
+}
+
+@Entity
+public class Father implements BuguEntity{
+    @Id
+    private String id;
+    private int level;
+
+    ...getter and setter...
+}
 }}}
-fetch()方法还支持级联取出属性，可以一级一级往下取，例如：
+这里，没有设置任何关联操作。那么：
 {{{
-BuguMapper.fetch(list, "father.father");
+FooDao fooDao = ...
+
+Father father = new Father();
+father.setLevel(10);
+
+Foo foo = new Foo();
+foo.setName("Frank");
+foo.setFather(father);
+fooDao.save(foo);  //出错！
 }}}
-当用fetch()方法取出@RefList注解标注的属性时，会根据注解上的sort属性进行排序。
+因为Foo中的father属性，没有关联
+
+=== fetchCascade() ===
+如果没有设置关联读取，即，cascade值中不包含“R”字符，那么，对@Ref、@RefList注解的实体，只有id值，其它值均为null。
+
+fetchCascade()方法还支持多级关联，可以一级一级往下取，例如：
+{{{
+BuguMapper.fetchCascade(list, "father.father");
+}}}
+当用fetchCascade()方法取出@RefList注解标注的属性时，会根据注解上的sort属性进行排序。
