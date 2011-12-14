@@ -14,6 +14,8 @@ BuguMongo集成了Lucene的功能。当往MongoDB中新增一个Document时，�
 ==步骤一：在Entity上加注解==
 代码例子如下：
 {{{
+package com.bugull.mongo.test;
+
 import com.bugull.mongo.BuguEntity;
 import com.bugull.mongo.annotations.Entity;
 import com.bugull.mongo.annotations.Embed;
@@ -61,7 +63,7 @@ public class EmbedFoo {
 public class FatherFoo implements BuguEntity{
     @Id
     private String id;
-    @IndexProperty(analyze=true)
+    @IndexRefBy(value=Foo.class, analyze=true)
     private String name;
     ...getter and setter...
 }
@@ -70,6 +72,7 @@ public class FatherFoo implements BuguEntity{
 
 ===@Indexed===
 表示需要对该Entity建索引。该Entity上必须要有@Entity和@Id注解，@Indexed才能起作用。
+
 ===@IndexProperty===
 表示需要对该属性建立索引。
 
@@ -83,14 +86,23 @@ store——boolean型，表示是否需要存储，缺省值为false
 
 boost——float型，表示该Field的权重，缺省值为1.0
 
-join——String型。@IndexProperty还支持上述基本数据类型组成的数组、List、Set等。这些集合中的元素，不管是什么数据类型，都会连结成一个字符串，然后加以索引。可以用join参数来设置连接字符。默认是用分号";"进行字符串连结。
+@IndexProperty还支持上述基本数据类型组成的数组、List、Set等。这些集合中的元素，不管是什么数据类型，都会连结成一个字符串，然后加以索引。
 
 ===@IndexEmbed===
-表示需要嵌入对该Embed属性的索引。
-===@IndexRef===
-表示需要嵌入对该Ref属性的索引。
+表示需要嵌入对该Embed对象的索引。索引域的名称形如“embed.x”。
 
-*提示：*BuguMongo不支持@EmbedList、@RefList类型属性的索引。
+===@IndexEmbedList===
+表示需要嵌入对该EmbedList对象的索引。索引域的名称形如“embed.x”。
+
+===@IndexRef===
+表示需要嵌入对该Ref对象的索引。结合@IndexRefBy使用。索引域的名称形如“father.name”。
+
+===@IndexRefList===
+表示需要嵌入对该RefList对象的索引。结合@IndexRefBy使用。索引域的名称形如“father.name”。
+
+===@IndexRefBy===
+表示需要嵌入到其它对象的Ref或RefList域的索引中。
+
 ===@IndexFilter===
 表示只有满足该条件的实体才会被索引，否则不创建索引。
 
