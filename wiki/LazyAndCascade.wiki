@@ -71,37 +71,107 @@ public class Foo implements BuguEntity{
     private Father father;
 
     ...getter and setter...
-
 }
 
 @Entity
 public class Father implements BuguEntity{
     @Id
     private String id;
-    private int level;
+    private String name;
 
     ...getter and setter...
 }
 }}}
-这里，没有设置任何关联操作。那么：
+这里，没有设置任何关联操作。因此，向MongoDB中插入foo的时候，无法关联插入father。只能分别创建，如下：
 {{{
 FooDao fooDao = ...
+FatherDao fatherDao = ...
 
 Father father = new Father();
-father.setLevel(10);
+father.setName("John");
+fatherDao.insert(father);  //先保存father
 
 Foo foo = new Foo();
 foo.setName("Frank");
 foo.setFather(father);
-fooDao.save(foo);  //出错！
+fooDao.insert(foo);  //再保存foo
 }}}
-因为Foo中的father属性，没有关联
+如果设置成关联创建，如下：
+{{{
+@Ref(cascade="C")
+private Father father;
+}}}
+那么，创建foo的同时，会关联创建father。
+{{{
+FooDao fooDao = ...
+
+Father father = new Father();
+father.setName("John");
+
+Foo foo = new Foo();
+foo.setName("Frank");
+foo.setFather(father);
+fooDao.insert(foo);  //会关联保存father
+}}}
+
+=== cascade的含义 ===
+
+结合上面的例子，cascade的CRUD含义如下：
+
+关联创建——cascade的值中包含字符“C”。当向MongoDB中插入foo的时候，如果father没有还没有被保存到数据库中，则会关联创建。
+
+关联读取——cascade的值中包含支付“R”。当从数据库中取出foo的时候，会关联取出father对象。
+
+关联修改——cascade的值中包含字符“U”。当保存foo的时候，如果father发生了变化，则会关联保存该变化。
+
+关联删除——cascade的值中包含字符“D”。当删除foo的时候，同时会删除father对象。
+
+对于用@RefList标注的属性，也是和@Ref一样的含义。
+
+当关联取出@RefList注解标注的属性时，会根据注解上的sort属性进行排序。
 
 === fetchCascade() ===
 如果没有设置关联读取，即，cascade值中不包含“R”字符，那么，对@Ref、@RefList注解的实体，只有id值，其它值均为null。
+
+以上面的代码为例，如果father属性没有设置关联读取，
+{{{
+@Ref
+private Father father;
+}}}
+那么，
+{{{
+Foo foo = (Foo)fooDao.query().is("id", "4eccbea26c02f26351e56bcc").result();
+Fahter father = foo.getFather();
+String id = father.getId();  //有值
+String name = father.getName();  //值为null
+}}}
+如果改为：
+{{{
+@Ref(cascade="R")
+private Father father;
+}}}
+则father.getName()不为null。
+
+对于没有设置关联读取的@Ref和@RefList属性，如果在某些情况下却又需要用到该属性，那么，可以使用BuguMapper类的fetchCascade()方法，把该属性关联取出。如：
+{{{
+Foo foo = (Foo)fooDao.query().is("id", "4eccbea26c02f26351e56bcc").result();
+BuguMapper.fetchCascade(foo, "father");  //关联取出father属性
+Fahter father = foo.getFather();
+String id = father.getId();  //有值
+String name = father.getName();  //有值
+
+List list = fooDao.query().pageNumber(1).pageSize(50).results();
+BuguMapper.fetch(list, "father");  //关联取出list中每个foo的father属性。
+}}}
+
+当用fetchCascade()方法取出@RefList注解标注的属性时，会根据注解上的sort属性进行排序。
+
+fetchCascade()方法可以一次关联取出多个@Ref、@RefList属性，如下：
+{{{
+BuguMapper.fetchCascade(list, "father", "children");
+}}}
 
 fetchCascade()方法还支持多级关联，可以一级一级往下取，例如：
 {{{
 BuguMapper.fetchCascade(list, "father.father");
 }}}
-当用fetchCascade()方法取出@RefList注解标注的属性时，会根据注解上的sort属性进行排序。
