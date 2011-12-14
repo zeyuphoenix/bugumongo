@@ -161,7 +161,7 @@ String id = father.getId();  //有值
 String name = father.getName();  //有值
 
 List list = fooDao.query().pageNumber(1).pageSize(50).results();
-BuguMapper.fetch(list, "father");  //关联取出list中每个foo的father属性。
+BuguMapper.fetchCascade(list, "father");  //关联取出list中每个foo的father属性。
 }}}
 
 当用fetchCascade()方法取出@RefList注解标注的属性时，会根据注解上的sort属性进行排序。
