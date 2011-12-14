@@ -133,7 +133,7 @@ List list = dao.query().is("embed.x", 3.14F).results();  //查询出全部embed.
 ===@EmbedList===
 表示该属性是一组嵌入的对象。
 
-@EmbedList注解支持java.util.List、java.util.Set、java.util.Map，但都必须使用泛型。当使用Map的时候，嵌入对象只能作为Map的value，而不能作为key。
+@EmbedList注解支持数组、java.util.List、java.util.Set、java.util.Map，但都必须使用泛型。当使用Map的时候，嵌入对象只能作为Map的value，而不能作为key。
 
 跟@Property一样，@EmbedList也有2个属性：name、lazy，含义也是一样的。
 
@@ -161,7 +161,7 @@ D——Delete，删除
 ===@RefList===
 表示对另一个对象的引用的集合。
 
-@RefList注解支持java.util.List、java.util.Set、java.util.Map，但都必须使用泛型。当使用Map的时候，引用对象只能作为Map的value，而不能作为key。
+@RefList注解支持数组、java.util.List、java.util.Set、java.util.Map，但都必须使用泛型。当使用Map的时候，引用对象只能作为Map的value，而不能作为key。
 
 @RefList有3个属性：
 
