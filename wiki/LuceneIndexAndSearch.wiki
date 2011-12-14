@@ -180,7 +180,7 @@ BuguMongo使用当前Lucene的默认版本号。用getVersion()可以获得版�
 
 当需要对一个Entity创建索引，或者修改、删除索引的时候，BuguMongo会从线程池中选择一个线程来执行该任务。setThreadPoolSize(int poolSize)，就是设置线程池的大小。该值可以不设置，默认值为10。
 
-setIndexReopenPeriod(long milli)的参数以毫秒为单位，表示索引刷新的时间周期，该参数值根据应用的情况而定，如1分钟：60L*1000L。该值可以不设置，默认值为30L*1000L，即30秒。
+setIndexReopenPeriod(long milli)的参数以毫秒为单位，表示索引刷新的时间周期，该参数值根据应用的情况而定。该值可以不设置，默认值为30L*1000L，即30秒。
 
 ==步骤三：搜索==
 通过上面的设置，BuguMongo能够实现Entity和Lucene索引之间的自动同步，你只要实现搜索就行了。最基本的搜索的例子如下：
