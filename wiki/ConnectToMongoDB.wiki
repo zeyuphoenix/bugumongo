@@ -44,16 +44,5 @@ BuguConnection conn = BuguConnection.getInstance();
 conn.setHost("192.168.0.100").setPort(27017).setDatabase("mydb").setUsername("username").setPassword("password").setOptions(options).connect();
 }}}
 
-==获取DB==
-用BuguMongo来进行开发，几乎不需要直接使用MongoDB Java Driver中的DB类。当然，在一些特殊的情况下，你可能会需要使用它，这时，可以通过BuguConnection的getDB()方法，来获取DB实例：
-{{{
-import com.mongodb.DB;
-...
-BuguConnection conn = BuguConnection.getInstance();
-conn.connect("192.168.0.100", 27017, "mydb", "username", "password");
-...
-DB db = conn.getDB();
-}}}
-
 ==相关FAQ==
  * [http://xbwen.iteye.com/blog/1222561 连接数据库的代码应该写在哪里？]
