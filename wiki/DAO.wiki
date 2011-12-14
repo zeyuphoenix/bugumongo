@@ -92,6 +92,8 @@ public void pull(BuguEntity obj, String key, Object value)
 
 public void pull(String id, String key, Object value)
 }}}
+对于数组、List、Set，在MongoDB中都被保存成数组，可以用push、pull方法对其进行操作。
+
 == 查询 ==
 
 查询需要用到Query类。先看看Query类中有些什么方法：
@@ -194,7 +196,7 @@ Foo foo = (Foo)dao.query().is("father", father).result();  //用fahter对象作�
 {{{
 List list = dao.query().in("name", "Frank", "John").sort("{level:1, timestamp: -1}").results();
 }}}
-对于排序字符串的书写规则，请[http://code.google.com/p/bugumongo/wiki/ObjectDocumentMapping#2.3、排序 参考这里]。
+对于排序字符串的书写规则，请[http://code.google.com/p/bugumongo/wiki/ObjectDocumentMapping#排序字符串 参考这里]。
 
 === 支持多个条件的and、or布尔组合查询 ===
 {{{
