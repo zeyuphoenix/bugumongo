@@ -1,4 +1,4 @@
-#summary 对象-文档映射，DAO操作
+#summary 对象-文档映射
 
 =对象-文档映射=
 在对象(Object，也称实体Entity)、文档(Document)之间实现自动转换，是BuguMongo的最核心功能，这能让你直接用面向对象的概念来操作MongoDB数据库，而不用去关心底层的数据库细节。
@@ -114,10 +114,19 @@ name——String型，用于指定映射到MongoDB collection中某个field。�
 
 lazy——Boolean型，含义是：取出该实体的列表时，是否取出该field值。如果为true，标识不取出。默认值为false。更仔细的讲解，请查看[http://code.google.com/p/bugumongo/wiki/LazyAndCascade lazy和cascade属性]
 
+===@Ignore===
+表示该属性不需要被映射。当保存实体时，该属性不会保存至MongoDB；同样，该属性也不会从MongoDB中取出。
+
 ===@Embed===
-表示该属性是一个嵌入的对象。嵌入的对象（如EmbedFoo）只是一个普通的POJO，不需要@Entity注解，不需要实现BuguEntity接口，也不需要有@Id。
+表示该属性是一个嵌入的对象。嵌入对象（如EmbedFoo）只是一个普通的POJO，不需要@Entity注解，不需要实现BuguEntity接口，也不需要有@Id。
 
 跟@Property一样，@Embed也有2个属性：name、lazy，含义也是一样的。
+
+嵌入对象的属性，可以用点号“.”来引用，例如查询：
+{{{
+FooDao dao = ...
+List list = dao.query().is("embed.x", 3.14F).results();  //查询出全部embed.x=3.14的Foo对象
+}}}
 
 ===@EmbedList===
 表示该属性是一组嵌入的对象。
@@ -133,211 +142,52 @@ lazy——Boolean型，含义是：取出该实体的列表时，是否取出该
 
 name——含义与@Property的参数name一样。
 
-lazy——boolean型，用于指定是否关联取出该引用对象。若lazy=true，表示只取出该引用对象的id，而不取出其它属性。若lazy=false，表示同时取出该引用对象的所有属性。缺省值为true。
+cascade——String型，用于指定关联操作。其值可以是C、R、U、D四个字符中的任意一个或多个字符组成。如：cascade="CRUD", cascade="CD", cascade="CR"等等。
+
+C、R、U、D四个字符分别代表的含义如下：
+
+C——Create，创建
+
+R——Retrieve，检索、读取
+
+U——Update，修改、更新
+
+D——Delete，删除
+
+对cascade属性的详细讲解，请查看[http://code.google.com/p/bugumongo/wiki/LazyAndCascade lazy和cascade属性]
+
 ===@RefList===
 表示对另一个对象的引用的集合。
 
-@RefList有3个参数：
-
-name——含义与@Property的参数name一样。
-
-lazy——boolean型，用于指定是否关联取出该引用对象。若lazy=true，表示只取出该引用对象的id，而不取出其它属性。若lazy=false，表示同时取出该引用对象的所有属性。缺省值为true。
-
-sort——String型，用于取出该List或Set属性时，使用的排序规则，其形式是："{'level':1}"，或"{'level':1, 'timestamp':-1}"这样的多个排序规则。如果不排序，则不用设置sort值。
-
-当lazy=false，或者使用BuguMapper.fetch()取出@RefList注解的属性时，都会使用其sort参数。
-
 @RefList注解支持java.util.List、java.util.Set、java.util.Map，但都必须使用泛型。当使用Map的时候，引用对象只能作为Map的value，而不能作为key。
-===@Ignore===
-表示该属性不需要被映射。当保存实体时，该属性不会保存至MongoDB；同样，该属性也不会从MongoDB中取出。
 
-==2、使用BuguDao进行操作==
-===2.1、Dao构造函数===
-你需要编写自己的Dao，如FooDao，来操作Foo相关的数据。FooDao需要继承自BuguDao，并且，在FooDao的构造函数中，需要传递Foo.class，如下：
-{{{
-public class FooDao extends BuguDao{
-    public FooDao(){
-        super(Foo.class);
-    }
-}
-}}}
+@RefList有3个属性：
 
-===2.2、BuguDao中的方法===
-BuguDao的使用非常灵活方便，它提供了大量的常用的方法，用于操作MongoDB的Collection，包括：
+name——含义与@Property的属性name一样。
 
-*插入：*
-{{{
-public void insert(BuguEntity obj)
+cascade——含义与@Ref的属性cascade一样。
 
-public void insert(List<BuguEntity> list)  //批量插入
-}}}
-*保存：*
-{{{
-public void save(BuguEntity obj)  //如果obj中没有ID值，则为插入，若有ID值，则为修改。
-}}}
-*删除：*
-{{{
-public void drop()
+sort——String型，用于取出该List或Set属性时，使用的排序规则，其形式是："{'level':1}"，或"{'level':1, 'timestamp':-1}"这样的排序字符串。如果不排序，则不用设置sort值。
 
-public void remove(BuguEntity obj)
-
-public void remove(String id)
-
-public void remove(String... ids)  //批量删除
-
-public void remove(String key, Object value)
-
-public void remove(DBObject query)
-}}}
-*修改：*
-{{{
-public void update(BuguEntity obj, DBObject dbo)
-
-public void update(String id, DBObject dbo)
-
-public void update(DBObject query, DBObject dbo)
-
-public void set(BuguEntity obj, String key, Object value)
-
-public void set(String id, String key, Object value)
-
-public void inc(BuguEntity obj, String key, Object value)
-
-public void inc(String id, String key, Object value)
-
-public void push(BuguEntity obj, String key, Object value)
-
-public void push(String id, String key, Object value)
-
-public void pull(BuguEntity obj, String key, Object value)
-
-public void pull(String id, String key, Object value)
-}}}
-*判断是否存在：*
-{{{
-public boolean exists(String key, Object value)
-
-public boolean exists(DBObject query)
-
-public boolean exists(BuguEntity obj, String key, Object value)
-}}}
-*查找一个：*
-{{{
-public Object findOne(String id)
-
-public Object findOne(String key, Object value)
-
-public Object findOne(DBObject query)
-}}}
-*查找全部：*
-{{{
-public List findAll()
-
-public List findAll(String orderBy)
-
-public List findAll(DBObject orderBy)
-
-public List findAll(int pageNum, int pageSize)
-
-public List findAll(String orderBy, int pageNum, int pageSize)
-
-public List findAll(DBObject orderBy, int pageNum, int pageSize)
-}}}
-*按条件查找：*
-{{{
-public List find(String key, Object value)
-
-public List find(DBObject query)
-
-public List find(String key, Object value, String orderBy)
-
-public List find(DBObject query, String orderBy)
-
-public List find(DBObject query, DBObject orderBy)
-
-public List find(String key, Object value, int pageNum, int pageSize)
-
-public List find(DBObject query, int pageNum, int pageSize)
-
-public List find(String key, Object value, String orderBy, int pageNum, int pageSize)
-
-public List find(DBObject query, String orderBy, int pageNum, int pageSize)
-
-public List find(DBObject query, DBObject orderBy, int pageNum, int pageSize)
-}}}
-*统计：*
-{{{
-public long count()
-
-public long count(String key, Object value)
-
-public long count(DBObject query)
-
-public List distinct(String key)
-
-public List distinct(String key, DBObject query)
-}}}
-
-通过继承BuguDao，可以直接使用BuguDao中的方法，也可以通过组合这些方法，实现更复杂的函数。
-
-一个Dao的例子如下：
-{{{
-public class FooDao extends BuguDao{
-    public FooDao(){
-        super(Foo.class);
-    }
-
-    public long coutByLowLevel(int level){
-        DBObject gt = new BasicDBObject("$gt", level);
-        DBObject query = new BasicDBObject("level", gt);
-        return this.count(query);
-    }
-}
-}}}
-然后可以这样调用FooDao中的方法：
-{{{
-FooDao fDao = new FooDao();
-
-int count = fDao.countByLowLevel(9);    //level值大于9的记录条数
-
-List list1 = fDao.findAll(1, 50);    //取出所有的Foo，并分页显示，显示第1页，每页50条
-
-List list2 = fDao.find("embed.x", 3.14, "{level:-1}");    //取出embed属性的x=3.14的Foo，按level值从大到小排列
-
-Foo foo = (Foo)fDao.findOne("4dcb4d1d3febc6503e4e5933");  //根据ID取出Entity
-
-foo.setName("MyNewName");
-
-fDao.save(foo);    //保存
-
-fDao.inc(foo, "level", 1);    //level值增加1
-
-fDao.set(foo, "embed.y", 100);    //把embed中y的值设为100
-
-fDao.remove(foo);   //删除
-}}} 
-
-===2.3、排序===
-正如前面的例子中显示的那样，BuguDao中的findAll()、find()等方法，在排序方面，除了支持标准的DBObject外，还支持使用形如"{level:-1}"这样的字符串进行排序，这能为编写程序带来方便。
-
+===排序字符串===
 排序字符串可以采用标准的JSON格式，如：
 {{{
-list = fDao.findAll("{'level': -1}");
+@RefList(sort="{'level': -1}")
 }}}
 若有多个排序条件，中间用逗号（,）隔开：
 {{{
-list = fDao.findAll("{'level':1, 'timestamp':-1}");
+@RefList(sort="{'level':1, 'timestamp':-1}")
 }}}
 
 也可以省略单引号，使用简化的JSON格式：
 {{{
-list1 = fDao.findAll("{level:1}");
-list2 = fDao.findAll("{level:1, timestamp:-1}");
+@RefList(sort="{level:1}")
+
+@RefList(sort="{level:1, timestamp:-1}")
 }}}
 甚至连花括号也省略，简化成下面这样，也是支持的：
 {{{
-list1 = fDao.findAll("level:1");
-list2 = fDao.findAll("level:1, timestamp:-1");
-}}}
+@RefList(sort="level:1")
 
-*注*：@RefList注解中的sort属性，也使用相同的书写规则。
+@RefList(sort="level:1, timestamp:-1")
+}}}
