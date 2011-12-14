@@ -275,3 +275,4 @@ double d = dao.max("embed.x");
 
 == 相关FAQ ==
  * [http://xbwen.iteye.com/blog/1276742 是否可以不创建没有任何自定义方法的Dao类？]
+ * [http://xbwen.iteye.com/blog/1310630 如何获取collection并对其重命名？]
