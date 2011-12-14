@@ -192,11 +192,10 @@ public class CreateNewsAction extends ActionSupport{
 
 如果是使用SpringMVC，那么Controller的代码示例如下：
 {{{
-@Controller  
-@RequestMapping(value="/upload")  
+@Controller    
 public class FileUploadController {
 
-    @RequestMapping(value="/fileUpload", method=RequestMethod.POST)  
+    @RequestMapping(value="/upload", method=RequestMethod.POST)  
     public String handleUpload(@RequestParam("file") MultipartFile file) throws IOException{
         InputStream is = file.getInputStream();
         String originalName = file.getOriginalFilename();
