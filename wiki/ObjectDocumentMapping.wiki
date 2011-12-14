@@ -9,21 +9,15 @@
 
 1个接口：BuguEntity
 
-2个Dao类：BuguDao、AdvancedDao
-
-1个查询类：Query
-
-1个辅助类：BuguMapper
-
-==1、定义Entity==
-===1.1、BuguEntity接口===
+==BuguEntity接口==
 要使得某个Java Entity能和MongoDB Document实现相互转换，该Entity需要实现BuguEntity接口，该接口中有2个方法，如下：
 {{{
 public void setId(String id);
     
 public String getId();
 }}}
-===1.2、注解===
+
+==注解==
 先看一段示例代码：
 {{{
 import com.bugull.mongo.BuguEntity;
@@ -92,35 +86,50 @@ public class ChildFoo implements BuguEntity{
     ...getter and setter...
 }
 }}}
-各个注解的含义如下：
-===@Entity===
-表示需要映射到MongoDB中的一个实体。该注解有3个参数：
 
-name——String型，表示其在MongoDB中的collection的名称。name可以省略，默认使用类名的全小写。
+各个注解的含义如下：
+
+===@Entity===
+表示需要映射到MongoDB中的一个实体。该注解有3个属性：
+
+name——String型，表示其在MongoDB中的collection的名称。name属性可以省略，默认使用类名的全小写。
 
 capped——boolean型，表示该Entity类对应的是Capped Collection，缺省值为false。
 
 capSize——long型，设置Capped Collection的大小，缺省值为10M（10L*1024L*1024L）。
 
 *提示：*使用@Entity注解的类，必须实现BuguEntity接口。
+
 ===@Id===
 映射到MongoDB中的"_id"，必须为String类型。
+
+用@Id注解的属性，在MongoDB数据库中，被保存成为一个ObjectId对象，形式如："_id" : ObjectId("4eb8beeaeaad0a390144f084")
+
 ===@Property===
 该注解可以省略。它用来映射基本数据类型，包括：String、int、long、short、float、double、boolean、char、Date、Timestamp等，以及这些基本数据类型组成的数组、List、Set、Map。
 
-@Property只有一个参数：
+@Property有2个属性：
 
-name——String型，用于指定映射到MongoDB collection中某个field。参数name可以省略，表示采用与Entity的Field相同的名称。
+name——String型，用于指定映射到MongoDB collection中某个field。属性name可以省略，表示采用与Entity的Field相同的名称。
+
+lazy——Boolean型，含义是：取出该实体的列表时，是否取出该field值。如果为true，标识不取出。默认值为false。更仔细的讲解，请查看[http://code.google.com/p/bugumongo/wiki/LazyAndCascade lazy和cascade属性]
+
 ===@Embed===
-表示该属性是一个嵌入的对象。其参数name的含义与@Property中的相同。
+表示该属性是一个嵌入的对象。嵌入的对象（如EmbedFoo）只是一个普通的POJO，不需要@Entity注解，不需要实现BuguEntity接口，也不需要有@Id。
+
+跟@Property一样，@Embed也有2个属性：name、lazy，含义也是一样的。
+
 ===@EmbedList===
-表示该属性是一组嵌入的对象。其参数name的含义与@Property中的相同。
+表示该属性是一组嵌入的对象。
 
 @EmbedList注解支持java.util.List、java.util.Set、java.util.Map，但都必须使用泛型。当使用Map的时候，嵌入对象只能作为Map的value，而不能作为key。
+
+跟@Property一样，@EmbedList也有2个属性：name、lazy，含义也是一样的。
+
 ===@Ref===
 表示对另一个对象的引用，在MongoDB中保存的是形如"father" : {"$ref" : "father", "$id" : ObjectId("4dcb4d1d3febc6503e4e5933")}这样的一个DBRef。
 
-@Ref有2个参数：
+@Ref有2个属性：
 
 name——含义与@Property的参数name一样。
 
