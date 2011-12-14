@@ -22,6 +22,15 @@ public void insert(List<BuguEntity> list)  //批量插入
 
 public void save(BuguEntity obj)  //如果obj中没有ID值，则为插入，若有ID值，则为修改。
 }}}
+例：
+{{{
+Foo foo = new Foo();
+foo.setName("Frank");
+foo.setLevel(10);
+
+FooDao dao = new FooDao();
+dao.save(foo);
+}}}
 
 == 修改 ==
 {{{
@@ -42,6 +51,20 @@ public void inc(BuguEntity obj, String key, Object value)
 public void inc(String id, String key, Object value)
 
 public void inc(Query query, String key, Object value)
+}}}
+例：
+{{{
+Foo foo = ...
+FooDao dao = new FooDao();
+dao.set(foo, "level", 9);  //把foo的level值修改为9
+
+//把foo的name改为“John”，level值改为20
+Map newValues = new HashMap();
+newValues.put("name", "John");
+newValues.put("level", 20);
+dao.set(foo, newValues);
+
+dao.inc(foo, "level", 100);  //把foo的level值增加100
 }}}
 
 == 删除 ==
