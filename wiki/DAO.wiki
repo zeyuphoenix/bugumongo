@@ -13,12 +13,62 @@ public class FooDao extends BuguDao{
 }
 }}}
 
-== 创建 ==
+== 插入 ==
+BuguDao中有如下方法可用于插入数据：
+{{{
+public void insert(BuguEntity obj)
+
+public void insert(List<BuguEntity> list)  //批量插入
+
+public void save(BuguEntity obj)  //如果obj中没有ID值，则为插入，若有ID值，则为修改。
+}}}
 
 == 修改 ==
+{{{
+public void save(BuguEntity obj)  //如果obj中没有ID值，则为插入，若有ID值，则为修改。
+
+public void set(BuguEntity obj, Map values)
+
+public void set(String id, Map values)
+
+public void set(Query query, Map values)
+
+public void set(BuguEntity obj, String key, Object value)
+
+public void set(String id, String key, Object value)
+
+public void inc(BuguEntity obj, String key, Object value)
+
+public void inc(String id, String key, Object value)
+
+public void inc(Query query, String key, Object value)
+}}}
 
 == 删除 ==
+{{{
+public void drop()  //删除全部
 
+public void remove(BuguEntity obj)
+
+public void remove(String id)
+
+public void remove(String... ids)  //批量删除
+
+public void remove(String key, Object value)  //按条件删除
+
+public void remove(Query query)  //按条件删除
+}}}
+
+== 数组、列表操作==
+{{{
+public void push(BuguEntity obj, String key, Object value)
+
+public void push(String id, String key, Object value)
+
+public void pull(BuguEntity obj, String key, Object value)
+
+public void pull(String id, String key, Object value)
+}}}
 == 查询 ==
 
 查询需要用到Query类。先看看Query类中有些什么方法：
