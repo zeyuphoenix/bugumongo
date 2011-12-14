@@ -7,7 +7,7 @@ BuguMongo集成了Lucene的功能。当往MongoDB中新增一个Document时，�
 
 在Lucene集成方面，BuguMongo提供了：
 
-6个注解：@Indexed、@IndexProperty、@IndexEmbed、@IndexRef、@IndexFilter、@BoostSwitch
+8个注解：@Indexed、@IndexProperty、@IndexEmbed、@IndexEmbedList、@IndexRef、@IndexRefList、@IndexFilter、@BoostSwitch
 
 5个类：BuguIndex、BuguParser、BuguSearcher、BuguHighlighter、IndexRebuilder
 
