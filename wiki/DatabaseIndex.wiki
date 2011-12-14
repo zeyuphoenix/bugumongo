@@ -11,7 +11,7 @@
 以一个简单的新闻系统为例：
 {{{
 @Entity
-@EnsureIndex(index="{type:1}")
+@EnsureIndex("{type:1}")
 public class News implements BuguEntity{
     @Id
     private String id;
@@ -26,24 +26,29 @@ public class News implements BuguEntity{
 }}}
 索引的书写规则，可以采用标准的JSON格式:
 {{{
-@EnsureIndex(index="{'type':1}")
+@EnsureIndex("{'type':1}")
 }}}
 或者简化的JSON格式：
 {{{
-@EnsureIndex(index="{type:1}")
+@EnsureIndex("{type:1}")
 }}}
 
 如果有多个索引，那么这样写：
 {{{
-@EnsureIndex(index="{type:1},{level:-1}")
+@EnsureIndex("{type:1},{level:-1}")
 }}}
 
 如果是组合索引，格式如下：
 {{{
-@EnsureIndex(index="{author:1, type:1}, {level:-1}")  //2个索引，第1个为组合索引
+@EnsureIndex("{author:1, type:1}, {level:-1}")  //2个索引，第1个为组合索引
 }}}
 
 如果是地理空间索引，也是类似的：
 {{{
-@EnsureIndex(index="{gps:2d}")
+@EnsureIndex("{gps:2d}")
+}}}
+
+还可以设置索引的属性，比如name、unique等：
+{{{
+@EnsureIndex("{author:1, level:-1, name:idx_author_level}")
 }}}
