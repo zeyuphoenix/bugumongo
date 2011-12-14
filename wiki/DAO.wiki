@@ -1,7 +1,7 @@
 #summary DAO操作
 
 = DAO操作 =
-像[对象-文档映射]中那样，给实体类加上了注解，并且实现了BuguEntity接口，接下来就可以使用BuguDao类操作该实体了。
+像[ObjectDocumentMapping 对象-文档映射]中那样，给实体类加上了注解，并且实现了BuguEntity接口，接下来就可以使用BuguDao类操作该实体了。
 
 == BuguDao构造函数 ==
 你需要编写自己的Dao，如FooDao，来操作Foo相关的数据。FooDao需要继承自BuguDao，并且，在FooDao的构造函数中，需要传递Foo.class，如下：
