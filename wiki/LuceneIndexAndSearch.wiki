@@ -29,7 +29,7 @@ import com.bugull.mongo.lucene.annotations.IndexFilter;
 import com.bugull.mongo.lucene.annotations.Compare;
 import java.util.List;
 
-@Entity(name="foo")
+@Entity
 @Indexed
 public class Foo implements BuguEntity{
     @Id
