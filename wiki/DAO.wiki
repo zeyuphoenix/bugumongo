@@ -1,0 +1,180 @@
+#summary DAO操作
+
+= DAO操作 =
+像[对象-文档映射]中那样，给实体类加上了注解，并且实现了BuguEntity接口，接下来就可以使用BuguDao类操作该实体了。
+
+== BuguDao构造函数 ==
+你需要编写自己的Dao，如FooDao，来操作Foo相关的数据。FooDao需要继承自BuguDao，并且，在FooDao的构造函数中，需要传递Foo.class，如下：
+{{{
+public class FooDao extends BuguDao{
+    public FooDao(){
+        super(Foo.class);
+    }
+}
+}}}
+
+== 创建 ==
+
+== 修改 ==
+
+== 删除 ==
+
+== 查询 ==
+
+查询需要用到Query类。先看看Query类中有些什么方法：
+
+*生成查询条件*：
+{{{
+public Query is(String key, Object value)
+
+public Query notEquals(String key, Object value)
+
+public Query greaterThan(String key, Object value)
+
+public Query greaterThanEquals(String key, Object value)
+
+public Query lessThan(String key, Object value)
+
+public Query lessThanEquals(String key, Object value)
+
+public Query in(String key, Object... values)
+
+public Query notIn(String key, Object... values)
+
+public Query all(String key, Object... values)
+
+public Query size(String key, int value)
+
+public Query mod(String key, int divisor, int remainder)
+
+public Query exists(String key)
+
+public Query notExists(String key)
+
+public Query regex(String key, String regex)
+
+public Query or(Query... qs)
+
+public Query and(Query... qs)
+}}}
+*地理空间数据查询*：
+{{{
+public Query near(String key, double x, double y)
+
+public Query near(String key, double x, double y, double maxDistance)
+
+public Query withinCenter(String key, double x, double y, double radius)
+
+public Query withinBox(String key, double x1, double y1, double x2, double y2)
+}}}
+*设置查询参数*:
+{{{
+public Query sort(String orderBy)
+
+public Query pageNumber(int pageNumber)
+
+public Query pageSize(int pageSize)
+}}}
+*返回查询结果*：
+{{{
+public Object result()  //返回一个实体
+
+public List results()  //返回多个实体
+
+public long count()
+}}}
+
+== 创建Query ==
+通过调用BuguDao中的query()方法，就可以创建一个Query对象：
+{{{
+public class FooDao extends BuguDao{
+    public FooDao(){
+        super(Foo.class);
+    }
+    ...
+}
+
+FooDao dao = new FooDao();
+Query q = dao.query();
+...
+}}}
+
+== 用Query实现查询 ==
+=== 支持连缀书写形式 ===
+{{{
+List list = dao.query().greaterThan("level", 10).notEquals("name", "Frank").pageNumber(1).pageSize(20).results();
+}}}
+
+=== 支持Entity对象作为查询条件 ===
+{{{
+FatherDao fDao = new FatherDao();
+FatherFoo father = (FatherFoo)fDao.query().is("id", "4dcb4d1d3febc6503e4e5933").result();
+
+Foo foo = (Foo)dao.query().is("father", father).result();  //用fahter对象作为查询条件
+}}}
+
+=== 支持字符串形式的排序 ===
+{{{
+List list = dao.query().in("name", "Frank", "John").sort("{level:1, timestamp: -1}").results();
+}}}
+对于排序字符串的书写规则，请[http://code.google.com/p/bugumongo/wiki/ObjectDocumentMapping#2.3、排序 参考这里]。
+
+=== 支持多个条件的and、or布尔组合查询 ===
+{{{
+Query q1 = dao.query().greaterThan("level", 10);
+Query q2 = dao.query().is("name", "John");
+List list = dao.query().or(q1, q2).results();
+}}}
+*注意*：and操作只有MongoDB 2.0以后才支持，而且，几乎很少需要用到and操作，Query的连缀书写形式，就是按多个条件的“与”逻辑进行组合的。一个需要用到and操作的例子如下，它用来连接两个or条件：
+{{{
+Query q1 = dao.query().is("level", 10);
+Query q2 = dao.query().is("level", 20);
+Query or1 = dao.query().or(q1, q2);
+Query q3 = dao.query().is("name", "Frank");
+Query q4 = dao.query().is("name", "John");
+Query or2 = dao.query().or(q3, q4);
+List list = dao.query().and(or1, or2).results();
+}}}
+
+== AdvancedDao ==
+AdvancedDao是BuguDao的子类，它主要提供MapReduce功能，以及基于MapReduce实现的一些高级统计功能。但鉴于目前MongoDB的MapReduce性能不是很理想，如果您的数据量非常庞大，请谨慎使用。
+
+AdvancedDao中的方法如下：
+
+*统计：*
+{{{
+public double max(String key)
+
+public double max(String key, DBObject query)
+
+public double min(String key)
+
+public double min(String key, DBObject query)
+
+public double sum(String key)
+
+public double sum(String key, DBObject query)
+}}}
+*分组：*
+{{{
+public Iterable<DBObject> group(GroupCommand cmd)
+
+public Iterable<DBObject> group(DBObject key, DBObject query, DBObject initial, String reduce)
+
+public Iterable<DBObject> group(DBObject key, DBObject query, DBObject initial, String reduce, String finalize)
+}}}
+*MapReduce：*
+{{{
+public Iterable<DBObject> mapReduce(MapReduceCommand cmd)
+
+public Iterable<DBObject> mapReduce(String map, String reduce)
+
+public Iterable<DBObject> mapReduce(String map, String reduce, DBObject query) 
+
+public Iterable<DBObject> mapReduce(String map, String reduce, String outputTarget, MapReduceCommand.OutputType outputType, DBObject sort, DBObject query)
+
+public Iterable<DBObject> mapReduce(String map, String reduce, String outputTarget, MapReduceCommand.OutputType outputType, DBObject sort, int pageNum, int pageSize, DBObject query)
+}}}
+
+== 相关FAQ ==
+ * [http://xbwen.iteye.com/blog/1276742 是否可以不创建没有任何自定义方法的Dao类？]
