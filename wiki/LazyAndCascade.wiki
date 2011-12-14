@@ -6,4 +6,17 @@ Add your content here.
 
 
 = cascade属性 =
-
+对于@Ref、@RefList注解的属性，默认lazy=true，只取出其值的id，而不取出其它属性值。当你要用到其它属性值的时候，可以使用BuguMapper的fetch方法，将@Ref、@RefList的属性值全部取出。例子如下：
+{{{
+...
+Foo foo = fooDao.findOne(id);
+BuguMapper.fetch(foo, "children");    //把foo的children属性取出来
+...
+List list = fooDao.findAll();
+BuguMapper.fetch(list, "father");
+}}}
+fetch()方法还支持级联取出属性，可以一级一级往下取，例如：
+{{{
+BuguMapper.fetch(list, "father.father");
+}}}
+当用fetch()方法取出@RefList注解标注的属性时，会根据注解上的sort属性进行排序。
