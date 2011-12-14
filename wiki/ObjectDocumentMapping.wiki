@@ -169,7 +169,7 @@ name——含义与@Property的属性name一样。
 
 cascade——含义与@Ref的属性cascade一样。
 
-sort——String型，用于取出该List或Set属性时使用的排序规则，其形式是："{'level':1}"，或"{'level':1, 'timestamp':-1}"这样的排序字符串。如果不排序，则不用设置sort值。
+sort——String型，用于关联取出该List或Set属性时使用的排序规则，其形式是："{'level':1}"，或"{'level':1, 'timestamp':-1}"这样的排序字符串。如果不排序，则不用设置sort值。
 
 ===排序字符串===
 排序字符串可以采用标准的JSON格式，如：
