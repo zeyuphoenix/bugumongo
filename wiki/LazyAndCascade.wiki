@@ -1,8 +1,52 @@
 #summary lazy和cascade属性
 
 = lazy属性 =
+@Property、@Embed、@EmbedList都有lazy属性，其缺省值都是false。
 
-Add your content here.
+如果把lazy设为true，那么表示：当取出一个List的时候，不会把lazy=true的属性取出来。
+
+如果是取单条记录，会把这条记录的所有field都取出来，不管该field是否为lazy。也就是说，lazy属性只对取列表的时候起作用。
+
+设置lazy属性的好处是，能够节省内存，而且取数据的速度会更快一些。
+
+以一个简单的新闻系统为例：
+{{{
+@Entity
+public class News implements BuguEntity{
+    @Id
+    private String id;
+    private String title;  //新闻标题
+    @Property(lazy=true)
+    private String content;  //新闻内容
+
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    ...getter and setter...
+    
+}
+
+public class NewsDao extends BuguDao{
+    public NewsDao(){
+        super(News.class);
+    }
+}
+}}}
+新闻的内容，是很长的字符串。而显示新闻列表的时候，并不需要把新闻内容取出来。
+{{{
+NewsDao dao = new NewsDao();
+List<News> list = dao.query().pageNumber(1).pageSize(100).results();  //取出100条新闻
+}}}
+因为content上的@Property注解，把lazy设为了true，因此，并没有把content字段从数据库中取出来，list里面每个News的content，值为null。
+
+=== fetchLazy() ===
 
 
 = cascade属性 =
