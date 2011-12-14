@@ -47,7 +47,13 @@ List<News> list = dao.query().pageNumber(1).pageSize(100).results();  //取出10
 因为content上的@Property注解，把lazy设为了true，因此，并没有把content字段从数据库中取出来，list里面每个News的content，值为null。
 
 === fetchLazy() ===
-
+在某些特殊的应用场合，对于设置了lazy=true的属性，仍然希望它能够在列表中显示。这时候，可以使用辅助工具类BuguMapper中的fetchLazy()方法：
+{{{
+NewsDao dao = new NewsDao();
+List<News> list = dao.query().pageNumber(1).pageSize(100).results();  //News中不包含lazy=true的字段
+BuguMapper.fetchLazy(list);  //现在，lazy=true的字段也被取出来了
+}}}
+fetchLazy()方法虽然用起来很方便，但它是以牺牲性能为代价的，因此，除非特殊情况，否则不要使用它。
 
 = cascade属性 =
 对于@Ref、@RefList注解的属性，默认lazy=true，只取出其值的id，而不取出其它属性值。当你要用到其它属性值的时候，可以使用BuguMapper的fetch方法，将@Ref、@RefList的属性值全部取出。例子如下：
