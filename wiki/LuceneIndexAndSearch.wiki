@@ -78,7 +78,7 @@ public class FatherFoo implements BuguEntity{
 
 @IndexProperty支持的数据类型包括：String、char、boolean、int、long、float、double、Date等基本数据类型。
 
-@IndexProperty注解有4个参数：
+@IndexProperty注解有3个参数：
 
 analyze——boolean型，表示是否需要分词，缺省值为false
 
@@ -102,6 +102,18 @@ boost——float型，表示该Field的权重，缺省值为1.0
 
 ===@IndexRefBy===
 表示需要嵌入到其它对象的Ref或RefList域的索引中。
+
+@IndexRefBy有4个参数：
+
+value——Class类型，表示被引用的类
+
+analyze——boolean型，表示是否需要分词
+
+store——boolean型，表示是否需要存储
+
+boost——float型，表示该Field的权重
+
+当某属性在多个类的索引中被引用时，上述4个参数都需要设置成数组形式。
 
 ===@IndexFilter===
 表示只有满足该条件的实体才会被索引，否则不创建索引。
