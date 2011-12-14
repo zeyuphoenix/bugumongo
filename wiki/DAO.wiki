@@ -181,6 +181,11 @@ Query q = dao.query();
 == 用Query实现查询 ==
 === 支持连缀书写形式 ===
 {{{
+List list = dao.query().greaterThan("level", 10).notEquals("name", "Frank").results();
+}}}
+
+=== 支持分页 ===
+{{{
 List list = dao.query().greaterThan("level", 10).notEquals("name", "Frank").pageNumber(1).pageSize(20).results();
 }}}
 
@@ -224,15 +229,15 @@ AdvancedDao中的方法如下：
 {{{
 public double max(String key)
 
-public double max(String key, DBObject query)
+public double max(String key, Query query)
 
 public double min(String key)
 
-public double min(String key, DBObject query)
+public double min(String key, Query query)
 
 public double sum(String key)
 
-public double sum(String key, DBObject query)
+public double sum(String key, Query query)
 }}}
 *分组：*
 {{{
@@ -253,6 +258,19 @@ public Iterable<DBObject> mapReduce(String map, String reduce, DBObject query)
 public Iterable<DBObject> mapReduce(String map, String reduce, String outputTarget, MapReduceCommand.OutputType outputType, DBObject sort, DBObject query)
 
 public Iterable<DBObject> mapReduce(String map, String reduce, String outputTarget, MapReduceCommand.OutputType outputType, DBObject sort, int pageNum, int pageSize, DBObject query)
+}}}
+
+示例代码：
+{{{
+//扩展自AdvancedDao
+public class FooDao extends AdvancedDao{
+    public FooDao(){
+        super(Foo.class);
+    }
+}
+
+FooDao dao = new FooDao();
+double d = dao.max("embed.x");
 }}}
 
 == 相关FAQ ==
