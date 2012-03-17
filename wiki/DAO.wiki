@@ -36,6 +36,7 @@ dao.save(foo);
 {{{
 public void save(BuguEntity obj)  //如果obj中没有ID值，则为插入，若有ID值，则为修改。
 
+/* 修改属性值 */
 public void set(BuguEntity obj, Map values)
 
 public void set(String id, Map values)
@@ -46,11 +47,21 @@ public void set(BuguEntity obj, String key, Object value)
 
 public void set(String id, String key, Object value)
 
+/* 增加、减少数值 */
+
 public void inc(BuguEntity obj, String key, Object value)
 
 public void inc(String id, String key, Object value)
 
 public void inc(Query query, String key, Object value)
+
+/* 删除属性列 */
+
+public void unset(BuguEntity entity, String key)
+
+public void unset(String id, String key)
+
+public void unset(Query query, String key)
 }}}
 例：
 {{{
@@ -65,6 +76,9 @@ newValues.put("level", 20);
 dao.set(foo, newValues);
 
 dao.inc(foo, "level", 100);  //把foo的level值增加100
+dao.inc(foo, "level", -50);  //把foo的level值减少50
+
+dao.unset(foo, "level");  //移除foo的属性列level
 }}}
 
 == 删除 ==
