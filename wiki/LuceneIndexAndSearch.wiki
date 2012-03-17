@@ -244,6 +244,8 @@ BuguParser提供了一系列静态方法，用于创建Query。
 
 *字符串查询：*
 {{{
+public static Query parseTerm(String field, String value)  //创建一个TermQuery
+
 public static Query parse(String field, String value)  //默认使用Operator.OR
 
 public static Query parse(String field, String value, Operator op)
