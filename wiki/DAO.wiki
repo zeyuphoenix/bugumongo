@@ -166,7 +166,7 @@ public List distinct(String key)
 == 创建Query ==
 通过调用BuguDao中的query()方法，就可以创建一个Query对象：
 {{{
-public class FooDao extends BuguDao{
+public class FooDao extends BuguDao<T> {
     public FooDao(){
         super(Foo.class);
     }
@@ -174,40 +174,40 @@ public class FooDao extends BuguDao{
 }
 
 FooDao dao = new FooDao();
-Query q = dao.query();
+Query<Foo> q = dao.query();
 ...
 }}}
 
 == 用Query实现查询 ==
 === 支持连缀书写形式 ===
 {{{
-List list = dao.query().greaterThan("level", 10).notEquals("name", "Frank").results();
+List<Foo> list = dao.query().greaterThan("level", 10).notEquals("name", "Frank").results();
 }}}
 
 === 支持分页 ===
 {{{
-List list = dao.query().greaterThan("level", 10).notEquals("name", "Frank").pageNumber(1).pageSize(20).results();
+List<Foo> list = dao.query().greaterThan("level", 10).notEquals("name", "Frank").pageNumber(1).pageSize(20).results();
 }}}
 
 === 支持Entity对象作为查询条件 ===
 {{{
 FatherDao fDao = new FatherDao();
-FatherFoo father = (FatherFoo)fDao.query().is("id", "4dcb4d1d3febc6503e4e5933").result();
+FatherFoo father = fDao.query().is("id", "4dcb4d1d3febc6503e4e5933").result();
 
-Foo foo = (Foo)dao.query().is("father", father).result();  //用fahter对象作为查询条件
+Foo foo = dao.query().is("father", father).result();  //用fahter对象作为查询条件
 }}}
 
 === 支持字符串形式的排序 ===
 {{{
-List list = dao.query().in("name", "Frank", "John").sort("{level:1, timestamp: -1}").results();
+List<Foo> list = dao.query().in("name", "Frank", "John").sort("{level:1, timestamp: -1}").results();
 }}}
 对于排序字符串的书写规则，请[http://code.google.com/p/bugumongo/wiki/ObjectDocumentMapping#排序字符串 参考这里]。
 
 === 支持多个条件的and、or布尔组合查询 ===
 {{{
-Query q1 = dao.query().greaterThan("level", 10);
-Query q2 = dao.query().is("name", "John");
-List list = dao.query().or(q1, q2).results();
+Query<Foo> q1 = dao.query().greaterThan("level", 10);
+Query<Foo> q2 = dao.query().is("name", "John");
+List<Foo> list = dao.query().or(q1, q2).results();
 }}}
 *注意*：and操作只有MongoDB 2.0以后才支持，而且，几乎很少需要用到and操作，Query的连缀书写形式，就是按多个条件的“与”逻辑进行组合的。一个需要用到and操作的例子如下，它用来连接两个or条件：
 {{{
