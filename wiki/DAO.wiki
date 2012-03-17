@@ -65,8 +65,9 @@ public void unset(Query query, String key)
 }}}
 例：
 {{{
-Foo foo = ...
 FooDao dao = new FooDao();
+Foo foo = dao.query().is("name", "Frank").result();
+
 dao.set(foo, "level", 9);  //把foo的level值修改为9
 
 //把foo的name改为“John”，level值改为20
@@ -208,7 +209,7 @@ List<Foo> list = dao.query().greaterThan("level", 10).notEquals("name", "Frank")
 FatherDao fDao = new FatherDao();
 FatherFoo father = fDao.query().is("id", "4dcb4d1d3febc6503e4e5933").result();
 
-Foo foo = dao.query().is("father", father).result();  //用fahter对象作为查询条件
+Foo foo = dao.query().is("father", father).result();  //用FatherFoo对象作为查询条件
 }}}
 
 === 支持字符串形式的排序 ===
