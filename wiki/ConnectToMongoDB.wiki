@@ -45,7 +45,7 @@ conn.setHost("192.168.0.100").setPort(27017).setDatabase("mydb").setUsername("us
 }}}
 
 ==关闭连接==
-当程序退出的时候，可以调用close()方法关闭BuguConnection，以便立即释放所有资源。
+当应用程序退出的时候，可以调用close()方法关闭BuguConnection，以便立即释放所有资源。
 {{{
 BuguConnection.getInstance().close();
 }}}
