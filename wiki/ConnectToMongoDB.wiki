@@ -44,5 +44,11 @@ BuguConnection conn = BuguConnection.getInstance();
 conn.setHost("192.168.0.100").setPort(27017).setDatabase("mydb").setUsername("username").setPassword("password").setOptions(options).connect();
 }}}
 
+==关闭连接==
+当程序退出的时候，可以调用close()方法关闭BuguConnection，以便立即释放所有资源。
+{{{
+BuguConnection.getInstance().close();
+}}}
+
 ==相关FAQ==
  * [http://xbwen.iteye.com/blog/1222561 连接数据库的代码应该写在哪里？]
