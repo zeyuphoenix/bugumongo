@@ -181,7 +181,7 @@ public List distinct(String key)
 == 创建Query ==
 通过调用BuguDao中的query()方法，就可以创建一个Query对象：
 {{{
-public class FooDao extends BuguDao<T> {
+public class FooDao extends BuguDao<Foo> {
     public FooDao(){
         super(Foo.class);
     }
