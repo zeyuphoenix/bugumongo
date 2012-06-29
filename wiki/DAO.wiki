@@ -22,6 +22,7 @@ public void insert(List<BuguEntity> list)  //批量插入
 
 public void save(BuguEntity obj)  //如果obj中没有ID值，则为插入，若有ID值，则为修改。
 }}}
+其中，当使用save(obj)方法时，如果obj中的id值为null，则实际执行数据库插入操作；如果obj中的id值不为null，则实际执行数据库修改操作。
 例：
 {{{
 Foo foo = new Foo();
@@ -30,7 +31,9 @@ foo.setLevel(10);
 
 FooDao dao = new FooDao();
 dao.save(foo);
+String id = foo.getId();  //保存至数据库后，foo中有id值了
 }}}
+目前，BuguMongo不支持自定义id值。如上面的例子所示，保存至mongoDB的时候，foo中的id值需要为null，由mongoDB自动生成id，并返回给foo。
 
 == 修改 ==
 {{{
