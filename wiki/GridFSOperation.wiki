@@ -18,7 +18,7 @@ public BuguFS(long chunkSize)
 public BuguFS(String bucketName, long chunkSize)
 }}}
 
-其中，bucketName在GridFS中又称为namespace（命名空间）。缺省情况下，GridFS把文件保存在fs命名空间里。缺省的文件块大小是256K（256L * 1024L）。更详细的介绍，请查看[http://www.mongodb.org/display/DOCS/GridFS+Specification GridFS的官方文档]。
+其中，bucketName在GridFS中又称为namespace（命名空间）。缺省情况下，GridFS把文件保存在fs命名空间里。缺省的文件块大小是256K。更详细的介绍，请查看[http://www.mongodb.org/display/DOCS/GridFS+Specification GridFS的官方文档]。
 
 BuguFS提供了如下操作：
 
@@ -225,11 +225,11 @@ public class FileUploadController {
 }
 }}}
 
-如果需要把文件上传到指定的namespace中，或者要设置文件的块大小，代码可以这样写：
+如果需要把文件上传到指定的namespace（bucket）中，或者要设置文件块的大小，代码可以这样写：
 {{{
 Uploader uploader = new Uploader(file, originalName);  //不重命名，使用原文件名
 uploader.setBucketName("attach");
-uploader.setChunkSize(512L * 1024L);
+uploader.setChunkSize(64L * 1024L);   //64K
 uploader.save();
 }}}
 
