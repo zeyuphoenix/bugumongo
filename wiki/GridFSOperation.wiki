@@ -228,7 +228,7 @@ public class FileUploadController {
 如果需要把文件上传到指定的namespace（bucket）中，或者要设置文件块的大小，代码可以这样写：
 {{{
 Uploader uploader = new Uploader(file, originalName);  //不重命名，使用原文件名
-uploader.setBucketName("attach");  //相应的Collection为：attach.files和attach.chunks
+uploader.setBucketName("attach");  //相应的Collection为：attach.files 和 attach.chunks
 uploader.setChunkSize(64L * 1024L);  //64K
 uploader.save();
 }}}
