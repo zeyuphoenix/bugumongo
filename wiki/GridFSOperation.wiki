@@ -169,7 +169,7 @@ fs.remove(query);
 ==2、辅助类：文件上传类Uploader==
 Uploader类有以下几个构造函数：
 {{{
-public Uploader(File file, String originalName)  //默认rename=false
+public Uploader(File file, String originalName)  //默认rename = false
 
 public Uploader(File file, String originalName, boolean rename)
 
@@ -181,7 +181,7 @@ public Uploader(byte[] data, String originalName)
 
 public Uploader(byte[] data, String originalName, boolean rename)
 }}}
-上面这些构造函数，如果rename=false，则以提供的originalName作为文件名来保存文件。如果rename=true，则会对文件进行重命名，由系统生成一个形如“2011070799999999999999.doc”的文件名，其中，20110707为日期，9999999999999为当前时间的纳秒数（long值）。
+上面这些构造函数，如果rename = false，则以提供的originalName作为文件名来保存文件。如果rename = true，则会对文件进行重命名，由系统生成一个形如“2011070799999999999999.doc”的文件名，其中，20110707为日期，9999999999999为当前时间的纳秒数（long值）。
 
 这里，以一个简单的新闻系统为例。
 
@@ -206,7 +206,7 @@ public class CreateNewsAction extends ActionSupport{
     ...
 }
 }}}
-上面的代码中，因为rename=true，因此，uploader.getFilename()，返回的是，文件经过保存以后，系统自动生成的文件名（含扩展名），格式如：2011070799999999999999.doc，其中，20110707为日期，9999999999999为当前时间的纳秒数。news实体中attachment值，就是这个字符串。
+上面的代码中，因为rename = true，因此，uploader.getFilename()，返回的是，文件经过保存以后，系统自动生成的文件名（含扩展名），格式如：2011070799999999999999.doc，其中，20110707为日期，9999999999999为当前时间的纳秒数。news实体中attachment值，就是这个字符串。
 
 如果是使用SpringMVC，那么Controller的代码示例如下：
 {{{
