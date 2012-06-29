@@ -179,7 +179,7 @@ public List distinct(String key)
 }}}
 
 == 创建BuguQuery ==
-通过调用BuguDao中的query()方法，就可以创建一个Query对象：
+通过调用BuguDao中的query()方法，就可以创建一个BuguQuery对象：
 {{{
 public class FooDao extends BuguDao<Foo> {
     public FooDao(){
