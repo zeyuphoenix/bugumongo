@@ -370,11 +370,12 @@ key、value——表示属性名称、属性值。
 
 例如：
 {{{
+http://www.domain.com/UploadedFile/2011070799999999999999.jpg
 http://www.domain.com/UploadedFile/bucket/images/2011070799999999999999.jpg
 http://www.domain.com/UploadedFile/dimension/small/2011070799999999999999.jpg
 http://www.domain.com/UploadedFile/author/Frank/dimension/small/2011070799999999999999.jpg
 }}}
-有2点*需要特别注意*的是：
+有2点需要特别注意的是：
 
 （1）如果保存文件的时候使用了bucketName，则获取文件的时候，需要指定bucket，如：
 {{{
