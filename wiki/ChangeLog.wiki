@@ -1,5 +1,19 @@
 #summary 版本更新日志
 
+= 1.4 =
+2012-06-29发布。
+
+ * 变更：把Query重命名为BuguQuery，以便统一和区分。
+ * 变更：BuguFS不再使用单例模式，而是用new()创建对象。
+ * 改进：把BuguSearcher的返回结果List中的null值排除。
+ * 改进：修改了上传到GridFS中的文件名的产生方式，以便在高并发的情况下也可确保文件名的唯一性。
+ * 改进：提高了图片压缩的清晰度。
+ * 改进：完善了几个地方的异常信息。
+ * 新增功能：可以设置文件存储的bucketName和chunkSize。
+ * 解决bug：IndexWriter和IndexSearcher初始化的时候，在多线程环境下出错。
+ * 解决bug：调用FieldUtil.get()方法时可能出现空指针异常。
+ * MongoDB Java Driver版本更新到2.8.0
+
 = 1.2 =
 2012-03-17发布。
 
