@@ -149,21 +149,21 @@ public BuguQuery<T> and(BuguQuery... qs)
 }}}
 *地理空间数据查询*：
 {{{
-public Query<T> near(String key, double x, double y)
+public BuguQuery<T> near(String key, double x, double y)
 
-public Query<T> near(String key, double x, double y, double maxDistance)
+public BuguQuery<T> near(String key, double x, double y, double maxDistance)
 
-public Query<T> withinCenter(String key, double x, double y, double radius)
+public BuguQuery<T> withinCenter(String key, double x, double y, double radius)
 
-public Query<T> withinBox(String key, double x1, double y1, double x2, double y2)
+public BuguQuery<T> withinBox(String key, double x1, double y1, double x2, double y2)
 }}}
 *设置查询参数*:
 {{{
-public Query<T> sort(String orderBy)
+public BuguQuery<T> sort(String orderBy)
 
-public Query<T> pageNumber(int pageNumber)
+public BuguQuery<T> pageNumber(int pageNumber)
 
-public Query<T> pageSize(int pageSize)
+public BuguQuery<T> pageSize(int pageSize)
 }}}
 *返回查询结果*：
 {{{
@@ -178,7 +178,7 @@ public boolean exists()
 public List distinct(String key)
 }}}
 
-== 创建Query ==
+== 创建BuguQuery ==
 通过调用BuguDao中的query()方法，就可以创建一个Query对象：
 {{{
 public class FooDao extends BuguDao<Foo> {
@@ -224,7 +224,7 @@ BuguQuery<Foo> q1 = dao.query().greaterThan("level", 10);
 BuguQuery<Foo> q2 = dao.query().is("name", "John");
 List<Foo> list = dao.query().or(q1, q2).results();
 }}}
-*注意*：and操作只有MongoDB 2.0以后才支持，而且，几乎很少需要用到and操作，Query的连缀书写形式，就是按多个条件的“与”逻辑进行组合的。一个需要用到and操作的例子如下，它用来连接两个or条件：
+*注意*：and操作只有MongoDB 2.0以后才支持，而且，几乎很少需要用到and操作。BuguQuery的连缀书写形式，就是按多个条件的“与”逻辑进行组合的。一个需要用到and操作的例子如下，它用来连接两个or条件：
 {{{
 BuguQuery q1 = dao.query().is("level", 10);
 BuguQuery q2 = dao.query().is("level", 20);
