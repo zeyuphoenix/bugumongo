@@ -5,6 +5,21 @@
 ==1、BuguFS类==
 BuguMongo通过BuguFS类来操作GridFS文件系统，能够实现对文件的保存、获取、删除、重命名、移动等操作，而且能够按文件夹组织文件。
 
+*构造函数*
+
+BuguFS提供了如下几个构造函数：
+{{{
+public BuguFS()
+
+public BuguFS(String bucketName)
+
+public BuguFS(long chunkSize)
+
+public BuguFS(String bucketName, long chunkSize)
+}}}
+
+其中，bucketName在GridFS中又称为namespace（命名空间）。缺省情况下，GridFS把文件保存在fs命名空间里。缺省的文件块大小是256K（256L * 1024L）。更详细的介绍，请查看[http://www.mongodb.org/display/DOCS/GridFS+Specification GridFS的官方文档]。
+
 BuguFS提供了如下操作：
 
 *保存*
@@ -97,6 +112,7 @@ public void removeFolder(String folderName)  //会同时删除里面的所有文
 
 此外，BuguFS中还有几个常用的*静态常量*：
 {{{
+public final static String BUCKET = "bucket";  //文件存放空间
 public final static String FOLDER = "folder";  //文件夹
 public final static String FILENAME = "filename";  //文件名
 public final static String LENGTH = "length";  //文件大小，以byte为单位
@@ -108,7 +124,7 @@ public final static String UPLOADDATE = "uploadDate";  //上传时间
 {{{
 import com.bugull.mongo.fs.BuguFS;
 
-BuguFS fs = BuguFS.getInstance();
+BuguFS fs = new BuguFS();
 
 //保存
 File file = ...
@@ -148,6 +164,8 @@ fs.remove(query);
 
 读取：UploadedFileServlet
 
+需要注意的是，这4个辅助类，都是以BuguFS为基础的，只是做了进一步的封装和简化，方便使用。
+
 ==2、辅助类：文件上传类Uploader==
 Uploader类有以下几个构造函数：
 {{{
@@ -163,7 +181,7 @@ public Uploader(byte[] data, String originalName)
 
 public Uploader(byte[] data, String originalName, boolean rename)
 }}}
-上面这些构造函数，如果rename=false，则以提供的originalName作为文件名来保存文件。如果rename=true，则会对文件进行重命名，由系统生成一个形如“2011070799999999999999.doc”的文件名，其中，20110707为日期，9999999999999为当前时间的毫秒数（long值）。
+上面这些构造函数，如果rename=false，则以提供的originalName作为文件名来保存文件。如果rename=true，则会对文件进行重命名，由系统生成一个形如“2011070799999999999999.doc”的文件名，其中，20110707为日期，9999999999999为当前时间的纳秒数（long值）。
 
 这里，以一个简单的新闻系统为例。
 
@@ -188,7 +206,7 @@ public class CreateNewsAction extends ActionSupport{
     ...
 }
 }}}
-上面的代码中，因为rename=true，因此，uploader.getFilename()，返回的是，文件经过保存以后，系统自动生成的文件名（含扩展名），格式如：2011070799999999999999.doc，其中，20110707为日期，9999999999999为当前时间的毫秒数。news实体中attachment值，就是这个字符串。
+上面的代码中，因为rename=true，因此，uploader.getFilename()，返回的是，文件经过保存以后，系统自动生成的文件名（含扩展名），格式如：2011070799999999999999.doc，其中，20110707为日期，9999999999999为当前时间的纳秒数。news实体中attachment值，就是这个字符串。
 
 如果是使用SpringMVC，那么Controller的代码示例如下：
 {{{
@@ -207,10 +225,18 @@ public class FileUploadController {
 }
 }}}
 
+如果需要把文件上传到指定的namespace中，或者要设置文件的块大小，代码可以这样写：
+{{{
+Uploader uploader = new Uploader(file, originalName);  //不重命名，使用原文件名
+uploader.setBucketName("attach");
+uploader.setChunkSize(512L * 1024L);
+uploader.save();
+}}}
+
 如果需要把文件上传到指定的文件夹中，Uploader可以这样定义：
 {{{
 String folderName = "文件夹A";
-Uploader uploader = new Uploader(file, originalName);  //不重命名，使用原文件名
+Uploader uploader = new Uploader(file, originalName); 
 uploader.setFolder(folderName);
 uploader.save();
 }}}
@@ -244,6 +270,7 @@ public class CreateProductAction extends ActionSupport{
         Watermark watermark = new Watermark();
         watermark.setImagePath("/root/website/images/watermark.png");
         ImageUploader uploader = new ImageUploader(img, imgFileName, true);
+        uploader.setBucketName("images");
         uploader.save(watermark);
         product.setPicture(uploader.getFilename());
         productDao.save(product);
@@ -343,10 +370,21 @@ key、value——表示属性名称、属性值。
 
 例如：
 {{{
+http://www.domain.com/UploadedFile/bucket/images/2011070799999999999999.jpg
 http://www.domain.com/UploadedFile/dimension/small/2011070799999999999999.jpg
 http://www.domain.com/UploadedFile/author/Frank/dimension/small/2011070799999999999999.jpg
 }}}
-*需要特别注意*的是，经过ImageUploader.compress()压缩后的图片，默认有一个尺寸属性，属性名称是"dimension"，属性值就是compress()函数中的参数值。
+有2点*需要特别注意*的是：
+
+（1）如果保存文件的时候使用了bucketName，则获取文件的时候，需要指定bucket，如：
+{{{
+http://www.domain.com/UploadedFile/bucket/images/2011070799999999999999.jpg
+}}}
+
+（2）经过ImageUploader.compress()压缩后的图片，默认有一个尺寸属性，属性名称是"dimension"，属性值就是compress()函数中的参数值。如：
+{{{
+http://www.domain.com/UploadedFile/dimension/small/2011070799999999999999.jpg
+}}}
 
 对于"jpg", "jpeg", "png", "gif", "bmp", "html", "htm", "swf", "mp3", "mp4", "pdf"等这些能直接在浏览器中使用的文件，通过该Servlet获取，浏览器能对它进行缓存。
 
