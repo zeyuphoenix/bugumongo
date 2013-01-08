@@ -165,9 +165,9 @@ C、R、U、D四个字符分别代表的含义如下：
 
     C：Create，创建
 
-    R：Retrieve，检索、读取
+    R：Read，读取
 
-    U：Update，修改、更新
+    U：Update，修改
 
     D：Delete，删除
 
