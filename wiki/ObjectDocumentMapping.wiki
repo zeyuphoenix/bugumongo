@@ -9,6 +9,8 @@
 
 1个接口：BuguEntity
 
+1个抽象类：SimpleEntity
+
 ==BuguEntity接口==
 要使得某个Java Entity能和MongoDB Document实现相互转换，该Entity需要实现BuguEntity接口，该接口中有2个方法，如下：
 {{{
@@ -23,6 +25,7 @@ public String getId();
 import com.bugull.mongo.BuguEntity;
 import com.bugull.mongo.annotations.Entity;
 import com.bugull.mongo.annotations.Id;
+import com.bugull.mongo.annotations.IdType;
 import com.bugull.mongo.annotations.Property;
 import com.bugull.mongo.annotations.Embed;
 import com.bugull.mongo.annotations.EmbedList;
@@ -70,7 +73,7 @@ public class EmbedFoo {
 
 @Entity(name="father")
 public class FatherFoo implements BuguEntity{
-    @Id
+    @Id(type=IdType.AUTO_INCREASE)
     private String id;
     private Date date;
     @Ref
@@ -90,20 +93,30 @@ public class ChildFoo implements BuguEntity{
 各个注解的含义如下：
 
 ===@Entity===
-表示需要映射到MongoDB中的一个实体。该注解有3个属性：
+表示需要映射到MongoDB中的一个实体。该注解有4个属性：
 
 name——String型，表示其在MongoDB中的collection的名称。name属性可以省略，默认使用类名的全小写。
 
 capped——boolean型，表示该Entity类对应的是Capped Collection，缺省值为false。
 
-capSize——long型，设置Capped Collection的大小，缺省值为10M（10L*1024L*1024L）。
+capSize——long型，设置Capped Collection的空间大小，以字节为单位，默认值为-1，表示未设置。
+
+capMax——long型，设置Capped Collection的最多能存储多少个document，默认值为-1，表示未设置。
+
+如果设置了capped=true，则需要设置capSize和capMax两者中的其中一个。
 
 *提示：*使用@Entity注解的类，必须实现BuguEntity接口。
 
 ===@Id===
-映射到MongoDB中的"_id"，必须为String类型。
+映射到MongoDB中的"_id"。id属性在Java代码中必须为String类型，但其在MongoDB中的数据类型，则根据对@Id的type属性的设置而定。@Id的type属性，有以下3个枚举值：
 
-用@Id注解的属性，在MongoDB数据库中，被保存成为一个ObjectId对象，形式如："_id" : ObjectId("4eb8beeaeaad0a390144f084")
+IdType.AUTO_GENERATE——默认值。表示由MongoDB自动产生id值。在MongoDB中，id被保存成为一个ObjectId对象，形式如："_id" : ObjectId("4eb8beeaeaad0a390144f084")。
+
+IdType.AUTO_INCREASE——表示id值自动增长。如1、2、3、4...。在MongoDB中，id被保存成Long类型的数值。
+
+IdType.USER_DEFINE——表示id值由程序员自己定义。比如，String id = UUID.randomUUID().toString()；在MongoDB中，id被保存成一个字符串。
+
+如果使用type=IdType.AUTO_INCREASE，那么还可以设置start参数，使得id从指定的值开始增长。
 
 ===@Property===
 该注解可以省略。它用来映射基本数据类型，包括：String、int、long、short、float、double、boolean、char、Date、Timestamp等，以及这些基本数据类型组成的数组、List、Set、Map。
@@ -135,12 +148,14 @@ List list = dao.query().is("embed.x", 3.14F).results();  //查询出全部embed.
 
 @EmbedList注解支持数组、java.util.List、java.util.Set、java.util.Map，但都必须使用泛型。当使用Map的时候，嵌入对象只能作为Map的value，而不能作为key。
 
+*注意：*和Embed一样，嵌入的对象都必须是自己定义的Java对象。如果是原始数据类型组成的List、Set、Map等，请使用@Property，而不是@EmbedList。
+
 跟@Property一样，@EmbedList也有2个属性：name、lazy，含义也是一样的。
 
 ===@Ref===
 表示对另一个对象的引用，在MongoDB中保存的是形如"father" : {"$ref" : "father", "$id" : ObjectId("4dcb4d1d3febc6503e4e5933")}这样的一个DBRef。
 
-@Ref有2个属性：
+@Ref有3个属性：
 
 name——含义与@Property的参数name一样。
 
@@ -148,26 +163,30 @@ cascade——String型，用于指定关联操作。其值可以是C、R、U、D
 
 C、R、U、D四个字符分别代表的含义如下：
 
-C——Create，创建
+    C：Create，创建
 
-R——Retrieve，检索、读取
+    R：Retrieve，检索、读取
 
-U——Update，修改、更新
+    U：Update，修改、更新
 
-D——Delete，删除
+    D：Delete，删除
 
 对cascade属性的详细讲解，请查看[http://code.google.com/p/bugumongo/wiki/LazyAndCascade lazy和cascade属性]
+
+reduced——boolean型，用于指定是否使用精简存储。默认值为false，@Ref字段在MongoDB中保存的是形如"father" : {"$ref" : "father", "$id" : ObjectId("4dcb4d1d3febc6503e4e5933")}这样的一个DBRef。如果把reduced设为true，则@Ref字段在MongoDB中保存的是一个字符串，即引用对象的id值，如："father" : "4dcb4d1d3febc6503e4e5933"。设置reduced=true，可以节省数据库的存储空间，但数据内容不再那么直观。
 
 ===@RefList===
 表示对另一个对象的引用的集合。
 
 @RefList注解支持数组、java.util.List、java.util.Set、java.util.Map，但都必须使用泛型。当使用Map的时候，引用对象只能作为Map的value，而不能作为key。
 
-@RefList有3个属性：
+@RefList有4个属性：
 
 name——含义与@Property的属性name一样。
 
 cascade——含义与@Ref的属性cascade一样。
+
+reduced——含义与@Ref的属性reduced一样。
 
 sort——String型，用于关联取出该List或Set属性时使用的排序规则，其形式是："{'level':1}"，或"{'level':1, 'timestamp':-1}"这样的排序字符串。如果不排序，则不用设置sort值。
 
