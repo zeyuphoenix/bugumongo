@@ -5,7 +5,7 @@
 
  * 新增：提供了BuguEntity接口的简单实现类SimpleEntity，方便简化代码。
  * 新增：可以指定ID的类型，包括：自动产生、自动增长、用户自定义。
- * 新增：@Ref和@RefList注解新增manual属性，用以指定使用Manual Reference还是DBRef。
+ * 新增：@Ref和@RefList注解新增reduced属性，用于优化数据库存储。
  * 新增：支持mongodb 2.2新增的new aggregation框架。
  * 新增：支持mongodb 2.2新增的TTL collection。
  * 新增：新增@IndexEmbedBy注解。
