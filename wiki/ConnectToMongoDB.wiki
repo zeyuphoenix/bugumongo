@@ -51,7 +51,7 @@ BuguConnection.getInstance().close();
 }}}
 
 ==连接数据库的代码应该写在哪里？==
-如果是开发Java Application，那么连接数据库的代码可能是写在main()方法里；如果开发的是web应用，那么可以在web.xml里添加一个监听器，比如：
+如果是开发Java Application，那么连接数据库的代码可能是写在main()方法里的开始部分；如果开发的是web应用，那么可以在web.xml里添加一个监听器，比如：
 {{{
 <listener>  
     <listener-class>com.xbwen.context.SystemInitListener</listener-class>  
