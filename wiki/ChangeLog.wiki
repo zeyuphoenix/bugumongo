@@ -22,8 +22,8 @@
  * BuguParser新增一个方法parseTerm(String field, String value)。
  * 新增功能：可以设置Lucene Index的RAM Buffer Size。
  * BuguConnection新增close()方法，用于释放资源。
- * 改进了log4j的日志格式，详细记录了异常信息。 (感谢wendal1985的建议)
- * 改进：Dao和Query增加了对泛型的支持。(感谢wendal1985的建议)
+ * 改进了log4j的日志格式，详细记录了异常信息。 (感谢网友wendal1985的建议)
+ * 改进：Dao和Query增加了对泛型的支持。(感谢网友wendal1985的建议)
  * 改进：关闭程序的时候，如果出现异常，Lucene索引没有解锁，则能够自动解锁。
  * 改进：一个entity本身可以不创建lucene索引，但某些属性可以被其它索引引用。
  * 改进：如果@IndexRefBy标注的属性只是@Id属性，则entity被修改的时候，Lucene索引不需要同步更新。
