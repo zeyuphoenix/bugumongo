@@ -28,18 +28,19 @@ conn.setReplicaSet(addrs).setDatabase("mydb").setUsername("username").setPasswor
 }}}
 
 ==设置连接参数==
-如果不想使用默认的连接参数，那么可以自己提供一个MongoOptions：
+如果不想使用默认的连接参数，那么可以自己提供一个MongoClientOptions：
 {{{
-MongoOptions options = ...
+MongoClientOptions options = ...
 BuguConnection conn = BuguConnection.getInstance();
 conn.setHost("192.168.0.100").setPort(27017).setDatabase("mydb").setOptions(options).connect();
 }}}
-对于各个连接参数和它们的默认值，可以查看[https://github.com/mongodb/mongo-java-driver/blob/master/src/main/com/mongodb/MongoOptions.java MongoOptions的源代码]。
+对于各个连接参数和它们的默认值，可以查看[https://github.com/mongodb/mongo-java-driver/blob/master/src/main/com/mongodb/MongoClientOptions.java MongoClientOptions的源代码]。
 
-其中一个大家最为关心的参数，就是数据库连接数（连接池）。MongoDB Java Driver默认使用10个连接，在一般的应用中，这足够了。如果你要修改这个默认的连接数，可以这样写：
+其中一个大家最为关心的参数，就是数据库连接数（连接池）。最新的MongoDB Java Driver默认使用100个连接，这个数目足够大了。如果你要修改这个默认的连接数，可以这样写：
 {{{
-MongoOptions options = new MongoOptions();
-options.connectionsPerHost = 20;  //使用20个连接
+MongoClientOptions.Builder builder = new MongoClientOptions.Builder();
+builder.connectionsPerHost(200);    //使用200个连接
+MongoClientOptions options = builder.build();
 BuguConnection conn = BuguConnection.getInstance();
 conn.setHost("192.168.0.100").setPort(27017).setDatabase("mydb").setUsername("username").setPassword("password").setOptions(options).connect();
 }}}
