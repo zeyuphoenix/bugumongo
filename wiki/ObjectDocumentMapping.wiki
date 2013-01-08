@@ -173,7 +173,7 @@ C、R、U、D四个字符分别代表的含义如下：
 
 对cascade属性的详细讲解，请查看[http://code.google.com/p/bugumongo/wiki/LazyAndCascade lazy和cascade属性]
 
-reduced——boolean型，用于指定是否使用精简存储。默认值为false，@Ref字段在MongoDB中保存的是形如"father" : {"$ref" : "father", "$id" : ObjectId("4dcb4d1d3febc6503e4e5933")}这样的一个DBRef。如果把reduced设为true，则@Ref字段在MongoDB中保存的是一个字符串，即引用对象的id值，如："father" : "4dcb4d1d3febc6503e4e5933"。设置reduced=true，可以节省数据库的存储空间，但数据内容不再那么直观。
+reduced——boolean型，用于指定是否使用精简存储。默认值为false，@Ref字段在MongoDB中保存的是形如"father" : {"$ref" : "father", "$id" : ObjectId("4dcb4d1d3febc6503e4e5933")}这样的一个DBRef。如果把reduced设为true，则@Ref字段在MongoDB中保存的是引用对象的id值，没有$ref属性，如："father" : "ObjectId(4dcb4d1d3febc6503e4e5933)"。设置reduced=true，可以节省数据库的存储空间，但数据内容不再那么直观。
 
 ===@RefList===
 表示对另一个对象的引用的集合。
