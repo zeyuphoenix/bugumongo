@@ -16,13 +16,13 @@ public class FooDao extends BuguDao<Foo> {
 == 插入 ==
 BuguDao中有如下方法可用于插入数据：
 {{{
-public void insert(BuguEntity obj)
+public void insert(T t)
 
-public void insert(List<BuguEntity> list)  //批量插入
+public void insert(List<T> list)  //批量插入
 
-public void save(BuguEntity obj)  //如果obj中没有ID值，则为插入，若有ID值，则为修改。
+public void save(T t)  //如果t中没有ID值，则为插入，若有ID值，则为修改。用户自定义ID除外。
 }}}
-其中，当使用save(obj)方法时，如果obj中的id值为null，则实际执行数据库插入操作；如果obj中的id值不为null，则实际执行数据库修改操作。
+其中，当使用save(obj)方法时，如果obj中的id值为null，则实际执行数据库插入操作；如果obj中的id值不为null，则实际执行数据库修改操作。（@Id的type=IdType.USER_DEFINE的情况除外）
 
 例：
 {{{
@@ -34,26 +34,25 @@ FooDao dao = new FooDao();
 dao.save(foo);
 String id = foo.getId();  //保存至数据库后，foo中有id值了
 }}}
-目前，BuguMongo不支持自定义id值。如上面的例子所示，保存至mongoDB的时候，foo中的id值需要为null，由mongoDB自动生成id，并返回给foo。
 
 == 修改 ==
 {{{
-public void save(BuguEntity obj)  //如果obj中没有ID值，则为插入，若有ID值，则为修改。
+public void save(T t)
 
 /* 修改属性值 */
-public void set(BuguEntity obj, Map values)
+public void set(T t, Map values)
 
 public void set(String id, Map values)
 
 public void set(BuguQuery query, Map values)
 
-public void set(BuguEntity obj, String key, Object value)
+public void set(T t, String key, Object value)
 
 public void set(String id, String key, Object value)
 
 /* 增加、减少数值 */
 
-public void inc(BuguEntity obj, String key, Object value)
+public void inc(T t, String key, Object value)
 
 public void inc(String id, String key, Object value)
 
@@ -61,7 +60,7 @@ public void inc(BuguQuery query, String key, Object value)
 
 /* 删除属性列 */
 
-public void unset(BuguEntity entity, String key)
+public void unset(T t, String key)
 
 public void unset(String id, String key)
 
@@ -90,7 +89,7 @@ dao.unset(foo, "level");  //移除foo的属性列level
 {{{
 public void drop()  //删除全部
 
-public void remove(BuguEntity obj)
+public void remove(T t)
 
 public void remove(String id)
 
@@ -103,11 +102,11 @@ public void remove(BuguQuery query)  //按条件删除
 
 == 数组、列表操作==
 {{{
-public void push(BuguEntity obj, String key, Object value)
+public void push(T t, String key, Object value)
 
 public void push(String id, String key, Object value)
 
-public void pull(BuguEntity obj, String key, Object value)
+public void pull(T t, String key, Object value)
 
 public void pull(String id, String key, Object value)
 }}}
@@ -291,7 +290,3 @@ public class FooDao extends AdvancedDao{
 FooDao dao = new FooDao();
 double d = dao.max("embed.x");
 }}}
-
-== 相关FAQ ==
- * [http://xbwen.iteye.com/blog/1276742 是否可以不创建没有任何自定义方法的Dao类？]
- * [http://xbwen.iteye.com/blog/1310630 如何获取collection并对其重命名？]
