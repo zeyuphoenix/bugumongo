@@ -224,7 +224,7 @@ BuguMongo框架提供了BuguEntity接口的一个简单实现：SimpleEntity。�
 
 SimpleEntity是一个抽象类，有一个id属性，使用默认的IdType.AUTO_GENERATE作为id的类型，并实现了getId()、setId()、equals()、hashCode()、toString()等方法。此外，它还提供了getTimestamp()方法，能告诉你该document是何时插入进MongoDB的（其原理是从ObjectId中获取创建时间）。
 
-建议你看一看[http://code.google.com/p/bugumongo/source/browse/trunk/src/java/com/bugull/mongo/SimpleEntity.java SimpleEntity的源代码]。
+建议你看一看[http://code.google.com/p/bugumongo/source/browse/trunk/src/java/com/bugull/mongo/SimpleEntity.java SimpleEntity的源代码]，它非常简单。
 
 使用SimpleEntity，可以使得你的实体模型的代码非常简洁，如下：
 {{{
