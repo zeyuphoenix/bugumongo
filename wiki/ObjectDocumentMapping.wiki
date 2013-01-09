@@ -218,3 +218,8 @@ sort——String型，用于关联取出该List或Set属性时使用的排序规
 
 @RefList(sort="level:1, timestamp:-1")
 }}}
+
+==辅助类：SimpleEntity==
+BuguMongo框架提供了BuguEntity接口的一个简单实现：SimpleEntity。你可以不用自己直接实现BuguEntity接口，而是继承自SimpleEntity。
+
+SimpleEntity是一个抽象类，有一个id属性，使用默认的IdType.AUTO_GENERATE作为id的类型，实现了getId()、setId()、equals()、hashCode()、toString()等方法。此外，它还提供了getTimestamp()方法，能告诉你该document是何时插入进MongoDB的（其原理是从ObjectId中获取创建时间）。
