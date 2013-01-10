@@ -1,5 +1,5 @@
-#summary AdvancedDao
+#summary 高级DAO操作
 
-= AdvancedDao =
+= 高级DAO操作 =
 
 待补充
