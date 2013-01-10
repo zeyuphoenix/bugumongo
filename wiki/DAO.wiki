@@ -238,6 +238,20 @@ BuguQuery or2 = dao.query().or(q3, q4);
 List list = dao.query().and(or1, or2).results();
 }}}
 
+
+==注意事项==
+使用DAO操作MongoDB时，应该使用数据库的字段名称，而不是Java的属性名称。比如：
+{{{
+@Property(name="total_score")
+private int totalScore;
+}
+}}}
+那么，操作数据库的时候，应该是：
+{{{
+list = dao.query().is("total_score", 1000).results();
+}}}
+一种较好的习惯是：使Java的属性名称，与数据库的字段名称，保持一致。
+
 == AdvancedDao ==
 AdvancedDao是BuguDao的子类，它主要提供MapReduce功能，以及基于MapReduce实现的一些高级统计功能。但鉴于目前MongoDB的MapReduce性能不是很理想，如果您的数据量非常庞大，请谨慎使用。
 
