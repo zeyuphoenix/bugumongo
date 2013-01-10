@@ -41,7 +41,7 @@ public Iterable<DBObject> mapReduce(String map, String reduce, String outputTarg
 示例代码：
 {{{
 //扩展自AdvancedDao
-public class FooDao extends AdvancedDao{
+public class FooDao extends AdvancedDao<Foo>{
     public FooDao(){
         super(Foo.class);
     }
