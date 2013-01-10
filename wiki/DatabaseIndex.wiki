@@ -52,3 +52,8 @@ public class News implements BuguEntity{
 {{{
 @EnsureIndex("{author:1, level:-1, name:idx_author_level}")
 }}}
+
+从MongoDB 2.2开始，增加了对TTL Collection的支持：
+{{{
+@EnsureIndex("{expireAfterSeconds:3600}")
+}}}
