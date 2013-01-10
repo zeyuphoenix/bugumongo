@@ -4,9 +4,9 @@
 
 AdvancedDao是BuguDao的子类，它主要提供：
 
-(1)MapReduce功能，以及基于MapReduce实现的一些统计功能。
+(1) MapReduce功能，以及基于MapReduce实现的一些统计功能。
 
-(2)Aggregation功能。
+(2) Aggregation功能。
 
 ==MapReduce==
 AdvancedDao提供了对MapReduce的支持。但鉴于目前MongoDB的MapReduce性能不是很理想，如果您的数据量非常庞大，请谨慎使用。
