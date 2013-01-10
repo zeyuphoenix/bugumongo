@@ -8,4 +8,5 @@
  * [LazyAndCascade lazy和cascade属性]
  * [DatabaseIndex 数据库索引]
  * [LuceneIndexAndSearch Lucene索引和搜索]
+ * [LuceneInCluster 集群环境中的Lucene]
  * [GridFSOperation GridFS文件操作]
