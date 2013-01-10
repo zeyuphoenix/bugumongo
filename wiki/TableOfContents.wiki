@@ -5,7 +5,7 @@
  * [ConnectToMongoDB 连接数据库]
  * [ObjectDocumentMapping 对象-文档映射]
  * [DAO DAO操作]
- * [AdvancedDao AdvancedDao]
+ * [AdvancedDao 高级DAO操作]
  * [LazyAndCascade lazy和cascade属性]
  * [DatabaseIndex 数据库索引]
  * [LuceneIndexAndSearch Lucene索引和搜索]
