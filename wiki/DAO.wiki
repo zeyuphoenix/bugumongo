@@ -244,7 +244,6 @@ List list = dao.query().and(or1, or2).results();
 {{{
 @Property(name="total_score")
 private int totalScore;
-}
 }}}
 那么，操作数据库的时候，应该是：
 {{{
