@@ -7,7 +7,7 @@ BuguMongo集成了Lucene的功能。当往MongoDB中新增一个Document时，�
 
 在Lucene集成方面，BuguMongo提供了：
 
-8个注解：@Indexed、@IndexProperty、@IndexEmbed、@IndexEmbedList、@IndexRef、@IndexRefList、@IndexFilter、@BoostSwitch
+10个注解：@Indexed、@IndexProperty、@IndexEmbed、@IndexEmbedList、@IndexRef、@IndexRefList、@IndexRefBy、@IndexEmbedBy、@IndexFilter、@BoostSwitch
 
 5个类：BuguIndex、BuguParser、BuguSearcher、BuguHighlighter、IndexRebuilder
 
@@ -89,10 +89,10 @@ boost——float型，表示该Field的权重，缺省值为1.0
 @IndexProperty还支持上述基本数据类型组成的数组、List、Set等。这些集合中的元素，不管是什么数据类型，都会连结成一个字符串，然后加以索引。
 
 ===@IndexEmbed===
-表示需要嵌入对该Embed对象的索引。索引域的名称形如“embed.x”。
+表示需要嵌入对该Embed对象的索引。结合@IndexEmbedBy使用。索引域的名称形如“embed.x”。
 
 ===@IndexEmbedList===
-表示需要嵌入对该EmbedList对象的索引。索引域的名称形如“embed.x”。
+表示需要嵌入对该EmbedList对象的索引。结合@IndexEmbedBy使用。索引域的名称形如“embed.x”。
 
 ===@IndexRef===
 表示需要嵌入对该Ref对象的索引。结合@IndexRefBy使用。索引域的名称形如“father.name”。
@@ -101,7 +101,7 @@ boost——float型，表示该Field的权重，缺省值为1.0
 表示需要嵌入对该RefList对象的索引。结合@IndexRefBy使用。索引域的名称形如“father.name”。
 
 ===@IndexRefBy===
-表示需要嵌入到其它对象的Ref或RefList域的索引中。
+表示需要嵌入到其它对象的@Ref或@RefList域的索引中。
 
 @IndexRefBy有4个参数：
 
@@ -114,6 +114,11 @@ store——boolean型，表示是否需要存储
 boost——float型，表示该Field的权重
 
 当某属性在多个类的索引中被引用时，上述4个参数都需要设置成数组形式。
+
+===@IndexEmbedBy===
+表示需要嵌入到其它对象的@Embed或@EmbedList域的索引中。
+
+@IndexEmbedBy拥有与@IndexRefBy相同的4个参数。
 
 ===@IndexFilter===
 表示只有满足该条件的实体才会被索引，否则不创建索引。
@@ -170,7 +175,10 @@ index.open();
 {{{
 index.close();
 }}}
-代码中各个函数的含义都很直观。其中：
+
+与BuguConnection一样，你也可以把BuguIndex看作是配置文件，它也是一个单例模式，BuguMongo框架中Lucene相关的组件，会自动使用BuguIndex的实例。
+
+上述代码中，各个方法的含义都很直观。其中：
 
 BuguMongo使用FSDirectory存储索引，通过setDirectoryPath()可以设置索引文件存放的位置。该值必须设置。
 
