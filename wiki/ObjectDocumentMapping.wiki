@@ -112,7 +112,7 @@ capMax——long型，设置Capped Collection的最多能存储多少个document
 
 @Id的type属性，有以下3个枚举值：
 
-IdType.AUTO_GENERATE——默认值。表示由MongoDB自动产生id值。在MongoDB中，id被保存成为一个ObjectId对象，形式如："_id" : ObjectId("4eb8beeaeaad0a390144f084")。
+IdType.AUTO_GENERATE——默认值。表示由MongoDB自动产生id值。在MongoDB中，id被保存成为一个ObjectId对象，形式如："{{{_}}}id" : ObjectId("4eb8beeaeaad0a390144f084")。
 
 IdType.AUTO_INCREASE——表示id值自动增长。如1、2、3、4...。在MongoDB中，id被保存成Long类型的数值。
 
