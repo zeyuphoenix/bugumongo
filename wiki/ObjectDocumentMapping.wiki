@@ -108,7 +108,7 @@ capMax——long型，设置Capped Collection的最多能存储多少个document
 *提示：*使用@Entity注解的类，必须实现BuguEntity接口。
 
 ===@Id===
-映射到MongoDB中的'_'id。@Id属性在Java代码中必须为String类型，但其在MongoDB中的数据类型，则根据对@Id的type属性的设置而定。
+映射到MongoDB中的'*'_'*'id。@Id属性在Java代码中必须为String类型，但其在MongoDB中的数据类型，则根据对@Id的type属性的设置而定。
 
 @Id的type属性，有以下3个枚举值：
 
