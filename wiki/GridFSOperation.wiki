@@ -387,4 +387,4 @@ http://www.domain.com/UploadedFile/bucket/images/2011070799999999999999.jpg
 http://www.domain.com/UploadedFile/dimension/small/2011070799999999999999.jpg
 }}}
 
-对于"jpg", "jpeg", "png", "gif", "bmp"等格式的图片文件，通过该Servlet获取，浏览器能对它进行缓存。其它类型的文件，如swf、pdf等，也能够直接在浏览器中打开，但不会进行缓存。
+对于"jpg", "jpeg", "png", "gif", "bmp"等格式的图片文件，通过该Servlet获取，浏览器能对它进行缓存。其它类型的文件，如swf、pdf、mp3、mp4等，也能够直接在浏览器中打开，但不会进行缓存。
