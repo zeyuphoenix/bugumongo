@@ -73,7 +73,7 @@ public class EmbedFoo {
 
 @Entity(name="father")
 public class FatherFoo implements BuguEntity{
-    @Id(type=IdType.AUTO_INCREASE)
+    @Id(type=IdType.AUTO_INCREASE, start=1000)
     private String id;
     private Date date;
     @Ref
@@ -119,6 +119,12 @@ IdType.AUTO_INCREASE——表示id值自动增长。如1、2、3、4...。在Mon
 IdType.USER_DEFINE——表示id值由程序员自己定义。比如，String id = UUID.randomUUID().toString()；在MongoDB中，id被保存成一个字符串。
 
 如果使用type=IdType.AUTO_INCREASE，那么还可以设置start参数，使得id从指定的值开始增长。
+
+一个例子如下：
+{{{
+@Id(type=IdType.AUTO_INCREASE, start=1000)
+private String id;
+}}}
 
 ===@Property===
 该注解可以省略。它用来映射基本数据类型，包括：String、int、long、short、float、double、boolean、char、Date、Timestamp等，以及这些基本数据类型组成的数组、List、Set、Map。
