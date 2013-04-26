@@ -112,7 +112,9 @@ public WriteResult pull(String id, String key, Object value)
 }}}
 对于数组、List、Set，在MongoDB中都被保存成数组，可以用push、pull方法对其进行操作。
 
-*注：*上述对数据库的修改操作，都有一个返回值WriteResult，代表了操作的结果。该类由mongoDB Java Driver提供，其详细信息，可以[http://api.mongodb.org/java/current/com/mongodb/WriteResult.html 查看这里]。
+*注：*
+
+上述对数据库的修改操作，都有一个返回值WriteResult，代表了操作的结果。该类由mongoDB Java Driver提供，其详细信息，可以[http://api.mongodb.org/java/current/com/mongodb/WriteResult.html 查看这里]。
 
 == 查询 ==
 
@@ -237,7 +239,7 @@ BuguQuery<Foo> q1 = dao.query().greaterThan("level", 10);
 BuguQuery<Foo> q2 = dao.query().is("name", "John");
 List<Foo> list = dao.query().or(q1, q2).results();
 }}}
-*注意*：and操作只有MongoDB 2.0以后才支持，而且，几乎很少需要用到and操作。BuguQuery的连缀书写形式，就是按多个条件的“与”逻辑进行组合的。一个需要用到and操作的例子如下，它用来连接两个or条件：
+*注*：几乎很少需要用到and操作。BuguQuery的连缀书写形式，就是按多个条件的“与”逻辑进行组合的。一个需要用到and操作的例子如下，它用来连接两个or条件：
 {{{
 BuguQuery q1 = dao.query().is("level", 10);
 BuguQuery q2 = dao.query().is("level", 20);
