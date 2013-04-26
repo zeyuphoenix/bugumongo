@@ -1,5 +1,23 @@
 #summary 版本更新日志
 
+= 1.8 =
+2013-04-25发布。
+
+ * 新增：BuguQuery新增对$where查询条件的支持。
+ * 新增：BuguQuery新增对$slice操作的支持。
+ * 新增：支持mongodb 2.4新增的text索引。
+ * 新增：新增了AccessRestrictedServlet和AccessCount类，用以记录和限制同时访问GridFS的线程数。
+ * 改进：insert、save、set、inc、push等操作，返回操作是否成功的标识。（感谢网友零距离的建议） 
+ * 改进：BuguDao的操作，支持BuguEntity作为参数。
+ * 改进：通过UploadedFileServlet获取的文件，包含ContentLength信息。
+ * 改进：通过UploadedFileServlet获取的文件，支持断点续传和多线程下载。
+ * 改进：通过UploadedFileServlet获取文件的时候，可以设置允许或禁止某个bucket。
+ * 改进：完善了线程池的关闭代码。
+ * 改进：代码精简，移除掉一些不必要的方法。
+ * 解决bug：在某些情况下，lazy=true不起作用。
+ * 解决bug：根据id排序的时候，可能不起作用。（感谢网友枷锁的反馈） 
+ * 变更：MongoDB Java Driver版本更新到2.11
+
 = 1.6 =
 2013-01-10发布。
 
