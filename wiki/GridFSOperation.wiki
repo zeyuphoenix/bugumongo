@@ -158,15 +158,15 @@ fs.remove(filename);
 fs.remove(query);
 }}}
 
-除了BuguFS外，BuguMongo还提供了另外4个辅助类，来简化GridFS文件的上传和获取，而且功能更加强大。这4个类分别是：
+除了BuguFS外，BuguMongo还提供了另外几个辅助类，来简化GridFS文件的上传和获取，而且功能更加强大。这4个类分别是：
 
 上传：Uploader、ImageUploader、Watermark。
 
-读取：UploadedFileServlet
+读取：UploadedFileServlet、AccessRestrictedServlet
 
 需要注意的是，这些辅助类，都是以BuguFS为基础的，只是做了进一步的封装和简化，方便使用。
 
-==2、辅助类：文件上传类Uploader==
+==2、文件上传类Uploader==
 Uploader类有以下几个构造函数：
 {{{
 public Uploader(File file, String originalName)  //默认rename = false
@@ -343,7 +343,9 @@ int width = size[0];   //宽度
 int height = size[1];  //高度
 }}}
 
-==4、辅助类：文件获取类UploadedFileServlet==
+==4、通过HTTP获取文件==
+
+===4.1 UploadedFileServlet===
 如果你是在Web项目中使用BuguMongo，那么，保存到GridFS中的文件，可以通过UploadedFileServlet来获取，在web.xml中配置如下：
 {{{
 <servlet>
@@ -387,4 +389,37 @@ http://www.domain.com/UploadedFile/bucket/images/2011070799999999999999.jpg
 http://www.domain.com/UploadedFile/dimension/small/2011070799999999999999.jpg
 }}}
 
-对于"jpg", "jpeg", "png", "gif", "bmp"等格式的图片文件，通过该Servlet获取，浏览器能对它进行缓存。其它类型的文件，则不会进行缓存。
+UploadedFileServlet可以配置成只允许访问某个bucket，或者禁止访问某个bucket，如，只允许通过该Servlet访问images这个bucket中的文件：
+{{{
+<servlet>
+    <servlet-name>UploadedFile</servlet-name>
+    <servlet-class>com.bugull.mongo.fs.UploadedFileServlet</servlet-class>
+    <init-param>
+        <param-name>allowBucket</param-name>
+        <param-value>images</param-value>
+    </init-param>
+</servlet>
+}}}
+如，禁止通过该Servlet访问personal这个bucket中的文件：
+{{{
+<servlet>
+    <servlet-name>UploadedFile</servlet-name>
+    <servlet-class>com.bugull.mongo.fs.UploadedFileServlet</servlet-class>
+    <init-param>
+        <param-name>forbidBucket</param-name>
+        <param-value>personal</param-value>
+    </init-param>
+</servlet>
+}}}
+allowBucket、forbidBucket这2个参数，只能使用一个，不支持2个同时使用。
+
+UploadedFileServlet有2个特点：
+
+（1）对于"jpg", "jpeg", "png", "gif", "bmp"等格式的图片文件，通过该Servlet获取，浏览器能对它进行缓存。其它类型的文件，则不会进行缓存。
+
+（2）支持断点续传和多线程下载。
+
+===4.2 AccessRestrictedServlet===
+该类扩展自UploadedFileServlet，用于限制对某些资源文件的访问。
+
+
