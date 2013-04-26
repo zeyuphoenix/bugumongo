@@ -311,12 +311,14 @@ r2.rebuild();
 对搜索结果中的关键词进行高亮显示，是一个经常用到的功能。BuguMongo中提供了一个类BuguHighlighter来实现该功能。代码例子如下：
 {{{
 Query query = BuguParser.parse("introduce", "谷歌");
-BuguSearcher searcher = new BuguSearcher(Foo.class);
+BuguSearcher<Foo> searcher = new BuguSearcher(Foo.class);
 BuguHighlighter highlighter = new BuguHighlighter("introduce", "谷歌");  //对introduce字段的“谷歌”关键词高亮显示
 searcher.setHighlighter(highlighter);
-List list = searcher.search(query);
+List<Foo> list = searcher.search(query);
 searcher.close();
 }}}
+在网页上，只需要显示foo.introduce字段的内容，其关键字部分，会自动高亮显示。
+
 可以对多个字段中的关键词高亮显示。比如，同时对title、introduce字段中的“谷歌”关键词高亮显示，BuguHighlighter可以这样定义：
 {{{
 String[] fields = new String[]{"title", "introduce"};
