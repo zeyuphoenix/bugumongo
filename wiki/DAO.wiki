@@ -132,7 +132,11 @@ public BuguQuery<T> lessThanEquals(String key, Object value)
 
 public BuguQuery<T> in(String key, Object... values)
 
+public BuguQuery<T> in(String key, List list)
+
 public BuguQuery<T> notIn(String key, Object... values)
+
+public BuguQuery<T> notIn(String key, List list)
 
 public BuguQuery<T> all(String key, Object... values)
 
@@ -145,6 +149,10 @@ public BuguQuery<T> existsField(String key)
 public BuguQuery<T> notExistsField(String key){
 
 public BuguQuery<T> regex(String key, String regex)
+
+public BuguQuery<T> where(String whereStr)
+
+public BuguQuery<T> slice(String key, long num)
 
 public BuguQuery<T> or(BuguQuery... qs)
 
