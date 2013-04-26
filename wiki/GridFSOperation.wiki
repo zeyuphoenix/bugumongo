@@ -389,7 +389,7 @@ http://www.domain.com/UploadedFile/bucket/images/2011070799999999999999.jpg
 http://www.domain.com/UploadedFile/dimension/small/2011070799999999999999.jpg
 }}}
 
-UploadedFileServlet可以配置成只允许访问某个bucket，或者禁止访问某个bucket，如，只允许通过该Servlet访问images这个bucket中的文件：
+前面配置的Servlet，可以通过它访问任何bucket中的文件。你可以把它配置成只允许访问某个bucket，或者禁止访问某个bucket，如，只允许通过该Servlet访问images这个bucket中的文件：
 {{{
 <servlet>
     <servlet-name>UploadedFile</servlet-name>
@@ -411,7 +411,7 @@ UploadedFileServlet可以配置成只允许访问某个bucket，或者禁止访�
     </init-param>
 </servlet>
 }}}
-allowBucket、forbidBucket这2个参数，只能使用一个，不支持2个同时使用。
+同一个UploadedFileServlet中，allowBucket、forbidBucket这2个参数，只能使用1个，不支持2个同时使用。
 
 UploadedFileServlet有2个特点：
 
@@ -420,6 +420,33 @@ UploadedFileServlet有2个特点：
 （2）支持断点续传和多线程下载。
 
 ===4.2 AccessRestrictedServlet===
-该类扩展自UploadedFileServlet，用于限制对某些资源文件的访问。
+该类扩展自UploadedFileServlet，用于限制对某些资源文件的并发访问数量。例如：
+{{{
+<servlet>
+    <servlet-name>AccessRistrictedServlet</servlet-name>
+    <servlet-class>com.bugull.mongo.fs.AccessRistrictedServlet</servlet-class>
+    <init-param>
+        <param-name>allowBucket</param-name>
+        <param-value>videos</param-value>
+    </init-param>
+    <init-param>
+        <param-name>resourceName</param-name>
+        <param-value>videos</param-value>
+    </init-param>
+    <init-param>
+        <param-name>maxAccess</param-name>
+        <param-value>100</param-value>
+    </init-param>
+    <init-param>
+        <param-name>redirectTo</param-name>
+        <param-value>/too_many_access.html</param-value>
+    </init-param>
+</servlet>
+}}}
+该配置表示：只允许通过该Servlet访问videos这个bucket中的文件，并且最多只允许100个并发访问，当超过该数目时，不返回文件，而是跳转至/too_many_access.html这个网页。
 
-
+如果你的应用中只有一个AccessRistrictedServlet，那么resourceName可以不配置，其默认值为bugu。resourceName的作用是：你可以通过它来获取当前有多少个并发访问在请求该Servlet。如：
+{{{
+AccessCount ac = AccessCount.getInstance();
+int count = ac.getCount("videos");  //如果没有配置resourceName，则为ac.getCount("bugu");
+}}}
