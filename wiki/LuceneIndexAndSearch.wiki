@@ -194,13 +194,12 @@ setIndexReopenPeriod(long milli)的参数以毫秒为单位，表示索引刷新
 通过上面的设置，BuguMongo能够实现Entity和Lucene索引之间的自动同步，你只要实现搜索就行了。最基本的搜索的例子如下：
 {{{
 Query query = BuguParser.parse("introduce", "谷歌");
-BuguSearcher searcher = new BuguSearcher(Foo.class);
+BuguSearcher<Foo> searcher = new BuguSearcher(Foo.class);
 searcher.setQuery(query).setSort().setFilter().setPageNumber(1).setPageSize(20).setMaxPage(50);
-List list = searcher.search();
+List<Foo> list = searcher.search();
 int count = searcher.getResultCount();
 searcher.close();  //务必记得关闭BuguSearcher
-for(Object obj : list){
-    Foo foo = (Foo)obj;
+for(Foo foo : list){
     ...
 }
 }}}
@@ -222,12 +221,11 @@ BooleanQuery bQuery = new BooleanQuery();
 bQuery.add(strQuery, Occur.SHOULD);
 bQuery.add(xQuery, Occur.MUST_NOT);
 bQuery.add(yQuery, Occur.MUST);
-BuguSearcher searcher = new BuguSearcher(Foo.class);
-List list = searcher.search(bQuery);
+BuguSearcher<Foo> searcher = new BuguSearcher(Foo.class);
+List<Foo> list = searcher.search(bQuery);
 int count = searcher.getResultCount();
 searcher.close();
-for(Object obj : list){
-    Foo foo = (Foo)obj;
+for(Foo foo : list){
     ...
 }
 }}}
@@ -236,7 +234,7 @@ for(Object obj : list){
 
 BuguSearcher能实现大部分常用的搜索功能，但在一些特殊的情况下，你可能需要使用底层的Lucene搜索功能，比如使用Collector，这时，你需要通过调用BuguSearcher的getSearcher()方法，来获得底层Lucene的IndexSearcher，然后用它来进行搜索。
 {{{
-BuguSearcher searcher = new BuguSearcher(Foo.class);
+BuguSearcher<Foo> searcher = new BuguSearcher(Foo.class);
 IndexSearcher is = searcher.getSearcher();
 Query query = ...
 Collector collector = ...
@@ -296,7 +294,7 @@ public static Query parse(String field, char value)
 }}}
 
 ==辅助工具：重建索引==
-在某些情况下，由于特殊的原因，Lucene索引文件没有与MongoDB中的记录一一对应，这时，需要对MongoDB中的文档重新建立Lucene索引。BuguMongo提供了一个类IndexRebuilder来实现该功能。代码例子如下：
+在某些情况下，由于特殊的原因，Lucene索引文件没有与MongoDB中的记录一一对应，比如，用shell命令往MongoDB中添加或修改了数据，这时，需要对MongoDB中的文档重新建立Lucene索引。BuguMongo提供了一个类IndexRebuilder来实现该功能。代码例子如下：
 {{{
 IndexRebuilder r1 = new IndexRebuilder(Foo.class);
 r1.rebuild();
