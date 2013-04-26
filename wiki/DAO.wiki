@@ -16,11 +16,11 @@ public class FooDao extends BuguDao<Foo> {
 == 插入 ==
 BuguDao中有如下方法可用于插入数据：
 {{{
-public void insert(T t)
+public WriteResult insert(T t)
 
-public void insert(List<T> list)  //批量插入
+public WriteResult insert(List<T> list)  //批量插入
 
-public void save(T t)  //如果t中没有ID值，则为插入，若有ID值，则为修改。用户自定义ID除外。
+public WriteResult save(T t)  //如果t中没有ID值，则为插入，若有ID值，则为修改。用户自定义ID除外。
 }}}
 其中，当使用save(obj)方法时，如果obj中的id值为null，则实际执行数据库插入操作；如果obj中的id值不为null，则实际执行数据库修改操作。（@Id的type=IdType.USER_DEFINE的情况除外）
 
@@ -37,34 +37,34 @@ String id = foo.getId();  //保存至数据库后，foo中有id值了
 
 == 修改 ==
 {{{
-public void save(T t)
+public WriteResult save(T t)
 
 /* 修改属性值 */
-public void set(T t, Map values)
+public WriteResult set(T t, Map values)
 
-public void set(String id, Map values)
+public WriteResult set(String id, Map values)
 
-public void set(BuguQuery query, Map values)
+public WriteResult set(BuguQuery query, Map values)
 
-public void set(T t, String key, Object value)
+public WriteResult set(T t, String key, Object value)
 
-public void set(String id, String key, Object value)
+public WriteResult set(String id, String key, Object value)
 
 /* 增加、减少数值 */
 
-public void inc(T t, String key, Object value)
+public WriteResult inc(T t, String key, Object value)
 
-public void inc(String id, String key, Object value)
+public WriteResult inc(String id, String key, Object value)
 
-public void inc(BuguQuery query, String key, Object value)
+public WriteResult inc(BuguQuery query, String key, Object value)
 
 /* 删除属性列 */
 
-public void unset(T t, String key)
+public WriteResult unset(T t, String key)
 
-public void unset(String id, String key)
+public WriteResult unset(String id, String key)
 
-public void unset(BuguQuery query, String key)
+public WriteResult unset(BuguQuery query, String key)
 }}}
 例：
 {{{
@@ -87,30 +87,32 @@ dao.unset(foo, "level");  //移除foo的属性列level
 
 == 删除 ==
 {{{
-public void drop()  //删除全部
+public void drop()  //删除整个Collection
 
-public void remove(T t)
+public WriteResult remove(T t)
 
-public void remove(String id)
+public WriteResult remove(String id)
 
-public void remove(String... ids)  //批量删除
+public WriteResult remove(String... ids)  //批量删除
 
-public void remove(String key, Object value)  //按条件删除
+public WriteResult remove(String key, Object value)  //按条件删除
 
-public void remove(BuguQuery query)  //按条件删除
+public WriteResult remove(BuguQuery query)  //按条件删除
 }}}
 
 == 数组、列表操作==
 {{{
-public void push(T t, String key, Object value)
+public WriteResult push(T t, String key, Object value)
 
-public void push(String id, String key, Object value)
+public WriteResult push(String id, String key, Object value)
 
-public void pull(T t, String key, Object value)
+public WriteResult pull(T t, String key, Object value)
 
-public void pull(String id, String key, Object value)
+public WriteResult pull(String id, String key, Object value)
 }}}
 对于数组、List、Set，在MongoDB中都被保存成数组，可以用push、pull方法对其进行操作。
+
+上述对数据库的修改操作，都有一个返回值WriteResult，代表了操作的结果。该类由mongoDB Java Driver提供，其详细信息，可以[http://api.mongodb.org/java/current/com/mongodb/WriteResult.html 查看这里]。
 
 == 查询 ==
 
