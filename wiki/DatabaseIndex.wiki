@@ -20,6 +20,7 @@ public class News implements BuguEntity{
     private String author;  //作者
     private String type;  //类别
     private int level;  //推荐级别
+    private Date publishTime;  //发布时间
 
     ...getter and setter...
 }
@@ -55,5 +56,5 @@ public class News implements BuguEntity{
 
 从MongoDB 2.2开始，增加了对TTL Collection的支持：
 {{{
-@EnsureIndex("{expireAfterSeconds:3600}")
+@EnsureIndex("{publishTime:1, expireAfterSeconds:3600}")
 }}}
