@@ -13,7 +13,6 @@
  * 改进：通过UploadedFileServlet获取的文件，支持断点续传和多线程下载。
  * 改进：通过UploadedFileServlet获取文件的时候，可以设置允许或禁止某个bucket。
  * 改进：完善了线程池的关闭代码。
- * 改进：代码精简，移除掉一些不必要的方法。
  * 解决bug：在某些情况下，lazy=true不起作用。
  * 解决bug：根据id排序的时候，可能不起作用。（感谢网友枷锁的反馈） 
  * 变更：MongoDB Java Driver版本更新到2.11
