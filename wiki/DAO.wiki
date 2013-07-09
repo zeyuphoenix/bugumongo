@@ -40,6 +40,7 @@ String id = foo.getId();  //保存至数据库后，foo中有id值了
 public WriteResult save(T t)
 
 /* 修改属性值 */
+
 public WriteResult set(T t, Map values)
 
 public WriteResult set(String id, Map values)
