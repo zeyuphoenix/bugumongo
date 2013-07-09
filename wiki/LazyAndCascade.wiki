@@ -1,13 +1,15 @@
 #summary lazy和cascade属性
 
 = lazy属性 =
+查询数据的时候，有些字段并不需要返回。这样能够节省内存，而且取数据的速度会更快一些。
+
+虽然BuguQuery查询中的方法returnFields()和notReturnFields()，可以指定查询的时候返回、不返回哪些字段，但如果每次查询的时候都要特别指定，那会非常麻烦。有没有简便一点的方法呢？用lazy属性即可实现。
+
 @Property、@Embed、@EmbedList都有lazy属性，其缺省值都是false。
 
 如果把lazy设为true，那么表示：当取出一个List的时候，不会把lazy=true的属性取出来。
 
 如果是取单条记录，会把这条记录的所有field都取出来，不管该field是否为lazy。也就是说，lazy属性只对取列表的时候起作用。
-
-设置lazy属性的好处是，能够节省内存，而且取数据的速度会更快一些。
 
 以一个简单的新闻系统为例：
 {{{
