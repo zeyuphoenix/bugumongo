@@ -225,7 +225,7 @@ List<Foo> list = dao.query().greaterThan("level", 10).notEquals("name", "Frank")
 
 === 支持指定返回、不返回某些字段 ===
 {{{
-//只返回id、name、level三个字段
+//只返回id、name、level这三个字段
 BuguQuery query1 = dao.query().greaterTan("level", 10).returnFields("name", "level") ;
 
 //不返回detail、comments这两个字段
