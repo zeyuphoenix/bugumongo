@@ -133,7 +133,7 @@ private String id;
 
 name——String型，用于指定映射到MongoDB collection中某个field。属性name可以省略，表示采用与Entity的Field相同的名称。
 
-lazy——Boolean型，含义是：取出该实体的列表时，是否取出该field值。如果为true，标识不取出。默认值为false。
+lazy——Boolean型，含义是：取出该实体的列表时，是否取出该field值。如果为true，表示不取出。默认值为false。
 
 对lazy属性的详细讲解，请查看[http://code.google.com/p/bugumongo/wiki/LazyAndCascade lazy和cascade属性]
 
