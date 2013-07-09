@@ -156,8 +156,6 @@ public BuguQuery<T> regex(String key, String regex)
 
 public BuguQuery<T> where(String whereStr)
 
-public BuguQuery<T> slice(String key, long num)
-
 public BuguQuery<T> or(BuguQuery... qs)
 
 public BuguQuery<T> and(BuguQuery... qs)
@@ -174,6 +172,12 @@ public BuguQuery<T> withinBox(String key, double x1, double y1, double x2, doubl
 }}}
 *设置查询参数*:
 {{{
+public BuguQuery<T> slice(String key, long num)
+
+public BuguQuery<T> returnFields(String... fieldNames)
+
+public BuguQuery<T> notReturnFields(String... fieldNames)
+
 public BuguQuery<T> sort(String orderBy)
 
 public BuguQuery<T> pageNumber(int pageNumber)
