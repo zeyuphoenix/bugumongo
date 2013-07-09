@@ -1,5 +1,16 @@
 #summary 版本更新日志
 
+= 1.10 =
+2013-07-08发布。
+
+ * 新增：@Ref和@RefList增加了对接口的支持。
+ * 新增：BuguQuery查询，通过returnFields()、notReturnFields()方法，可以设定只取出特定的字段。
+ * 改进：代码精简，移除了一些不必要的方法。
+ * 解决bug：TTL collection功能不正确。（感谢网友云端漫步的反馈） 
+ * 解决bug：BuguDao中的push、pull操作，不支持EmbedList对象。（感谢网友羽翼齐飞的反馈）
+ * 解决bug：@RefList中cascade="R"的处理不正确，无法关联取出数据。（感谢网友下一道彩虹的反馈）
+ * 解决bug：@RefList中cascade="D"的处理不正确，无法关联删除数据。（感谢网友★甲方★的反馈）
+
 = 1.8 =
 2013-04-25发布。
 
