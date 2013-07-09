@@ -227,6 +227,7 @@ List<Foo> list = dao.query().greaterThan("level", 10).notEquals("name", "Frank")
 {{{
 //只返回id、name、level三个字段
 BuguQuery query1 = dao.query().greaterTan("level", 10).returnFields("name", "level") ;
+
 //不返回detail、comments这两个字段
 BuguQuery query2 = dao.query().greaterThan("level", 10).notReturnFields("detail", "comments");  
 }}}
