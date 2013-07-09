@@ -1,7 +1,7 @@
 #summary 版本更新日志
 
 = 1.10 =
-2013-07-08发布。
+2013-07-09发布。
 
  * 新增：@Ref和@RefList增加了对接口的支持。
  * 新增：BuguQuery查询，通过returnFields()、notReturnFields()方法，可以设定只取出特定的字段。
