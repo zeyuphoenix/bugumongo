@@ -223,6 +223,11 @@ List<Foo> list = dao.query().greaterThan("level", 10).notEquals("name", "Frank")
 List<Foo> list = dao.query().greaterThan("level", 10).notEquals("name", "Frank").pageNumber(1).pageSize(20).results();
 }}}
 
+=== 支持指定返回、不返回某些字段 ===
+{{{
+BuguQuery query = dao.query().greaterThan("level", 10).notReturnFields("detail", "comments");  //不取出detail、comments两个字段的内容
+}}}
+
 === 支持Entity对象作为查询条件 ===
 {{{
 FatherDao fDao = new FatherDao();
