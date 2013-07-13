@@ -167,7 +167,11 @@ List list = dao.query().is("embed.x", 3.14F).results();  //查询出全部embed.
 
 name——含义与@Property的参数name一样。
 
-impl——如果@Ref标注在一个接口（Interface）上，那么可以用impl指定其实现类。
+impl——如果@Ref标注在一个接口（Interface）上，那么可以用impl指定其实现类。例：
+{{{
+@Ref(impl=MyFather.class)
+private IFather father;
+}}}
 
 cascade——String型，用于指定关联操作。其值可以是C、R、U、D四个字符中的任意一个或多个字符组成。如：cascade="CRUD", cascade="CD", cascade="CR"等等。
 
