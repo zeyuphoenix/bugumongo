@@ -266,7 +266,7 @@ List list = dao.query().and(or1, or2).results();
 
 
 ==注意事项==
-使用DAO操作MongoDB时，应该使用数据库的字段名称，而不是Java的属性名称。（@Id字段除外。可以用数据库字段名`_`id，也可以用Java属性名称）。
+使用DAO操作MongoDB时，应该使用数据库的字段名称，而不是Java的属性名称。
 
 比如：
 {{{
