@@ -338,7 +338,7 @@ http://www.domain.com/UploadedFile/bucket/images/2011070799999999999999.jpg
 http://www.domain.com/UploadedFile/dimension/small/2011070799999999999999.jpg
 }}}
 
-前面配置的Servlet，可以通过它访问任何bucket中的文件。你可以把它配置成只允许访问某个bucket，或者禁止访问某个bucket，如，只允许通过该Servlet访问images这个bucket中的文件：
+前面配置的Servlet，可以通过它访问任何bucket中的文件。你可以把它配置成只允许访问某个bucket，或者禁止访问某个bucket。如，只允许通过该Servlet访问images这个bucket中的文件：
 {{{
 <servlet>
     <servlet-name>UploadedFile</servlet-name>
@@ -361,6 +361,23 @@ http://www.domain.com/UploadedFile/dimension/small/2011070799999999999999.jpg
 </servlet>
 }}}
 同一个UploadedFileServlet中，allowBucket、forbidBucket这2个参数，只能使用1个，不支持2个同时使用。
+
+对于需要保护的文件，可能你还希望通过密码才能访问。你可以对该Servlet设置password属性，通过该Servlet访问文件的时候，必须提供相符合的密码。如：
+{{{
+<servlet>
+    <servlet-name>UploadedFile</servlet-name>
+    <servlet-class>com.bugull.mongo.fs.UploadedFileServlet</servlet-class>
+    <init-param>
+        <param-name>password</param-name>
+        <param-value>abcd</param-value>
+    </init-param>
+</servlet>
+}}}
+那么，正确的获取文件的方式是：
+{{{
+http://www.domain.com/UploadedFile/2011070788888888.mp4?password=xxxxxx
+}}}
+其中，xxxxxx是密码abcd经过MD5加密后的字符串。
 
 UploadedFileServlet有2个特点：
 
