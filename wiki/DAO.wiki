@@ -41,6 +41,10 @@ public WriteResult save(T t)
 
 /* 修改属性值 */
 
+public WriteResult set(T t, String key, Object value)
+
+public WriteResult set(String id, String key, Object value)
+
 public WriteResult set(T t, Map values)
 
 public WriteResult set(String id, Map values)
@@ -48,10 +52,6 @@ public WriteResult set(String id, Map values)
 public WriteResult set(BuguQuery query, String key, Object value)
 
 public WriteResult set(BuguQuery query, Map values)
-
-public WriteResult set(T t, String key, Object value)
-
-public WriteResult set(String id, String key, Object value)
 
 /* 增加、减少数值 */
 
@@ -63,11 +63,11 @@ public WriteResult inc(BuguQuery query, String key, Object value)
 
 /* 删除属性列 */
 
-public WriteResult unset(T t, String key)
+public WriteResult unset(T t, String... keys)
 
-public WriteResult unset(String id, String key)
+public WriteResult unset(String id, String... keys)
 
-public WriteResult unset(BuguQuery query, String key)
+public WriteResult unset(BuguQuery query, String... keys)
 }}}
 例：
 {{{
