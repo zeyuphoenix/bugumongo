@@ -1,5 +1,22 @@
 #summary 版本更新日志
 
+= 1.12 =
+2013-11-23发布。
+
+* 新增：新增BuguMapper.toJsonString()方法，用于把Entity转换成JSON。（感谢网友hxj的建议）
+* 新增：BuguDao新增set(String id, Map values)方法。
+* 新增：BuguDao新增set(BuguQuery query, Map values)方法。
+* 改进：@Id字段能自动转换成"_id"进行查询。
+* 改进：重建Lucene索引的时候，可以多任务。（感谢网友ko的建议）
+* 改进：BuguDao中针对@Embed和@EmbedList字段操作的时候，支持直接使用Java对象。
+* 改进：通过UploadedFileServlet获取文件的时候，可以设置密码。
+* 改进：BuguDao中的unset()方法可以一次性移除多个字段。
+* 改进：把BuguDao中不建议使用的方法改成@Deprecated，以便在下一个版本移除。
+* 解决bug：BuguDao中的set()方法对@Embed等字段不起作用。（感谢网友hxj的反馈）
+* 解决bug：Short和Float对象类型的数据，无法从数据库取出。（感谢网友秀明新竹的反馈）
+* 解决bug：UploadedFileServlet对断点续传字节的解析，在某些情况下不正确。
+
+
 = 1.10 =
 2013-07-09发布。
 
