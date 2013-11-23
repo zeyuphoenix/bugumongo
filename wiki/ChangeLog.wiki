@@ -2,7 +2,6 @@
 
 = 1.12 =
 2013-11-23发布。
-
  * 新增：新增BuguMapper.toJsonString()方法，用于把Entity转换成JSON。（感谢网友hxj的建议）
  * 新增：BuguDao新增set(String id, Map values)方法。
  * 新增：BuguDao新增set(BuguQuery query, Map values)方法。
@@ -19,7 +18,6 @@
 
 = 1.10 =
 2013-07-09发布。
-
  * 新增：@Ref和@RefList增加了对接口的支持。
  * 新增：BuguQuery查询，通过returnFields()、notReturnFields()方法，可以设定只取出特定的字段。
  * 改进：代码精简，移除了一些不必要的方法。
@@ -31,7 +29,6 @@
 
 = 1.8 =
 2013-04-25发布。
-
  * 新增：BuguQuery新增对$where查询条件的支持。
  * 新增：BuguQuery新增对$slice操作的支持。
  * 新增：支持mongodb 2.4新增的text索引。
@@ -49,7 +46,6 @@
 
 = 1.6 =
 2013-01-10发布。
-
  * 新增：提供了BuguEntity接口的简单实现类SimpleEntity，方便简化代码。
  * 新增：可以指定ID的类型，包括：自动产生、自动增长、用户自定义。
  * 新增：@Ref和@RefList注解新增reduced属性，用于优化数据库存储。
@@ -68,7 +64,6 @@
 
 = 1.4 =
 2012-06-29发布。
-
  * 变更：把Query重命名为BuguQuery，以便统一和区分。
  * 变更：BuguFS不再使用单例模式，而是用new()创建对象。
  * 改进：把BuguSearcher的返回结果List中的null值排除。
@@ -83,7 +78,6 @@
 
 = 1.2 =
 2012-03-17发布。
-
  * BuguDao新增unset()系列方法，用于删除某一列。
  * BuguMapper新增一个toDBRef(Class<?> clazz, String idStr)方法。
  * BuguParser新增一个方法parseTerm(String field, String value)。
