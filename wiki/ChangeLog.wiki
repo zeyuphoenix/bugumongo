@@ -6,7 +6,7 @@
  * 新增：新增BuguMapper.toJsonString()方法，用于把Entity转换成JSON。（感谢网友hxj的建议）
  * 新增：BuguDao新增set(String id, Map values)方法。
  * 新增：BuguDao新增set(BuguQuery query, Map values)方法。
- * 改进：@Id字段能自动转换成"_id"进行查询。
+ * 改进：@Id字段能自动转换成"`_`id"进行查询。
  * 改进：重建Lucene索引的时候，可以多任务。（感谢网友ko的建议）
  * 改进：BuguDao中针对@Embed和@EmbedList字段操作的时候，支持直接使用Java对象。
  * 改进：通过UploadedFileServlet获取文件的时候，可以设置密码。
