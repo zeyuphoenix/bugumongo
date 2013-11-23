@@ -45,6 +45,8 @@ public WriteResult set(T t, Map values)
 
 public WriteResult set(String id, Map values)
 
+public WriteResult set(BuguQuery query, String key, Object value)
+
 public WriteResult set(BuguQuery query, Map values)
 
 public WriteResult set(T t, String key, Object value)
