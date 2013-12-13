@@ -204,7 +204,7 @@ reduced=true时，@Ref字段在MongoDB中保存的是引用对象的id值，没�
 
 name——含义与@Property的属性name一样。
 
-impl——含义与@Ref的属性impl一样。
+impl——含义与@Ref的属性impl类似，指定集合中元素的实现类。
 
 cascade——含义与@Ref的属性cascade一样。
 
