@@ -105,7 +105,7 @@ boost——float型，表示该Field的权重，缺省值为1.0
 
 @IndexRefBy有4个参数：
 
-value——Class类型，表示被引用的类
+value——Class类型，表示被引用的类，该值必须设置
 
 analyze——boolean型，表示是否需要分词，缺省值为false
 
