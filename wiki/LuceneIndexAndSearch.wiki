@@ -107,11 +107,11 @@ boost——float型，表示该Field的权重，缺省值为1.0
 
 value——Class类型，表示被引用的类
 
-analyze——boolean型，表示是否需要分词
+analyze——boolean型，表示是否需要分词，缺省值为false
 
-store——boolean型，表示是否需要存储
+store——boolean型，表示是否需要存储，缺省值为false
 
-boost——float型，表示该Field的权重
+boost——float型，表示该Field的权重，缺省值为1.0
 
 当某属性在多个类的索引中被引用时，上述4个参数都需要设置成数组形式。
 
