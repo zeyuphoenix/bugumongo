@@ -52,7 +52,6 @@
  * 新增：支持mongodb 2.2新增的new aggregation框架。
  * 新增：支持mongodb 2.2新增的TTL collection。
  * 新增：新增@IndexEmbedBy注解。
- * 新增：支持集群环境下的Lucene索引和搜索。
  * 改进：完善了BuguDao的泛型参数。
  * 改进：完善了AdvancedDao的功能和异常信息。
  * 改进：drop某个collection的时候，能自动drop其相应的数据库索引。
