@@ -16,6 +16,8 @@
  * 变更：BuguFS不再使用new()方法来创建对象，而是使用对象工厂BuguFSFactory。
  * 变更：MongoDB Java Driver版本更新到2.12 
 
+由于Google Code不再提供下载支持，1.14版本，请[http://www.bugull.com/projects/bugu-mongo/bugu-mongo-1.14.zip 从这里下载]
+
 = 1.12 =
 2013-11-23发布。
  * 新增：新增BuguMapper.toJsonString()方法，用于把Entity转换成JSON。（感谢网友hxj的建议）
