@@ -161,10 +161,9 @@ public WriteResult bitwise(BuguQuery query, String key, int value, Bitwise bitwi
 FooDao dao = new FooDao();
 Foo foo = dao.query().is("name", "Frank").result();
 
-dao.update().set(foo, "level", 9);  //把foo的level值修改为9
+dao.update().set(foo, "level", 5);  //把foo的level值修改为5
 
 dao.update().inc(foo, "level", 10);  //把foo的level值增加10
-dao.unset(foo, "level");  //移除foo的属性列level
 }}}
 
 == 基本查询 ==
@@ -333,7 +332,6 @@ Foo foo = dao.query().is("father", father).result();  //用FatherFoo对象作为
 {{{
 List<Foo> list = dao.query().in("name", "Frank", "John").sort("{level:1, timestamp: -1}").results();
 }}}
-
 
 ==注意事项==
 1、对于数组、List、Set，在MongoDB中都被保存成数组，可以用push、pull等方法对其进行操作。
