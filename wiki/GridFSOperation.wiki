@@ -5,17 +5,22 @@
 ==1、BuguFS类==
 BuguMongo通过BuguFS类来操作GridFS文件系统，能够实现对文件的保存、获取、删除、重命名、移动等操作。
 
-*构造函数*
+*创建BuguFS对象*
 
-BuguFS提供了如下几个构造函数：
+BuguMongo框架提供了工厂类BuguFSFactory，用于创建BuguFS对象：
 {{{
-public BuguFS()
+public BuguFS create()
 
-public BuguFS(String bucketName)
+public BuguFS create(String bucketName)
 
-public BuguFS(long chunkSize)
+public BuguFS create(long chunkSize)
 
-public BuguFS(String bucketName, long chunkSize)
+public BuguFS create(String bucketName, long chunkSize)
+}}}
+
+例如：
+{{{
+BuguFS fs = BuguFSFactory.getInstance().create();
 }}}
 
 其中，bucketName是mongoDB Java Driver中的叫法，在GridFS中，又被称为namespace（命名空间）。缺省情况下，GridFS把文件保存在fs命名空间里。缺省的文件块大小是256K。关于GridFS更详细的介绍，请查看[http://www.mongodb.org/display/DOCS/GridFS+Specification mongoDB的官方文档]。
@@ -52,11 +57,7 @@ public List<GridFSDBFile> find(DBObject query, int pageNum, int pageSize)
 
 public List<GridFSDBFile> find(DBObject query, String orderBy)
 
-public List<GridFSDBFile> find(DBObject query, DBObject orderBy)
-
 public List<GridFSDBFile> find(DBObject query, String orderBy, int pageNum, int pageSize)
-
-public List<GridFSDBFile> find(DBObject query, DBObject orderBy, int pageNum, int pageSize)
 }}}
 *文件重命名*
 {{{
@@ -85,7 +86,7 @@ public final static String UPLOADDATE = "uploadDate";  //上传时间
 {{{
 import com.bugull.mongo.fs.BuguFS;
 
-BuguFS fs = new BuguFS();
+BuguFS fs = BuguFSFactory.getInstance().create();
 
 //保存
 File file = ...
@@ -411,8 +412,11 @@ UploadedFileServlet有2个特点：
 }}}
 该配置表示：只允许通过该Servlet访问videos这个bucket中的文件，并且最多只允许100个并发访问，当超过该数目时，不返回文件，而是跳转至/too_many_access.html这个网页。
 
-如果你的应用中只有一个AccessRistrictedServlet，那么resourceName可以不配置，其默认值为bugu。resourceName的作用是：你可以通过它来获取当前有多少个并发访问在请求该Servlet。如：
+如果不配置redirectTo参数，则访问请求不会被跳转，而是会进入等待队列。
+
+如果你的应用中只有一个AccessRistrictedServlet，那么resourceName可以不配置，其默认值为bugu。resourceName的作用是：你可以通过它来获取当前还剩下多少个空闲的访问名额，以及等待队列中有多少个元素。如：
 {{{
 AccessCount ac = AccessCount.getInstance();
-int count = ac.getCount("videos");  //如果没有配置resourceName，则为ac.getCount("bugu");
+int available = ac.getAvailablePermits("videos");  //如果没有配置resourceName，则为ac.getCount("bugu");
+int waiting = ac.getQueueLength("videos");
 }}}
