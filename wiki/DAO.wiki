@@ -35,11 +35,37 @@ dao.save(foo);
 String id = foo.getId();  //保存至数据库后，foo中有id值了
 }}}
 
+== 删除 ==
+{{{
+public void drop()  //删除整个Collection
+
+public WriteResult remove(T t)
+
+public WriteResult remove(String id)
+
+public WriteResult remove(List<String> idList)  //批量删除
+
+public WriteResult remove(String key, Object value)  //按条件删除
+
+public WriteResult remove(BuguQuery query)  //按条件删除
+}}}
+
 == 修改 ==
+对于修改过的对象，可以调用如下方法进行保存：
 {{{
 public WriteResult save(T t)
-
+}}}
+除此之外，mongoDB还提供了大量的对数据记录进行直接修改的方法。这些方法实在太多了，而且还在不断增加，因此BuguMongo把这些方法集中到了一个类BuguUpdater中：
+{{{
+BuguUpdater updater = dao.update();
+}}}
+我们看看BuguUpdater类中有哪些方法：
+{{{
 /* 修改属性值 */
+
+public WriteResult set(BuguQuery query, String key, Object value)
+
+public WriteResult set(BuguQuery query, Map values)
 
 public WriteResult set(T t, String key, Object value)
 
@@ -49,9 +75,13 @@ public WriteResult set(T t, Map values)
 
 public WriteResult set(String id, Map values)
 
-public WriteResult set(BuguQuery query, String key, Object value)
+/* 删除属性列 */
 
-public WriteResult set(BuguQuery query, Map values)
+public WriteResult unset(T t, String... keys)
+
+public WriteResult unset(String id, String... keys)
+
+public WriteResult unset(BuguQuery query, String... keys)
 
 /* 增加、减少数值 */
 
@@ -61,63 +91,87 @@ public WriteResult inc(String id, String key, Object value)
 
 public WriteResult inc(BuguQuery query, String key, Object value)
 
-/* 删除属性列 */
+/* 乘以某个数值 */
 
-public WriteResult unset(T t, String... keys)
+public WriteResult mul(T t, String key, Object value)
 
-public WriteResult unset(String id, String... keys)
+public WriteResult mul(String id, String key, Object value)
 
-public WriteResult unset(BuguQuery query, String... keys)
+public WriteResult mul(BuguQuery query, String key, Object value)
+
+/* 数组操作 */
+
+public WriteResult push(T t, String key, Object value)
+
+public WriteResult push(String id, String key, Object value)
+
+public WriteResult push(BuguQuery query, String key, Object value)
+
+public WriteResult pushEach(T t, String key, List valueList)
+
+public WriteResult pushEach(String id, String key, List valueList)
+
+public WriteResult pushEach(BuguQuery query, String key, List valueList)
+
+public WriteResult pull(T t, String key, Object value)
+
+public WriteResult pull(String id, String key, Object value)
+
+public WriteResult pull(BuguQuery query, String key, Object value)
+
+public WriteResult popFirst(T t, String key)
+
+public WriteResult popFirst(String id, String key)
+
+public WriteResult popFirst(BuguQuery query, String key)
+
+public WriteResult popLast(T t, String key)
+
+public WriteResult popLast(String id, String key)
+
+public WriteResult popLast(BuguQuery query, String key)
+
+/* 设置成较小值 */
+
+public WriteResult min(T t, String key, Object value)
+
+public WriteResult min(String id, String key, Object value)
+
+public WriteResult min(BuguQuery query, String key, Object value)
+
+/* 设置成较大值 */
+
+public WriteResult max(T t, String key, Object value)
+
+public WriteResult max(String id, String key, Object value)
+
+public WriteResult max(BuguQuery query, String key, Object value)
+
+/* 按位操作 */
+
+public WriteResult bitwise(T t, String key, int value, Bitwise bitwise)
+
+public WriteResult bitwise(String id, String key, int value, Bitwise bitwise)
+
+public WriteResult bitwise(BuguQuery query, String key, int value, Bitwise bitwise)
+
 }}}
 例：
 {{{
 FooDao dao = new FooDao();
 Foo foo = dao.query().is("name", "Frank").result();
 
-dao.set(foo, "level", 9);  //把foo的level值修改为9
+dao.update().set(foo, "level", 9);  //把foo的level值修改为9
 
-//把foo的name改为“John”，level值改为20
-Map newValues = new HashMap();
-newValues.put("name", "John");
-newValues.put("level", 20);
-dao.set(foo, newValues);
-
-dao.inc(foo, "level", 100);  //把foo的level值增加100
-dao.inc(foo, "level", -50);  //把foo的level值减少50
-
+dao.update().inc(foo, "level", 10);  //把foo的level值增加10
 dao.unset(foo, "level");  //移除foo的属性列level
 }}}
 
-== 删除 ==
-{{{
-public void drop()  //删除整个Collection
-
-public WriteResult remove(T t)
-
-public WriteResult remove(String id)
-
-public WriteResult remove(String... ids)  //批量删除
-
-public WriteResult remove(String key, Object value)  //按条件删除
-
-public WriteResult remove(BuguQuery query)  //按条件删除
-}}}
-
-== 数组、列表操作==
-{{{
-public WriteResult push(T t, String key, Object value)
-
-public WriteResult push(String id, String key, Object value)
-
-public WriteResult pull(T t, String key, Object value)
-
-public WriteResult pull(String id, String key, Object value)
-}}}
-对于数组、List、Set，在MongoDB中都被保存成数组，可以用push、pull方法对其进行操作。
-
 *注：*
 
-上述对数据库的修改操作，都有一个返回值WriteResult，代表了操作的结果。该类由mongoDB Java Driver提供，其详细信息，可以[http://api.mongodb.org/java/current/com/mongodb/WriteResult.html 查看这里]。
+1、对于数组、List、Set，在MongoDB中都被保存成数组，可以用push、pull等方法对其进行操作。
+
+2、上述对数据库的修改操作，都有一个返回值WriteResult，代表了操作的结果。该类由mongoDB Java Driver提供，其详细信息，可以[http://api.mongodb.org/java/current/com/mongodb/WriteResult.html 查看这里]。
 
 == 基本查询 ==
 
@@ -286,24 +340,6 @@ Foo foo = dao.query().is("father", father).result();  //用FatherFoo对象作为
 List<Foo> list = dao.query().in("name", "Frank", "John").sort("{level:1, timestamp: -1}").results();
 }}}
 对于排序字符串的书写规则，请[http://code.google.com/p/bugumongo/wiki/ObjectDocumentMapping#排序字符串 参考这里]。
-
-=== 支持多个条件的and、or布尔组合查询 ===
-{{{
-BuguQuery<Foo> q1 = dao.query().greaterThan("level", 10);
-BuguQuery<Foo> q2 = dao.query().is("name", "John");
-List<Foo> list = dao.query().or(q1, q2).results();
-}}}
-*注*：几乎很少需要用到and操作。BuguQuery的连缀书写形式，就是按多个条件的“与”逻辑进行组合的。一个需要用到and操作的例子如下，它用来连接两个or条件：
-{{{
-BuguQuery q1 = dao.query().is("level", 10);
-BuguQuery q2 = dao.query().is("level", 20);
-BuguQuery or1 = dao.query().or(q1, q2);
-BuguQuery q3 = dao.query().is("name", "Frank");
-BuguQuery q4 = dao.query().is("name", "John");
-BuguQuery or2 = dao.query().or(q3, q4);
-List list = dao.query().and(or1, or2).results();
-}}}
-
 
 ==注意事项==
 使用DAO操作MongoDB时，应该使用数据库的字段名称，而不是Java的属性名称。
