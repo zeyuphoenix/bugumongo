@@ -2,7 +2,7 @@
 
 = 1.14 =
 2014-05-03发布。
- * 新增：增加了对byte和byte[]数据类型的支持。
+ * 新增：增加了对byte和byte`[]`数据类型的支持。
  * 新增：增加了对Queue和LinkedList数据类型的支持。
  * 新增：新增BuguUpdater类，把BuguDao中更新数据的操作统一放到BuguUpdater中。
  * 新增：BuguUpdater中，新增mul()、min()、max()、popFirst()、popLast()、bitwise()等方法。
