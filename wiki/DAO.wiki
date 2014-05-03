@@ -22,7 +22,7 @@ public WriteResult insert(List<T> list)  //批量插入
 
 public WriteResult save(T t)  //如果t中没有ID值，则为插入，若有ID值，则为修改。用户自定义ID除外。
 }}}
-其中，当使用save(obj)方法时，如果obj中的id值为null，则实际执行数据库插入操作；如果obj中的id值不为null，则实际执行数据库修改操作。（@Id的type=IdType.USER_DEFINE的情况除外）
+其中，当使用save(obj)方法时，如果obj中的id值为null，则实际执行插入操作；如果obj中的id值不为null，则实际执行修改操作。（@Id的type=IdType.USER_DEFINE的情况除外）
 
 例：
 {{{
@@ -166,12 +166,6 @@ dao.update().set(foo, "level", 9);  //把foo的level值修改为9
 dao.update().inc(foo, "level", 10);  //把foo的level值增加10
 dao.unset(foo, "level");  //移除foo的属性列level
 }}}
-
-*注：*
-
-1、对于数组、List、Set，在MongoDB中都被保存成数组，可以用push、pull等方法对其进行操作。
-
-2、上述对数据库的修改操作，都有一个返回值WriteResult，代表了操作的结果。该类由mongoDB Java Driver提供，其详细信息，可以[http://api.mongodb.org/java/current/com/mongodb/WriteResult.html 查看这里]。
 
 == 基本查询 ==
 
@@ -339,10 +333,15 @@ Foo foo = dao.query().is("father", father).result();  //用FatherFoo对象作为
 {{{
 List<Foo> list = dao.query().in("name", "Frank", "John").sort("{level:1, timestamp: -1}").results();
 }}}
-对于排序字符串的书写规则，请[http://code.google.com/p/bugumongo/wiki/ObjectDocumentMapping#排序字符串 参考这里]。
+
 
 ==注意事项==
-使用DAO操作MongoDB时，应该使用数据库的字段名称，而不是Java的属性名称。
+1、对于数组、List、Set，在MongoDB中都被保存成数组，可以用push、pull等方法对其进行操作。
+
+2、BuguMongo支持用字符串来表示排序规则。对于其书写方法，请[http://code.google.com/p/bugumongo/wiki/ObjectDocumentMapping#排序字符串 参考这里]。
+
+3、对数据库的更新操作，都有一个返回值WriteResult，代表了操作的结果。该类由mongoDB Java Driver提供，其详细信息，可以[http://api.mongodb.org/java/current/com/mongodb/WriteResult.html 查看这里]。
+4、使用DAO操作MongoDB时，应该使用数据库的字段名称，而不是Java的属性名称。
 
 比如：
 {{{
