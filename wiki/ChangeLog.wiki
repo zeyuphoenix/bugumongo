@@ -12,7 +12,7 @@
  * 解决bug：@IndexEmbed不起作用。 （感谢网友汝逸的反馈）
  * 解决bug：使用$in查询时，对空数组[]的处理不正确。 （感谢网友David Cen的反馈）
  * 解决bug：当在@RefList中使用接口时，对实现类的解析不正确。
- * 解决bug：对List<Float>、List<Short>类型的解析不正确。 
+ * 解决bug：对List`<`Float`>`、List`<`Short`>`类型的解析不正确。 
  * 变更：BuguFS不再使用new()方法来创建对象，而是使用对象工厂BuguFSFactory。
  * 变更：MongoDB Java Driver版本更新到2.12 
 
